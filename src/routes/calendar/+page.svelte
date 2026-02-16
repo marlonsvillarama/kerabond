@@ -1,6 +1,9 @@
 <script>
-    import Calendar from "$lib/components/calendar.svelte";
+    // import Calendar from "$lib/components/calendar.svelte";
+    import CalendarWeek from "$lib/components/calendar-week.svelte";
+    import CalendarMonth from "$lib/components/calendar-month.svelte";
 
+    let mode = $state('week');
 </script>
 
 <div class="wrapper">
@@ -8,7 +11,11 @@
         Calendar Header
     </div>
     <div class="contents">
-        <Calendar />
+        {#if mode === 'week'}
+        <CalendarWeek />
+        {:else}
+        <CalendarMonth />
+        {/if}
     </div>
 </div>
 

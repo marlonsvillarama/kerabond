@@ -7,14 +7,16 @@
     /* --font-serif: "Playfair Display", serif; */
     --font-serif: "PT Serif", serif;
     --font-size: 16px;
-    --color: rgba(0, 0, 0, 0.9);
+    /* --color: rgba(0, 0, 0, 0.9); */
 
     --accent: rgb(239, 191, 4);
 
     /* --border: rgba(0, 0, 0, 0.1); */
     --border: oklab(0.21 0.00164224 -0.00577088 / 0.2);
     /* --border-light: rgba(0, 0, 0, 0.05); */
-    --border-light: oklch(0.21 0.006 285.885 / 0.05);
+    --border-light: oklch(0.21 0.006 285.885 / 0.1);
+    --border-lighter: oklch(0.21 0.006 285.885 / 0.05);
+    --border-lightest: oklch(0.21 0.006 285.885 / 0.04);
 
     --darkest: rgba(0, 0, 0, 0.95);
     --darker: rgba(0, 0, 0, 0.9);

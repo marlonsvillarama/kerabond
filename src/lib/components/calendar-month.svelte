@@ -10,34 +10,51 @@
         { id: 6, name: 'Saturday' },
         { id: 7, name: 'Sunday' },
     ];
-    const START = {
-        DAY: '0600',
-        SHIFT: '0830'
-    };
-    const END = {
-        DAY: '1900',
-        SHIFT: '1700'
-    };
-    const INTERVAL = 30;
+    // const START = {
+    //     DAY: '0600',
+    //     SHIFT: '0830'
+    // };
+    // const END = {
+    //     DAY: '1900',
+    //     SHIFT: '1700'
+    // };
+    // const INTERVAL = 30;
 
-    const parseTime = (dt) => {
-        let hours = dt.getHours();
-        let output = `${hours > 12 ? hours - 12 : hours}:00 ${hours >= 12 ? 'PM' : 'AM'}`;
-        return output;
-    };
+    // const parseTime = (dt) => {
+    //     let hours = dt.getHours();
+    //     let output = `${hours > 12 ? hours - 12 : hours}:00 ${hours >= 12 ? 'PM' : 'AM'}`;
+    //     return output;
+    // };
 
-    let slots = $state([]);
+    let weeks = $state([]);
     onMount(() => {
         let now = new Date();
-        let startHour = START.DAY.slice(0, 2);
-        let endHour = END.DAY.slice(0, 2);
-        let day = new Date(
-            now.getFullYear(),
-            now.getMonth(),
-            now.getDate(),
-            parseInt(startHour),
-            0
-        );
+        let startDay = new Date(now.getFullYear(), now.getMonth(), 1);
+        let endDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+        let currentDay = new Date(now.getFullYear(), now.getMonth(), 1);
+
+        do {
+            let dayOfWeek = currentDay.getDay();
+            let week = [];
+            // Build array of weeks
+            if (currentDay.getDate() === 1) {
+                if (currentDay.getDay() > 0) {
+                    for (let i = 0; i < currentDay.getDay(); i++) {
+
+                    }
+                }
+            }
+            else {}
+        } while (currentDay.getDate() <= endDay.getDate());
+        // let startHour = START.DAY.slice(0, 2);
+        // let endHour = END.DAY.slice(0, 2);
+        // let day = new Date(
+        //     now.getFullYear(),
+        //     now.getMonth(),
+        //     now.getDate(),
+        //     parseInt(startHour),
+        //     0
+        // );
 
         do {
             slots.push({

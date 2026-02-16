@@ -17,18 +17,12 @@
 
 <style>
     .wrapper {
-        /* border: 4px solid green; */
         height: 100%;
         width: 100%;
         display: flex;
         flex-direction: column;
         flex: auto 1fr;
     }
-	/* .header {
-		padding: 0.25rem 0.75rem;
-		border-bottom: 1px solid var(--border-light);
-		z-index: 2;
-	} */
 	.body {
 		flex: 1;
 		overflow-y: auto;
