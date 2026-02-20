@@ -1,10 +1,6 @@
 <script>
     import { onMount } from "svelte";
 
-    // const START_HOUR = 6;
-    // const END_HOUR = 19;
-    // const INTERVAL = 30;
-
     let {
         startDay = '0600',
         startShift = '0830',
@@ -79,7 +75,6 @@
 
 <style>
     .slot {
-        /* background-color: aliceblue; */
         height: 2rem;
         border-left: 1px solid var(--border-light);
         border-bottom: 1px solid var(--border-lightest);

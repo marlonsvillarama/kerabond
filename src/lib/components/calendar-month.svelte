@@ -12,36 +12,30 @@
     ];
     const WEEK_START = 1;
 
+    let {
+        now = new Date()
+    } = $props();
+
     let weeks = $state([]);
     onMount(() => {
-        let now = new Date(2026, 3, 11);
-        // let now = new Date();
-
         let startDay = new Date(now.getFullYear(), now.getMonth(), 1);
         let endDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
         let currentDay = new Date(startDay.getFullYear(), startDay.getMonth(), 1);
-        // console.log(' - startDay', startDay);
-        // console.log(' - endDay', endDay);
 
         let week = [];
         do {
-            // console.log(' - currentDay', currentDay);
             let currentDate = currentDay.getDate();
             let dayOfWeek = currentDay.getDay();
-            // console.log(`>>> START >> dayOfWeek = ${dayOfWeek}; currentDate = ${currentDate}`, currentDay);
 
             if (week.length >= 7) {
-                // console.log(' - adding week to month...');
                 weeks.push(week);
                 week = [];
             }
 
             if (currentDate === 1) {
-                // console.log(' - initializing new week...');
                 week = [];
 
                 let count = dayOfWeek - WEEK_START;
-                // console.log(` - pre-populating week; dayOfWeek = ${dayOfWeek}; count = ${count}`);
                 for (let i = 0; i < count; i++) {
                     week.push(null);
                 }
@@ -53,30 +47,21 @@
             });
 
             if (currentDate === endDay.getDate()) {
-                // console.log(` - week (${week.length}) ==>`, JSON.stringify(week));
-                // console.log(` - populating until end of month; remaining = ${7 - week.length}`);
                 for (let i = week.length; i < 7; i++) {
                     week.push(null);
                 }
     
-                // console.log(' - adding week to end of month...');
                 weeks.push(week);
                 break;
             }
 
-            // console.log(` - week (${week.length}) ==>`, JSON.stringify(week));
             currentDay.setDate(currentDate + 1);
         } while (currentDay <= endDay);
-
-        console.log('weeks', JSON.stringify(weeks));
     });
 </script>
 
-<!-- Wrapper -->
 <div class="wrapper">
-    <!-- Header -->
     <div class="header border-b border-(--border)">
-        <!-- <div class="time-col border-r border-(--border)"></div> -->
         {#each days as day, i}
             <div class="week-day text-center {i < days.length - 1 ? 'border-r border-(--border)' : ''}">
                 {day.name}
@@ -119,16 +104,11 @@
     .calendar-grid {
         width: 100%;
         display: grid;
-        /* background-color: aliceblue; */
     }
     .header {
         font-weight: 600;
         grid-template-columns: repeat(7, 1fr);
     }
-    /* .calendar-grid { */
-        /* background-color: aliceblue; */
-        /* height: 1000px; */
-    /* } */
     .week-day {
         background-color: var(--accent-light);
         padding: 0.25rem;
@@ -164,10 +144,4 @@
         left: 0.5rem;
         font-weight: 500;
     }
-    /* .time-col {
-        background-color: aliceblue;
-    } */
-    /* .calendar-grid {
-        height: 1000px;
-    } */
 </style>

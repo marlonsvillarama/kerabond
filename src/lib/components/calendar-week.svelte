@@ -43,13 +43,11 @@
             slots.push({ value: day, text: parseTime(day) });
             day.setMinutes(day.getMinutes() + (2 * INTERVAL));
         } while (day.getHours() < endHour);
-        console.log('slots', slots);
+        // console.log('slots', slots);
     });
 </script>
 
-<!-- Wrapper -->
 <div class="wrapper">
-    <!-- Header -->
     <div class="header border-b border-(--border)">
         <div class="time-col border-r border-(--border)"></div>
         {#each days as day, i}
@@ -69,9 +67,6 @@
                 {/each}
             </div>
             {#each days as day, i}
-                <!-- <div class="week-day {i < days.length - 1 ? 'border-r border-(--border)' : ''}">
-                    {day.id}
-                </div> -->
                 <CalendarDay
                     startDay={START.DAY}
                     endDay={END.DAY}
@@ -114,7 +109,4 @@
     .slot {
         height: 4rem;
     }
-    /* .calendar-grid {
-        height: 1000px;
-    } */
 </style>

@@ -22,23 +22,10 @@
         {/if}
     </div>
 </main>
-<!-- <div class="wrapper">
-    <div class="header">
-        Calendar Header
-    </div>
-    <div class="contents">
-        {#if mode === 'week'}
-        <CalendarWeek />
-        {:else}
-        <CalendarMonth />
-        {/if}
-    </div>
-</div> -->
 
 <style>
     main {
         height: 100%;
-        /* border: 4px solid green; */
         display: flex;
         flex-direction: column;
         flex: auto 1fr;
@@ -54,20 +41,4 @@
         flex: 1;
         overflow-y: auto;
     }
-    /* .wrapper {
-        border: 2px solid green;
-        height: 100%;
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        flex: auto 1fr;
-    }
-    .header {
-        border-bottom: 1px solid var(--border);
-		padding: 0.25rem 0.75rem;
-    }
-    .contents {
-        border: 2px solid red;
-        overflow: auto;
-    } */
 </style>
