@@ -10,63 +10,65 @@
         { id: 6, name: 'Saturday' },
         { id: 7, name: 'Sunday' },
     ];
-    // const START = {
-    //     DAY: '0600',
-    //     SHIFT: '0830'
-    // };
-    // const END = {
-    //     DAY: '1900',
-    //     SHIFT: '1700'
-    // };
-    // const INTERVAL = 30;
-
-    // const parseTime = (dt) => {
-    //     let hours = dt.getHours();
-    //     let output = `${hours > 12 ? hours - 12 : hours}:00 ${hours >= 12 ? 'PM' : 'AM'}`;
-    //     return output;
-    // };
+    const WEEK_START = 1;
 
     let weeks = $state([]);
     onMount(() => {
-        let now = new Date();
+        let now = new Date(2026, 3, 11);
+        // let now = new Date();
+
         let startDay = new Date(now.getFullYear(), now.getMonth(), 1);
         let endDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-        let currentDay = new Date(now.getFullYear(), now.getMonth(), 1);
+        let currentDay = new Date(startDay.getFullYear(), startDay.getMonth(), 1);
+        // console.log(' - startDay', startDay);
+        // console.log(' - endDay', endDay);
 
+        let week = [];
         do {
+            // console.log(' - currentDay', currentDay);
+            let currentDate = currentDay.getDate();
             let dayOfWeek = currentDay.getDay();
-            let week = [];
-            // Build array of weeks
-            if (currentDay.getDate() === 1) {
-                if (currentDay.getDay() > 0) {
-                    for (let i = 0; i < currentDay.getDay(); i++) {
+            // console.log(`>>> START >> dayOfWeek = ${dayOfWeek}; currentDate = ${currentDate}`, currentDay);
 
-                    }
+            if (week.length >= 7) {
+                // console.log(' - adding week to month...');
+                weeks.push(week);
+                week = [];
+            }
+
+            if (currentDate === 1) {
+                // console.log(' - initializing new week...');
+                week = [];
+
+                let count = dayOfWeek - WEEK_START;
+                // console.log(` - pre-populating week; dayOfWeek = ${dayOfWeek}; count = ${count}`);
+                for (let i = 0; i < count; i++) {
+                    week.push(null);
                 }
             }
-            else {}
-        } while (currentDay.getDate() <= endDay.getDate());
-        // let startHour = START.DAY.slice(0, 2);
-        // let endHour = END.DAY.slice(0, 2);
-        // let day = new Date(
-        //     now.getFullYear(),
-        //     now.getMonth(),
-        //     now.getDate(),
-        //     parseInt(startHour),
-        //     0
-        // );
 
-        do {
-            slots.push({
-                value: day,
-                text: parseTime(day)
+            week.push({
+                date: new Date(currentDay.getFullYear(), currentDay.getMonth(), currentDay.getDate()),
+                day: dayOfWeek
             });
-            // slots.push({
-            //     time: day.toLocaleTimeString({ hour: 'numeric', minute: 'numeric' })
-            // });
-            day.setMinutes(day.getMinutes() + (2 * INTERVAL));
-        } while (day.getHours() < endHour);
-        console.log('slots', slots);
+
+            if (currentDate === endDay.getDate()) {
+                // console.log(` - week (${week.length}) ==>`, JSON.stringify(week));
+                // console.log(` - populating until end of month; remaining = ${7 - week.length}`);
+                for (let i = week.length; i < 7; i++) {
+                    week.push(null);
+                }
+    
+                // console.log(' - adding week to end of month...');
+                weeks.push(week);
+                break;
+            }
+
+            // console.log(` - week (${week.length}) ==>`, JSON.stringify(week));
+            currentDay.setDate(currentDate + 1);
+        } while (currentDay <= endDay);
+
+        console.log('weeks', JSON.stringify(weeks));
     });
 </script>
 
@@ -74,7 +76,7 @@
 <div class="wrapper">
     <!-- Header -->
     <div class="header border-b border-(--border)">
-        <div class="time-col border-r border-(--border)"></div>
+        <!-- <div class="time-col border-r border-(--border)"></div> -->
         {#each days as day, i}
             <div class="week-day text-center {i < days.length - 1 ? 'border-r border-(--border)' : ''}">
                 {day.name}
@@ -84,27 +86,18 @@
     
     <div class="calendar-contents">
         <div class="calendar-grid">
-            <div class="time-col">
-                {#each slots as slot, i}
-                    <div class="slot {i < slots.length - 1 ? 'border-b' : ''} border-(--border-light)">
-                        {slot.text}
+            {#each weeks as week}
+            <div class="row">
+                {#each days as day, i}
+                <div class="slot{week[day.id - 1] ? '' : '-disabled'}">
+                    {#if week[day.id - 1]}
+                    <div class="title">
+                        {week[day.id - 1].date.getDate()}
                     </div>
+                    {/if}
+                </div>
                 {/each}
             </div>
-            {#each days as day, i}
-                <!-- <div class="week-day {i < days.length - 1 ? 'border-r border-(--border)' : ''}">
-                    {day.id}
-                </div> -->
-                <CalendarDay
-                    startDay={START.DAY} endDay={END.DAY}
-                    startShift={START.SHIFT} endShift={END.SHIFT}
-                    interval={INTERVAL}
-                    blocked={false}
-                    blocks={[
-                        {start: '1000', end: '1100'},
-                        {start: '1400', end: '1430'}
-                    ]}
-                />
             {/each}
         </div>
     </div>
@@ -126,14 +119,54 @@
     .calendar-grid {
         width: 100%;
         display: grid;
-        grid-template-columns: 100px repeat(7, 1fr);
+        /* background-color: aliceblue; */
     }
+    .header {
+        font-weight: 600;
+        grid-template-columns: repeat(7, 1fr);
+    }
+    /* .calendar-grid { */
+        /* background-color: aliceblue; */
+        /* height: 1000px; */
+    /* } */
     .week-day {
+        background-color: var(--accent-light);
         padding: 0.25rem;
     }
-    .slot {
-        height: 4rem;
+    .row {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
     }
+    .slot {
+        height: 10rem;
+        position: relative;
+    }
+    .slot-disabled {
+        background: repeating-linear-gradient(
+            45deg,
+            white,
+            white 10px,
+            var(--accent) 10px,
+            var(--accent) 11px
+        )
+    }
+    .slot,
+    .slot-disabled {
+        border-bottom: 1px solid var(--border);
+    }
+    .slot:not(:last-child),
+    .slot-disabled:not(:last-child) {
+        border-right: 1px solid var(--border);
+    }
+    .title {
+        position: absolute;
+        top: 0.5rem;
+        left: 0.5rem;
+        font-weight: 500;
+    }
+    /* .time-col {
+        background-color: aliceblue;
+    } */
     /* .calendar-grid {
         height: 1000px;
     } */

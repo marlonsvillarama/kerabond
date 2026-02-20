@@ -15,7 +15,7 @@
         SHIFT: '0830'
     };
     const END = {
-        DAY: '1900',
+        DAY: '2000',
         SHIFT: '1700'
     };
     const INTERVAL = 30;
@@ -40,13 +40,7 @@
         );
 
         do {
-            slots.push({
-                value: day,
-                text: parseTime(day)
-            });
-            // slots.push({
-            //     time: day.toLocaleTimeString({ hour: 'numeric', minute: 'numeric' })
-            // });
+            slots.push({ value: day, text: parseTime(day) });
             day.setMinutes(day.getMinutes() + (2 * INTERVAL));
         } while (day.getHours() < endHour);
         console.log('slots', slots);
@@ -79,8 +73,10 @@
                     {day.id}
                 </div> -->
                 <CalendarDay
-                    startDay={START.DAY} endDay={END.DAY}
-                    startShift={START.SHIFT} endShift={END.SHIFT}
+                    startDay={START.DAY}
+                    endDay={END.DAY}
+                    startShift={START.SHIFT}
+                    endShift={END.SHIFT}
                     interval={INTERVAL}
                     blocked={false}
                     blocks={[
@@ -112,6 +108,7 @@
         grid-template-columns: 100px repeat(7, 1fr);
     }
     .week-day {
+        background-color: var(--accent-light);
         padding: 0.25rem;
     }
     .slot {

@@ -29,7 +29,7 @@
         font-family: "Corinthia", cursive;
     }
     .menu > a {
-        font-weight: 600;
+        font-weight: 500;
         padding: 0.375rem 1rem;
         border: 0;
         cursor: pointer;
@@ -44,7 +44,7 @@
         align-items: center;
         justify-content: center;
         gap: 0.5rem;
-        font-weight: 700;
+        font-weight: 500;
         padding: 0.25rem 1rem;
         border: 1px solid var(--border);
         border-radius: 0.5rem;

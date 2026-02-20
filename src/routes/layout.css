@@ -3,13 +3,14 @@
 @plugin '@tailwindcss/typography';
 
 :root {
-    --font-default: "Manrope", sans-serif;
+    --font-default: "Geist", sans-serif;
     /* --font-serif: "Playfair Display", serif; */
     --font-serif: "PT Serif", serif;
     --font-size: 16px;
     /* --color: rgba(0, 0, 0, 0.9); */
 
     --accent: rgb(239, 191, 4);
+    --accent-light: rgba(239, 191, 4, 0.4);
 
     /* --border: rgba(0, 0, 0, 0.1); */
     --border: oklab(0.21 0.00164224 -0.00577088 / 0.2);

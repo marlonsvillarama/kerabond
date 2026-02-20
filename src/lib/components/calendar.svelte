@@ -15,7 +15,7 @@
         SHIFT: '0830'
     };
     const END = {
-        DAY: '1900',
+        DAY: '2000',
         SHIFT: '1700'
     };
     const INTERVAL = 30;
