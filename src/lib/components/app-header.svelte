@@ -33,7 +33,7 @@
         padding: 0.375rem 1rem;
         border: 0;
         cursor: pointer;
-        transition: all 100ms ease-in-out;
+        transition: var(--transition);
     }
     .menu > a:hover {
         border-radius: 0.5rem;

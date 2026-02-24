@@ -6,6 +6,7 @@
 
     let title = $derived.by(() => {
         let output = '';
+        console.log('calendar.title derived', date);
 
         if (mode === 'week') {
             let startWeek = new Date(date.getFullYear(), date.getMonth(), date.getDate());
@@ -31,13 +32,30 @@
     });
 </script>
 
-<h1 class="title">{title}</h1>
+<button onclick={onrefresh} title="Click to Refresh">
+    <h1 class="title">{title}</h1>
+    <i class="ph-fill ph-arrows-clockwise" size={32}></i>
+</button>
 
 <style>
+    button {
+        border: 0px solid var(--accent-light);
+        border-radius: 0.5rem;
+        box-shadow: var(--shadow-sm);
+        cursor: pointer;
+        padding: 0.25rem 3rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        /* justify-content: space-between; */
+    }
+    button:hover {
+        background-color: var(--accent-light);
+    }
     .title {
-        font-size: 1.25rem;
+        font-size: 1.125rem;
         font-weight: 600;
-        margin-bottom: 0.5rem;
+        /* margin-bottom: 0.5rem; */
         /* border: 1px solid red; */
     }
 </style>

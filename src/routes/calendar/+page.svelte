@@ -1,26 +1,28 @@
 <script>
-    // import Calendar from "$lib/components/calendar.svelte";
     import CalendarTitle from "$lib/components/calendar-title.svelte";
     import CalendarControls from "$lib/components/calendar-controls.svelte";
     import CalendarWeek from "$lib/components/calendar-week.svelte";
     import CalendarMonth from "$lib/components/calendar-month.svelte";
+    import ModeToggle from "$lib/components/mode-toggle.svelte";
 
     let mode = $state('month');
-    let date = new Date();
+    let date = $state(new Date(2026, 0, 10));
 </script>
 
 <main>
-    <div class="controls">
+    <section class="header">
+        <ModeToggle bind:mode={mode} />
         <CalendarTitle {date} {mode} />
-        <CalendarControls {date} {mode} />
-    </div>
-    <div class="content">
+        <CalendarControls bind:date={date} {mode} />
+    </section>
+
+    <section class="content">
         {#if mode === 'week'}
-        <CalendarWeek />
+            <CalendarWeek value={date} />
         {:else}
-        <CalendarMonth />
+            <CalendarMonth value={date} />
         {/if}
-    </div>
+    </section>
 </main>
 
 <style>
@@ -31,11 +33,12 @@
         flex: auto 1fr;
         padding: 0.5rem 0.75rem;
     }
-    .controls {
-        border-bottom: 1px solid var(--border-light);
+    .header {
+        padding-bottom: 0.375rem;
         display: flex;
         align-items: center;
         justify-content: space-between;
+        border-bottom: 1px solid var(--border-light);
     }
     .content {
         flex: 1;

@@ -11,6 +11,8 @@
 
     --accent: rgb(239, 191, 4);
     --accent-light: rgba(239, 191, 4, 0.4);
+    --accent-lighter: rgba(239, 191, 4, 0.25);
+    --accent-lightest: rgba(239, 191, 4, 0.1);
 
     /* --border: rgba(0, 0, 0, 0.1); */
     --border: oklab(0.21 0.00164224 -0.00577088 / 0.2);
@@ -28,6 +30,8 @@
 
     --shadow-sm: rgba(0, 0, 0, 0.16) 0px 1px 4px;
     --shadow-md: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+
+    --transition: all 100ms ease-in-out;
 }
 
 html {

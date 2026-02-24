@@ -1,26 +1,24 @@
 <script>
-    import { onMount } from "svelte";
-    import CalendarDay from "./calendar-day.svelte";
-    let days = [
-        { id: 1, name: 'Monday' },
-        { id: 2, name: 'Tuesday' },
-        { id: 3, name: 'Wednesday' },
-        { id: 4, name: 'Thursday' },
-        { id: 5, name: 'Friday' },
-        { id: 6, name: 'Saturday' },
-        { id: 7, name: 'Sunday' },
-    ];
-    const WEEK_START = 1;
+    import { createSettingsData } from "$lib/data/settings.svelte";
+    import CalendarMonthDay from "./calendar-monthday.svelte";
+    import CalendarMonthday from "./calendar-monthday.svelte";
 
     let {
-        now = new Date()
+        data = [],
+        value = new Date()
     } = $props();
 
-    let weeks = $state([]);
-    onMount(() => {
-        let startDay = new Date(now.getFullYear(), now.getMonth(), 1);
-        let endDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+    const settings = createSettingsData();
+    // let weekDays = settings.weekDays;
+    // console.log('weekDays', weekDays);
+
+    let weeks = $derived.by(() => {
+        let output = [];
+        let startDay = new Date(value.getFullYear(), value.getMonth(), 1);
+        let endDay = new Date(value.getFullYear(), value.getMonth() + 1, 0);
         let currentDay = new Date(startDay.getFullYear(), startDay.getMonth(), 1);
+        console.log('startDay', startDay);
+        console.log('endDay', endDay);
 
         let week = [];
         do {
@@ -28,14 +26,25 @@
             let dayOfWeek = currentDay.getDay();
 
             if (week.length >= 7) {
-                weeks.push(week);
+                output.push(week);
                 week = [];
             }
 
             if (currentDate === 1) {
                 week = [];
+                let count = 0;
 
-                let count = dayOfWeek - WEEK_START;
+                // if start with Sunday
+                if (settings.weekStart === 0) {
+                    if (dayOfWeek === 0) count = 0;
+                    else count = dayOfWeek;
+                }
+                else {
+                    if (dayOfWeek === 0) count = 6;
+                    else count = dayOfWeek - 1;
+                }
+                console.log('** 1 count = ', count);
+
                 for (let i = 0; i < count; i++) {
                     week.push(null);
                 }
@@ -51,19 +60,22 @@
                     week.push(null);
                 }
     
-                weeks.push(week);
+                output.push(week);
                 break;
             }
 
             currentDay.setDate(currentDate + 1);
         } while (currentDay <= endDay);
+        console.log('*** calendar-month output', output);
+
+        return output;
     });
 </script>
 
 <div class="wrapper">
     <div class="header border-b border-(--border)">
-        {#each days as day, i}
-            <div class="week-day text-center {i < days.length - 1 ? 'border-r border-(--border)' : ''}">
+        {#each settings.weekDays as day, i}
+            <div class="week-day text-center {i < settings.weekDays.length - 1 ? 'border-r border-(--border)' : ''}">
                 {day.name}
             </div>
         {/each}
@@ -73,14 +85,11 @@
         <div class="calendar-grid">
             {#each weeks as week}
             <div class="row">
-                {#each days as day, i}
-                <div class="slot{week[day.id - 1] ? '' : '-disabled'}">
-                    {#if week[day.id - 1]}
-                    <div class="title">
-                        {week[day.id - 1].date.getDate()}
-                    </div>
-                    {/if}
-                </div>
+                {#each settings.weekDays as day, i}
+                <CalendarMonthday
+                    day={week[i]}
+                    disabled={settings.daysOff.indexOf(day.id) >= 0}
+                />
                 {/each}
             </div>
             {/each}
@@ -117,7 +126,7 @@
         display: grid;
         grid-template-columns: repeat(7, 1fr);
     }
-    .slot {
+    /* .slot {
         height: 10rem;
         position: relative;
     }
@@ -143,5 +152,5 @@
         top: 0.5rem;
         left: 0.5rem;
         font-weight: 500;
-    }
+    } */
 </style>

@@ -1,14 +1,17 @@
 <script>
+    import { createSettingsData } from "$lib/data/settings.svelte";
     import { onMount } from "svelte";
 
+    const settings = createSettingsData();
     let {
-        startDay = '0600',
-        startShift = '0830',
-        endDay = '1900',
-        endShift = '1730',
         blocked = false,
         blocks = [],
-        interval
+        data = [],
+        startDay = settings.startDay,
+        startShift = settings.startShift,
+        endDay = settings.endDay,
+        endShift = settings.endShift,
+        interval = settings.interval
     } = $props();
 
     const parseTime = (dt) => {
@@ -30,7 +33,7 @@
         parseInt(startDay.slice(0, 2)),
         parseInt(startDay.slice(2))
     );
-    console.log('*** START day', day);
+    // console.log('*** START day', day);
     onMount(() => {
         do {
             let isBlockedSlot = false;
@@ -57,7 +60,7 @@
                 day.getMinutes()
             );
         } while (day.getHours() < parseInt(endDay.slice(0, 2)));
-        console.log('slots', slots);
+        // console.log('slots', slots);
     });
 </script>
 
@@ -65,7 +68,6 @@
     {#each slots as slot, i}
         <div data-slot={slot.text}
             class="slot
-                cursor-{slot.disabled === true ? 'disabled' : 'pointer'}
                 {slot.disabled === true ? 'slot-disabled' : ''}
                 {i < slots.length - 1 && slot.text.indexOf('30') > 0 ? 'slot-end' : ''}"
         >
@@ -75,20 +77,21 @@
 
 <style>
     .slot {
+        position: relative;
         height: 2rem;
         border-left: 1px solid var(--border-light);
         border-bottom: 1px solid var(--border-lightest);
+        cursor: pointer;
+        transition: var(--transition);
+    }
+    .slot:not(.slot-disabled):hover {
+        background-color: var(--accent-light);
+    }
+    .slot-disabled {
+        background-color: var(--lightest);
+        cursor: not-allowed;
     }
     .slot-end {
         border-bottom: 1px solid var(--border-light);
-    }
-    .slot-disabled {
-        background: repeating-linear-gradient(
-            45deg,
-            white,
-            white 10px,
-            var(--accent) 10px,
-            var(--accent) 11px
-        )
     }
 </style>
