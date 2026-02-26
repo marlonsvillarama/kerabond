@@ -5,40 +5,63 @@
 
     let settings = createSettingsData();
 
-    const parseTime = (dt) => {
-        let hours = dt.getHours();
-        let output = `${hours > 12 ? hours - 12 : hours}:00 ${hours >= 12 ? 'PM' : 'AM'}`;
-        return output;
-    };
+    let {
+        data = [],
+        value = new Date()
+    } = $props();
+
+    let timeSlots = $state([]);
+
+    // const parseTime = (dt) => {
+    //     let hours = dt.getHours();
+    //     let output = `${hours > 12 ? hours - 12 : hours}:00 ${hours >= 12 ? 'PM' : 'AM'}`;
+    //     return output;
+    // };
 
     const blockDay = (id) => {
         alert(`blocking day ${id}...`);
     };
 
-    let {
-        data = [],
-        value = new Date()
-    } = $props();
-    let slots = $state([]);
+    const getDate = (index) => {
+        let dt = new Date(weekStart.getFullYear(), weekStart.getMonth(), weekStart.getDate());
+        dt.setDate(dt.getDate() + index);
+        return dt;
+    };
 
-    onMount(() => {
-        // settings = createSettingsData();
-        let now = new Date();
+    let weekStart = $derived.by(() => {
+        let dt = new Date(value.getFullYear(), value.getMonth(), value.getDate());
+        dt.setDate(value.getDate() - value.getDay() + settings.weekStart);
+        console.log(`week value`, value);
+        console.log(`weekStart`, dt);
+        return dt;
+    });
+
+    let weekEnd = $derived.by(() => {
+        let dt = new Date(value.getFullYear(), value.getMonth(), value.getDate());
+        dt.setDate(value.getDate() + (7 - value.getDay() - settings.weekStart));
+        console.log(`week value`, value);
+        console.log(`weekEnd`, dt);
+        return dt;
+    });
+
+    /* onMount(() => {
+        // let now = new Date();
         let startHour = settings.startDay.slice(0, 2);
         let endHour = settings.endDay.slice(0, 2);
         let day = new Date(
-            now.getFullYear(),
-            now.getMonth(),
-            now.getDate(),
+            value.getFullYear(),
+            value.getMonth(),
+            value.getDate(),
             parseInt(startHour),
             0
         );
 
         do {
-            slots.push({ value: day, text: parseTime(day) });
+            timeSlots.push({ value: day, text: parseTime(day) });
             day.setMinutes(day.getMinutes() + (2 * settings.interval));
         } while (day.getHours() < endHour);
-    });
+        console.log('timeSlots', timeSlots);
+    }); */
 </script>
 
 <div class="wrapper">
@@ -59,14 +82,15 @@
     <div class="calendar-contents">
         <div class="calendar-grid">
             <div class="time-col">
-                {#each slots as slot, i}
-                    <div class="slot {i < slots.length - 1 ? 'border-b' : ''} border-(--border-light)">
+                {#each settings.timeSlots as slot, i}
+                    <div class="slot {i < timeSlots.length - 1 ? 'border-b' : ''} border-(--border-light)">
                         {slot.text}
                     </div>
                 {/each}
             </div>
             {#each settings.weekDays as day, i}
                 <CalendarWeekDay
+                    value={getDate(i)}
                     startDay={settings.startDay}
                     endDay={settings.endDay}
                     startShift={settings.startShift}
@@ -95,7 +119,7 @@
         flex: 1;
         overflow-y: auto;
     }
-    .header,
+    /* .header, */
     .calendar-grid {
         width: 100%;
         display: grid;

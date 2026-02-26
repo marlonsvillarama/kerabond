@@ -11,7 +11,8 @@
         startShift = settings.startShift,
         endDay = settings.endDay,
         endShift = settings.endShift,
-        interval = settings.interval
+        interval = settings.interval,
+        value = new Date()
     } = $props();
 
     const parseTime = (dt) => {
@@ -34,7 +35,11 @@
         parseInt(startDay.slice(2))
     );
     // console.log('*** START day', day);
+
+    let timeSlots = $state([]);
+
     onMount(() => {
+        console.log('** weekDay value', value);
         do {
             let isBlockedSlot = false;
             blocks.forEach(b => {
@@ -62,11 +67,14 @@
         } while (day.getHours() < parseInt(endDay.slice(0, 2)));
         // console.log('slots', slots);
     });
+
+    const showForm = () => {};
 </script>
 
 <div class="day-wrapper">
     {#each slots as slot, i}
         <div data-slot={slot.text}
+            onclick={showForm}
             class="slot
                 {slot.disabled === true ? 'slot-disabled' : ''}
                 {i < slots.length - 1 && slot.text.indexOf('30') > 0 ? 'slot-end' : ''}"
@@ -76,12 +84,15 @@
 </div>
 
 <style>
-    .slot {
+    .day-wrapper {
         position: relative;
-        height: 2rem;
-        border-left: 1px solid var(--border-light);
+    }
+    .slot {
+        border: 1px solid var(--light);
+        border-left: 1px solid var(--border-lightest);
         border-bottom: 1px solid var(--border-lightest);
         cursor: pointer;
+        height: 2rem;
         transition: var(--transition);
     }
     .slot:not(.slot-disabled):hover {

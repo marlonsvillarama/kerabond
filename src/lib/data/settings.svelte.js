@@ -19,6 +19,29 @@ const DAYS = [
     { id: 7, name: 'Sunday' },
 ];
 
+const getDayTimeSlots = () => {
+    let startHour = settingsData.startDay.slice(0, 2);
+    let endHour = settingsData.endDay.slice(0, 2);
+    let now = new Date();
+    let day = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate(),
+        parseInt(startHour),
+        0
+    );
+
+    let output = [];
+    do {
+        output.push({ value: day, text: parseTime(day) });
+        day.setMinutes(day.getMinutes() + (2 * settingsData.interval));
+    } while (day.getHours() < endHour);
+
+    console.log('getDayTimeSlots output', output);
+    return output;
+
+};
+
 const getWeekDays = () => {
     if (settingsData.weekStart === 1) {
         return [ ...DAYS.slice(1, 7), DAYS[0] ];
@@ -26,6 +49,12 @@ const getWeekDays = () => {
 
     return DAYS.slice(0, 7);
 };
+
+    const parseTime = (dt) => {
+        let hours = dt.getHours();
+        let output = `${hours > 12 ? hours - 12 : hours}:00 ${hours >= 12 ? 'PM' : 'AM'}`;
+        return output;
+    };
 
 export const createSettingsData = () => {
     return {
@@ -36,7 +65,8 @@ export const createSettingsData = () => {
         get interval () { return settingsData.interval; },
         get weekStart () { return settingsData.weekStart; },
         get daysOff () { return settingsData.daysOff; },
-        get weekDays () { return getWeekDays(); }
+        get weekDays () { return getWeekDays(); },
+        get timeSlots () { return getDayTimeSlots(); }
 
         // set startDay (value) { settingsData.startDay; },
         // set startShift (value) { return settingsData.startShift; },
