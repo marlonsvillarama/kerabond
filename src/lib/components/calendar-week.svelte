@@ -1,6 +1,7 @@
 <script>
     import { createSettingsData } from "$lib/data/settings.svelte";
     import { onMount } from "svelte";
+    import CalendarWeekSlots from "./calendar-week-slots.svelte";
     import CalendarWeekDay from "./calendar-weekday.svelte";
 
     let settings = createSettingsData();
@@ -11,6 +12,7 @@
     } = $props();
 
     let timeSlots = $state([]);
+    let dialogDate = $state('');
 
     // const parseTime = (dt) => {
     //     let hours = dt.getHours();
@@ -62,16 +64,22 @@
         } while (day.getHours() < endHour);
         console.log('timeSlots', timeSlots);
     }); */
+
+    const showForm = (value) => {
+        // alert(`showForm value = ${value}`);
+        document.getElementById('day-dialog').showModal();
+        dialogDate = value;
+        console.log(`dialogDate = "${dialogDate}"`)
+    };
 </script>
 
 <div class="wrapper">
-    <div class="header border-b border-(--border)">
+    <div class="header border-b-2 border-(--accent)">
         <div class="time-col border-r border-(--border)"></div>
         {#each settings.weekDays as day, i}
             <div class="week-day {i < settings.weekDays.length - 1 ? 'border-r border-(--border)' : ''}">
-                <div class="day-title">
-                    {day.name.slice(0, 3).toUpperCase()}
-                </div>
+                <span class="date">{getDate(i).getDate().toString()}</span>
+                <span class="name">{day.name.slice(0, 3).toUpperCase()}</span>
                 <button class="menu" title="Menu" onclick={blockDay(i)}>
                     <i class="ph ph-gear-six"></i>
                 </button>
@@ -81,13 +89,9 @@
     
     <div class="calendar-contents">
         <div class="calendar-grid">
-            <div class="time-col">
-                {#each settings.timeSlots as slot, i}
-                    <div class="slot {i < timeSlots.length - 1 ? 'border-b' : ''} border-(--border-light)">
-                        {slot.text}
-                    </div>
-                {/each}
-            </div>
+
+            <CalendarWeekSlots />
+
             {#each settings.weekDays as day, i}
                 <CalendarWeekDay
                     value={getDate(i)}
@@ -101,11 +105,17 @@
                         // {start: '1000', end: '1100'},
                         // {start: '1400', end: '1430'}
                     ]}
+                    onslotselect={() => showForm(value)}
                 />
             {/each}
         </div>
     </div>
 </div>
+
+<dialog id="day-dialog">
+    <span>dialog</span>
+    <!-- <span>{dialogTitle}</span> -->
+</dialog>
 
 <style>
     .wrapper {
@@ -114,6 +124,11 @@
         display: flex;
         flex-direction: column;
         flex: auto 1fr;
+    }
+    .header {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 100px repeat(7, 1fr);
     }
     .calendar-contents {
         flex: 1;
@@ -126,25 +141,42 @@
         grid-template-columns: 100px repeat(7, 1fr);
     }
     .week-day {
-        background-color: var(--accent-light);
-        padding: 0.25rem 0.5rem;
+        /* background-color: var(--accent-lighter); */
+        padding: 0.25rem 0.5rem 0.25rem 0.75rem;
         font-weight: 500;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        position: relative;
-        padding: 0.5rem 0.5rem 0.675rem;
+        /* position: relative; */
+        /* padding: 0.5rem 0.5rem 0.675rem; */
     }
-    .day-title {
+    /* .day-title {
+        width: 100%;
+        border: 1px solid red;
         display: flex;
         align-items: center;
+        justify-content: space-between;
         gap: 1rem;
+    } */
+    .week-day .date {
+        /* color: var(--dark); */
+        font-size: 1.5rem;
+        font-weight: 400;
+        /* border: 1px solid red; */
+        line-height: 1.5rem;
+    }
+    .week-day .name {
+        color: var(--medium);
+        /* font-size: 1.25rem; */
+        font-weight: 400;
+        /* border: 1px solid red; */
+        line-height: 1.25rem;
     }
     .slot {
         height: 4rem;
     }
     .menu {
-        position: absolute;
+        /* position: absolute; */
         top: 0.25rem;
         right: 0.25rem;
         padding: 0.25rem 0.375rem 0.125rem;
@@ -159,5 +191,13 @@
     }
     .menu:hover {
         background-color: var(--border-lightest);
+    }
+    #day-dialog {
+        padding: 1rem;
+        /* width: 20rem;
+        height: 10rem; */
+        top: 50%;
+        left: 50%;
+        transform: translateX(-50%) translateY(-50%);
     }
 </style>

@@ -12,13 +12,12 @@
         endDay = settings.endDay,
         endShift = settings.endShift,
         interval = settings.interval,
-        value = new Date()
+        value = new Date(),
+        onslotselect
     } = $props();
 
-    const parseTime = (dt) => {
-        let hours = dt.getHours();
-        let output = `${hours > 12 ? hours - 12 : hours}:${dt.getMinutes().toString().padStart(2, '0')} ${hours >= 12 ? 'PM' : 'AM'}`;
-        return output;
+    const parseDateTime = (dt) => {
+        return `${dt.getFullYear()}/${(dt.getMonth() + 1)}/${dt.getDate()} ${dt.getHours()}:${dt.getMinutes().toString().padStart(2, '0')}`;
     };
 
     const toTimeInt = (dt) => {
@@ -26,20 +25,27 @@
     }
 
     let slots = $state([]);
-    let now = new Date();
+    
+    // let now = new Date();
     let day = new Date(
-        now.getFullYear(),
-        now.getMonth(),
-        now.getDate(),
+        value.getFullYear(),
+        value.getMonth(),
+        value.getDate(),
         parseInt(startDay.slice(0, 2)),
         parseInt(startDay.slice(2))
     );
     // console.log('*** START day', day);
+    // let timeSlots = $state([]);
 
-    let timeSlots = $state([]);
+    // const showForm = (value) => {
+        // alert(`showForm value = ${value}`);
+        // document.getElementById('day-dialog').showModal();
+        // dialogDate = value;
+        // console.log(`dialogDate = "${dialogDate}"`)
+    // };
 
     onMount(() => {
-        console.log('** weekDay value', value);
+        // console.log('** weekDay value', value);
         do {
             let isBlockedSlot = false;
             blocks.forEach(b => {
@@ -48,36 +54,36 @@
                 }
             });
             slots.push({
-                value: day,
-                text: parseTime(day),
+                value: parseDateTime(day),
+                // time: parseTime(day),
+                // text: parseTime(day),
                 disabled: (
                     toTimeInt(day) < parseInt(startShift) ||
                     toTimeInt(day) >= parseInt(endShift)) ||
-                    blocked === true ||
+                    settings.daysOff.indexOf(value.getDay()) >= 0 ||
                     isBlockedSlot === true
             })
             day.setMinutes(day.getMinutes() + interval);
             day = new Date(
-                now.getFullYear(),
-                now.getMonth(),
-                now.getDate(),
+                value.getFullYear(),
+                value.getMonth(),
+                value.getDate(),
                 day.getHours(),
                 day.getMinutes()
             );
         } while (day.getHours() < parseInt(endDay.slice(0, 2)));
-        // console.log('slots', slots);
+        console.log('slots', slots);
     });
-
-    const showForm = () => {};
+    // () => showForm(slot.value)
 </script>
 
 <div class="day-wrapper">
     {#each slots as slot, i}
-        <div data-slot={slot.text}
-            onclick={showForm}
+        <div data-slot={slot.value}
+            onclick={onslotselect}
             class="slot
                 {slot.disabled === true ? 'slot-disabled' : ''}
-                {i < slots.length - 1 && slot.text.indexOf('30') > 0 ? 'slot-end' : ''}"
+                {i < slots.length - 1 && slot.value.indexOf('30') > 0 ? 'slot-end' : ''}"
         >
         </div>
     {/each}
@@ -88,7 +94,8 @@
         position: relative;
     }
     .slot {
-        border: 1px solid var(--light);
+        /* border: 1px solid var(--light); */
+        border: 0;
         border-left: 1px solid var(--border-lightest);
         border-bottom: 1px solid var(--border-lightest);
         cursor: pointer;

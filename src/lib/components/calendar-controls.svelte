@@ -44,14 +44,14 @@
     <button onclick={moveToPrevious} title="Previous">
         <i class="ph ph-caret-left"></i>
         <!-- Previous -->
-        Previous {mode}
+        <!-- Previous {mode} -->
     </button>
     <button onclick={moveToToday} title="Today" class="today">
         Today
     </button>
     <button onclick={moveToNext} title="Next">
         <!-- Next -->
-        Next {mode}
+        <!-- Next {mode} -->
         <i class="ph ph-caret-right"></i>
     </button>
 </div>
@@ -69,7 +69,7 @@
         display: flex;
         align-items: center;
         gap: 0.5rem;
-        padding: 0.5rem 1rem;
+        padding: 0.5rem;
         /* background-color: aliceblue; */
         /* border: 1px solid var(--lightest); */
         border: 0px solid transparent;
@@ -89,8 +89,12 @@
     }
     button.today {
         background-color: var(--accent-light);
+        padding: 0.5rem 1rem;
     }
     button.today:hover {
         background-color: var(--accent);
+    }
+    button > i {
+        font-size: 1.25rem;
     }
 </style>

@@ -7,12 +7,16 @@
 
     let mode = $state('week');
     let date = $state(new Date(2026, 0, 10));
+
+    const refreshCalendar = () => {
+        alert(`refreshCalendar; mode = ${mode}\n${date.toLocaleDateString('en-NZ')}`);
+    };
 </script>
 
 <main>
     <section class="header">
         <ModeToggle bind:mode={mode} />
-        <CalendarTitle {date} {mode} />
+        <CalendarTitle {date} {mode} onrefresh={refreshCalendar} />
         <CalendarControls bind:date={date} {mode} />
     </section>
 

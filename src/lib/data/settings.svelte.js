@@ -5,7 +5,7 @@ let settingsData = $state({
     endShift: '1730',
     interval: 30,
     weekStart: 0,
-    daysOff: [ 0, 6 ]
+    daysOff: [ 0 ]
 });
 
 const DAYS = [

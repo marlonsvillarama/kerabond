@@ -1,7 +1,8 @@
 <script>
     let {
         date,
-        mode = 'week'
+        mode = 'week',
+        onrefresh
     } = $props();
 
     let title = $derived.by(() => {
