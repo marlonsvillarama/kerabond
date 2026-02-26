@@ -1,11 +1,14 @@
 <script>
+    import { createCalendarData } from "$lib/data/calendar.svelte";
     import { createSettingsData } from "$lib/data/settings.svelte";
     import { onMount } from "svelte";
 
+    const calendarData = createCalendarData();
     const settings = createSettingsData();
     let {
         blocked = false,
-        blocks = [],
+        blocks = [
+        ],
         data = [],
         startDay = settings.startDay,
         startShift = settings.startShift,
@@ -44,6 +47,49 @@
         // console.log(`dialogDate = "${dialogDate}"`)
     // };
 
+    const calcAppointmentHeight = (slot) => {
+        let appointment = blocks.find(b => b.slot === slot);
+        return Math.floor(appointment.duration / 30);
+        // let str = `calc(${settings.slotHeight} * Math.floor(${appointment.duration} / 30))`;
+        // console.log(`calcAppointmentHeight str`, str);
+    };
+
+    const calcAppointmentY = (slot) => {
+        let dt = new Date(slot);
+        let start = new Date(
+            dt.getFullYear(),
+            dt.getMonth(),
+            dt.getDate(),
+            parseInt(settings.startDay.slice(0, 2)),
+            parseInt(settings.startDay.slice(2))
+        );
+        console.log(`calcAppointmentCoords dt`, dt);
+        console.log(`calcAppointmentCoords start`, start);
+        let interval = Math.floor((dt.getTime() - start.getTime()) / 1800000);
+        console.log(`interval = ${interval}`);
+        return interval;
+    };
+
+    const getSlotAppointment = (slot) => {
+        return blocks.find(b => b.slot === slot);
+    };
+
+    const hasAppointment = (slot) => {
+        let appointment = blocks.find(b => b.slot === slot);
+        console.log(`hasAppointment; slot = ${slot}`, appointment);
+        return !!appointment;
+    };
+
+    const setSlot = (slot) => {
+        calendarData.slot = slot;
+        onslotselect();
+    };
+
+    const showAppointment = (slot) => {
+        alert(`showAppointment slot = ${slot}`);
+        calcAppointmentCoords(slot);
+    };
+
     onMount(() => {
         // console.log('** weekDay value', value);
         do {
@@ -59,9 +105,10 @@
                 // text: parseTime(day),
                 disabled: (
                     toTimeInt(day) < parseInt(startShift) ||
-                    toTimeInt(day) >= parseInt(endShift)) ||
-                    settings.daysOff.indexOf(value.getDay()) >= 0 ||
-                    isBlockedSlot === true
+                    toTimeInt(day) >= parseInt(endShift)
+                ) ||
+                settings.daysOff.indexOf(value.getDay()) >= 0 ||
+                isBlockedSlot === true
             })
             day.setMinutes(day.getMinutes() + interval);
             day = new Date(
@@ -80,12 +127,22 @@
 <div class="day-wrapper">
     {#each slots as slot, i}
         <div data-slot={slot.value}
-            onclick={onslotselect}
+            onclick={() => setSlot(slot.value)}
             class="slot
                 {slot.disabled === true ? 'slot-disabled' : ''}
                 {i < slots.length - 1 && slot.value.indexOf('30') > 0 ? 'slot-end' : ''}"
         >
+            {slot.value}
         </div>
+    {/each}
+    {#each blocks as block, i}
+        {#if hasAppointment(block.slot)}
+            <div class="appointment" onclick={() => showAppointment(block.slot)}
+                style="top:calc(2.5rem * {calcAppointmentY(block.slot)}); height:calc((2.5rem * {calcAppointmentHeight(block.slot)}) - 1px);"
+            >
+                <span>{getSlotAppointment(block.slot).customer}</span>
+            </div>
+        {/if}
     {/each}
 </div>
 
@@ -99,17 +156,33 @@
         border-left: 1px solid var(--border-lightest);
         border-bottom: 1px solid var(--border-lightest);
         cursor: pointer;
-        height: 2rem;
+        height: 2.5rem;
         transition: var(--transition);
+        position: relative;
+        z-index: 0;
     }
-    .slot:not(.slot-disabled):hover {
+    /* .slot:not(.slot-disabled):hover {
         background-color: var(--accent-light);
-    }
+    } */
     .slot-disabled {
         background-color: var(--lightest);
         cursor: not-allowed;
     }
     .slot-end {
         border-bottom: 1px solid var(--border-light);
+    }
+    .appointment {
+        border: 1px solid var(--border-lighter);
+        border-radius: 3px;
+        background-color: var(--accent-lighter);
+        /* margin: 1px; */
+        position: absolute;
+        left: 1px;
+        top: 1px;
+        right: 1px;
+        /* height: 6rem; */
+        /* bottom: 1px; */
+        z-index: 100;
+        padding: 0.125rem;
     }
 </style>

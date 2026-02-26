@@ -16,9 +16,9 @@
 </div>
 
 <style>
-    .slot {
+    /* .slot {
         height: 4rem;
-    }
+    } */
     /* .header {
         width: 100%;
         display: grid;
@@ -40,6 +40,6 @@
         gap: 1rem;
     } */
     .slot {
-        height: 4rem;
+        height: 5rem;
     }
 </style>

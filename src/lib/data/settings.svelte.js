@@ -1,4 +1,5 @@
 let settingsData = $state({
+    slotHeight: '2.5rem',
     startDay: '0600',
     startShift: '0830',
     endDay: '1900',
@@ -66,7 +67,8 @@ export const createSettingsData = () => {
         get weekStart () { return settingsData.weekStart; },
         get daysOff () { return settingsData.daysOff; },
         get weekDays () { return getWeekDays(); },
-        get timeSlots () { return getDayTimeSlots(); }
+        get timeSlots () { return getDayTimeSlots(); },
+        get slotHeight () { return this.slotHeight },
 
         // set startDay (value) { settingsData.startDay; },
         // set startShift (value) { return settingsData.startShift; },

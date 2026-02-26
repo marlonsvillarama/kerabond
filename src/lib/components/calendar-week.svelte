@@ -1,9 +1,11 @@
 <script>
+    import { createCalendarData } from "$lib/data/calendar.svelte";
     import { createSettingsData } from "$lib/data/settings.svelte";
     import { onMount } from "svelte";
     import CalendarWeekSlots from "./calendar-week-slots.svelte";
     import CalendarWeekDay from "./calendar-weekday.svelte";
 
+    let calendarData = createCalendarData();
     let settings = createSettingsData();
 
     let {
@@ -65,10 +67,11 @@
         console.log('timeSlots', timeSlots);
     }); */
 
-    const showForm = (value) => {
+    let slotDialog = $state(null);
+    const showForm = () => {
         // alert(`showForm value = ${value}`);
-        document.getElementById('day-dialog').showModal();
-        dialogDate = value;
+        slotDialog.showModal();
+        dialogDate = calendarData.slot;
         console.log(`dialogDate = "${dialogDate}"`)
     };
 </script>
@@ -102,19 +105,19 @@
                     interval={settings.interval}
                     blocked={false}
                     blocks={[
-                        // {start: '1000', end: '1100'},
-                        // {start: '1400', end: '1430'}
+                        { id: 1, slot: '2026/1/6 10:00', duration: 60, customer: 'Apple Villarama' },
+                        { id: 2, slot: '2026/1/6 11:30', duration: 30, customer: 'Marlongst Villarama' }
                     ]}
-                    onslotselect={() => showForm(value)}
+                    onslotselect={() => showForm()}
                 />
             {/each}
         </div>
     </div>
 </div>
 
-<dialog id="day-dialog">
+<dialog class="day-dialog" bind:this={slotDialog}>
     <span>dialog</span>
-    <!-- <span>{dialogTitle}</span> -->
+    <span>{calendarData.slot}</span>
 </dialog>
 
 <style>
@@ -192,12 +195,12 @@
     .menu:hover {
         background-color: var(--border-lightest);
     }
-    #day-dialog {
+    .day-dialog {
         padding: 1rem;
         /* width: 20rem;
         height: 10rem; */
-        top: 50%;
+        top: 40%;
         left: 50%;
-        transform: translateX(-50%) translateY(-50%);
+        transform: translateX(-50%);
     }
 </style>
