@@ -3,7 +3,8 @@
     import { createSettingsData } from "$lib/data/settings.svelte";
     import { onMount } from "svelte";
     import CalendarWeekSlots from "./calendar-week-slots.svelte";
-    import CalendarWeekDay from "./calendar-weekday.svelte";
+    import CalendarWeekDay from "./calendar-week-day.svelte";
+    // import CalendarDialog from "./calendar-dialog.svelte";
 
     let calendarData = createCalendarData();
     let settings = createSettingsData();
@@ -45,12 +46,15 @@
     });
 
     let slotDialog = $state(null);
+    // let open = $state(false);
     const showForm = () => {
         // alert(`showForm value = ${value}`);
         slotDialog.showModal();
         dialogDate = calendarData.slot;
         // console.log(`dialogDate = "${dialogDate}"`)
+        // open = true;
     };
+
 </script>
 
 <div class="wrapper">
@@ -77,10 +81,10 @@
                     value={cd.date}
                     blocked={false}
                     blocks={[
-                        { id: 1, slot: '2026/2/26 10:00', duration: 60, customer: 'Apple Villarama', service: "Men/Women (Gold Card Holder)" },
-                        { id: 2, slot: '2026/2/26 11:30', duration: 30, customer: 'Marlongst Villarama', service: "Women's Haircut with Blowdry Men/Women (Gold Card Holder)" },
-                        { id: 3, slot: '2026/2/27 10:30', duration: 60, customer: 'Marlongst Villarama', service: "Women's Haircut with Blowdry Men/Women (Gold Card Holder)" },
-                        { id: 4, slot: '2026/2/27 11:30', duration: 90, customer: 'Marlongst Villarama', service: "Women's Haircut with Blowdry Men/Women (Gold Card Holder)" },
+                        { id: 1, slot: '2026/2/26 10:00', duration: 60, customer: 'Apple Villarama', service: "Men/Women (Gold Card Holder)", email: 'apple.v@gmail.com', phone: '0227000215' },
+                        { id: 2, slot: '2026/2/26 11:30', duration: 30, customer: 'Marlongst Villarama', service: "Women's Haircut with Blowdry Men/Women (Gold Card Holder)", email: 'apple.v11@gmail.com', phone: '0227000222' },
+                        { id: 3, slot: '2026/2/27 10:30', duration: 60, customer: 'Marlonger Villaramer', service: "Women's Haircut with Blowdry Men/Women (Gold Card Holder)", email: 'apple.v22@gmail.com', phone: '0227000217' },
+                        { id: 4, slot: '2026/2/27 11:30', duration: 90, customer: 'Apfel V', service: "Women's Haircut with Blowdry Men/Women (Gold Card Holder)", email: 'apple.v34345234523@gmail.com', phone: '0227000214' },
                     ]}
                     onslotselect={() => showForm()}
                 />
@@ -89,9 +93,42 @@
     </div>
 </div>
 
+<!-- <CalendarDialog bind:open={open} /> -->
+
+
 <dialog class="day-dialog" bind:this={slotDialog}>
-    <span>dialog</span>
-    <span>{calendarData.slot}</span>
+    <div class="dlg-header">
+        <div class="dlg-title">
+            <span>Appointment Details</span>
+            <i class="ph ph-x"></i>
+        </div>
+        {#if calendarData.block}
+            <span class="dlg-desc">Update your appointment details here</span>
+        {:else}
+            <span class="dlg-desc">Add an appointment</span>
+        {/if}
+    </div>
+    <!-- <span>{calendarData.slot}</span> -->
+    <div class="dlg-contents">
+        <div class="contact">
+            <span class="name">{calendarData.block?.customer}</span>
+            <span class="phone">{calendarData.block?.phone}</span>
+            <span class="email">{calendarData.block?.email}</span>
+        </div>
+        <!-- <div class="row">
+            <label for="customer">Customer Name</label>
+        </div>
+        <div class="row">
+            <label for="phone">Phone</label>
+        </div>
+        <div class="row">
+            <label for="email">Email</label>
+        </div> -->
+        <div class="row">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" />
+        </div>
+    </div>
 </dialog>
 
 <style>
@@ -170,11 +207,82 @@
         background-color: var(--border-lightest);
     }
     .day-dialog {
-        padding: 1rem;
-        /* width: 20rem;
-        height: 10rem; */
-        top: 40%;
+        padding: 1rem 1.5rem;
+        top: 35%;
         left: 50%;
         transform: translateX(-50%);
+        border: 1px solid var(--border-light);
+        border-radius: 0.5rem;
+        outline: 0;
+        width: 30rem;
+    }
+    .dlg-header {
+        display: grid;
+        gap: 0rem;
+        margin-bottom: 1rem;
+    }
+    .dlg-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .dlg-title > span {
+        font-size: 1rem;
+        font-weight: 600;
+    }
+    .dlg-desc {
+        color: var(--medium);
+    }
+    .dlg-contents {
+        display: grid;
+        gap: 1rem;
+    }
+    .row * {
+        display: grid;
+        font-size: 0.875rem;
+    }
+    .row > label {
+        /* border: 1px solid red; */
+        font-weight: 500;
+    }
+    input[type=email],
+    input[type=tel],
+    input[type=text],
+    select
+    {
+        border: 1px solid var(--border-light);
+        border-radius: 0.375rem;
+        padding: 0.25rem 0.5rem;
+        width: 100%;
+        /* outline: 1px solid var(--accent); */
+    }
+    input[type=tel] {
+        width: 10rem;
+    }
+    input[type=email]:focus,
+    input[type=tel]:focus,
+    input[type=text]:focus,
+    select {
+        border: 1px solid var(--accent);
+        box-shadow: 0 0 5px var(--accent-light);
+        outline: none;
+        /* outline: 2px solid var(--accent); */
+    }
+    .contact {
+        padding: 0.25rem 0.5rem;
+        background-color: var(--accent-lightest);
+        border: 0;
+        /* border: 1px solid var(--border-lighter); */
+        border-radius: 0.375rem;
+        box-shadow: 0 0 3px var(--accent);
+        display: grid;
+    }
+    .contact > span {
+        color: var(--medium);
+    }
+    .contact > span.name {
+        color: var(--darkest);
+        font-size: 1rem;
+        font-weight: 600;
     }
 </style>

@@ -1,7 +1,6 @@
 <script>
     import { createCalendarData } from "$lib/data/calendar.svelte";
     import { createSettingsData } from "$lib/data/settings.svelte";
-    import { onMount } from "svelte";
 
     const calendarData = createCalendarData();
     const settings = createSettingsData();
@@ -128,7 +127,10 @@
     };
 
     const showAppointment = (slot) => {
-        alert(`showAppointment slot = ${slot}`);
+        calendarData.block = null;
+        calendarData.block = blocks.find(b => b.slot === slot);
+        onslotselect();
+        // alert(`showAppointment slot = ${slot}`);
         // calcAppointmentCoords(slot);
     };
 </script>

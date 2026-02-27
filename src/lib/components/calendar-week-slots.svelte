@@ -1,7 +1,7 @@
 <script>
     import { createSettingsData } from "$lib/data/settings.svelte";
     import { onMount } from "svelte";
-    import CalendarWeekDay from "./calendar-weekday.svelte";
+    import CalendarWeekDay from "./calendar-week-day.svelte";
 
     let settings = createSettingsData();
     // console.log('week-slots timeSlots', settings.timeSlots);

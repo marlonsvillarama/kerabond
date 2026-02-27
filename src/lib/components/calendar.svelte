@@ -1,6 +1,6 @@
 <script>
     import { onMount } from "svelte";
-    import CalendarDay from "./calendar-weekday.svelte";
+    import CalendarDay from "./calendar-week-day.svelte";
     let days = [
         { id: 1, name: 'Monday' },
         { id: 2, name: 'Tuesday' },
