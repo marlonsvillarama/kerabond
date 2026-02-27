@@ -7,7 +7,7 @@
 
     let title = $derived.by(() => {
         let output = '';
-        console.log('calendar.title derived', date);
+        // console.log('calendar.title derived', date);
 
         if (mode === 'week') {
             let startWeek = new Date(date.getFullYear(), date.getMonth(), date.getDate());

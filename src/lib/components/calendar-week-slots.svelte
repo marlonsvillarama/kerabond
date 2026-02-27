@@ -4,7 +4,7 @@
     import CalendarWeekDay from "./calendar-weekday.svelte";
 
     let settings = createSettingsData();
-    console.log('week-slots timeSlots', settings.timeSlots);
+    // console.log('week-slots timeSlots', settings.timeSlots);
 </script>
 
 <div class="time-col">

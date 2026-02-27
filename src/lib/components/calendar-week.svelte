@@ -16,73 +16,50 @@
     let timeSlots = $state([]);
     let dialogDate = $state('');
 
-    // const parseTime = (dt) => {
-    //     let hours = dt.getHours();
-    //     let output = `${hours > 12 ? hours - 12 : hours}:00 ${hours >= 12 ? 'PM' : 'AM'}`;
-    //     return output;
-    // };
-
     const blockDay = (id) => {
         alert(`blocking day ${id}...`);
-    };
-
-    const getDate = (index) => {
-        let dt = new Date(weekStart.getFullYear(), weekStart.getMonth(), weekStart.getDate());
-        dt.setDate(dt.getDate() + index);
-        return dt;
     };
 
     let weekStart = $derived.by(() => {
         let dt = new Date(value.getFullYear(), value.getMonth(), value.getDate());
         dt.setDate(value.getDate() - value.getDay() + settings.weekStart);
-        console.log(`week value`, value);
-        console.log(`weekStart`, dt);
+        // console.log(`week value`, value);
+        // console.log(`weekStart`, dt);
         return dt;
     });
 
-    let weekEnd = $derived.by(() => {
-        let dt = new Date(value.getFullYear(), value.getMonth(), value.getDate());
-        dt.setDate(value.getDate() + (7 - value.getDay() - settings.weekStart));
-        console.log(`week value`, value);
-        console.log(`weekEnd`, dt);
-        return dt;
+    let currentWeekDays = $derived.by(() => {
+        let output = [];
+        for (let i = 0; i < 7; i++) {
+            let dt = new Date(weekStart.getFullYear(), weekStart.getMonth(), weekStart.getDate());
+            dt.setDate(dt.getDate() + i);
+            
+            let obj = {
+                date: dt,
+                name: settings.weekDays.find(d => d.id === dt.getDay())?.name
+            };
+            // console.log(`* currentWeekDays obj, i = ${i}`, obj);
+            output.push(obj);
+        }
+        return output;
     });
-
-    /* onMount(() => {
-        // let now = new Date();
-        let startHour = settings.startDay.slice(0, 2);
-        let endHour = settings.endDay.slice(0, 2);
-        let day = new Date(
-            value.getFullYear(),
-            value.getMonth(),
-            value.getDate(),
-            parseInt(startHour),
-            0
-        );
-
-        do {
-            timeSlots.push({ value: day, text: parseTime(day) });
-            day.setMinutes(day.getMinutes() + (2 * settings.interval));
-        } while (day.getHours() < endHour);
-        console.log('timeSlots', timeSlots);
-    }); */
 
     let slotDialog = $state(null);
     const showForm = () => {
         // alert(`showForm value = ${value}`);
         slotDialog.showModal();
         dialogDate = calendarData.slot;
-        console.log(`dialogDate = "${dialogDate}"`)
+        // console.log(`dialogDate = "${dialogDate}"`)
     };
 </script>
 
 <div class="wrapper">
     <div class="header border-b-2 border-(--accent)">
         <div class="time-col border-r border-(--border)"></div>
-        {#each settings.weekDays as day, i}
+        {#each currentWeekDays as cd, i}
             <div class="week-day {i < settings.weekDays.length - 1 ? 'border-r border-(--border)' : ''}">
-                <span class="date">{getDate(i).getDate().toString()}</span>
-                <span class="name">{day.name.slice(0, 3).toUpperCase()}</span>
+                <span class="date">{cd.date.getDate().toString()}</span>
+                <span class="name">{cd.name.slice(0, 3).toUpperCase()}</span>
                 <button class="menu" title="Menu" onclick={blockDay(i)}>
                     <i class="ph ph-gear-six"></i>
                 </button>
@@ -95,18 +72,15 @@
 
             <CalendarWeekSlots />
 
-            {#each settings.weekDays as day, i}
+            {#each currentWeekDays as cd, i}
                 <CalendarWeekDay
-                    value={getDate(i)}
-                    startDay={settings.startDay}
-                    endDay={settings.endDay}
-                    startShift={settings.startShift}
-                    endShift={settings.endShift}
-                    interval={settings.interval}
+                    value={cd.date}
                     blocked={false}
                     blocks={[
-                        { id: 1, slot: '2026/1/6 10:00', duration: 60, customer: 'Apple Villarama' },
-                        { id: 2, slot: '2026/1/6 11:30', duration: 30, customer: 'Marlongst Villarama' }
+                        { id: 1, slot: '2026/2/26 10:00', duration: 60, customer: 'Apple Villarama', service: "Men/Women (Gold Card Holder)" },
+                        { id: 2, slot: '2026/2/26 11:30', duration: 30, customer: 'Marlongst Villarama', service: "Women's Haircut with Blowdry Men/Women (Gold Card Holder)" },
+                        { id: 3, slot: '2026/2/27 10:30', duration: 60, customer: 'Marlongst Villarama', service: "Women's Haircut with Blowdry Men/Women (Gold Card Holder)" },
+                        { id: 4, slot: '2026/2/27 11:30', duration: 90, customer: 'Marlongst Villarama', service: "Women's Haircut with Blowdry Men/Women (Gold Card Holder)" },
                     ]}
                     onslotselect={() => showForm()}
                 />

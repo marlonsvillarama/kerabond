@@ -38,7 +38,7 @@ const getDayTimeSlots = () => {
         day.setMinutes(day.getMinutes() + (2 * settingsData.interval));
     } while (day.getHours() < endHour);
 
-    console.log('getDayTimeSlots output', output);
+    // console.log('getDayTimeSlots output', output);
     return output;
 
 };

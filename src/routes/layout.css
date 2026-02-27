@@ -13,6 +13,8 @@
     --accent-light: rgba(239, 191, 4, 0.4);
     --accent-lighter: rgba(239, 191, 4, 0.25);
     --accent-lightest: rgba(239, 191, 4, 0.1);
+    
+    --slot-bg: #ffefca;
 
     /* --border: rgba(0, 0, 0, 0.1); */
     --border: oklab(0.21 0.00164224 -0.00577088 / 0.2);
