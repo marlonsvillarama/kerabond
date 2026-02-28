@@ -6,7 +6,7 @@
     import ModeToggle from "$lib/components/mode-toggle.svelte";
 
     let mode = $state('week');
-    let date = $state(new Date(2026, 0, 10));
+    let date = $state(new Date());
 
     const refreshCalendar = () => {
         alert(`refreshCalendar; mode = ${mode}\n${date.toLocaleDateString('en-NZ')}`);

@@ -1,9 +1,12 @@
 <script>
     import { createCalendarData } from "$lib/data/calendar.svelte";
+    import { createServicesData } from "$lib/data/services.svelte";
     import { createSettingsData } from "$lib/data/settings.svelte";
 
     const calendarData = createCalendarData();
+    const services = createServicesData();
     const settings = createSettingsData();
+
     let {
         blocked = false,
         blocks = [],
@@ -54,8 +57,6 @@
             });
             output.push({
                 value: parseDateTime(currentDay),
-                // time: parseTime(day),
-                // text: parseTime(day),
                 disabled: (
                     toTimeInt(currentDay) < parseInt(startShift) ||
                     toTimeInt(currentDay) >= parseInt(endShift)
@@ -89,9 +90,9 @@
 
     const calcAppointmentHeight = (slot) => {
         let appointment = blocks.find(b => b.slot === slot);
-        return Math.floor(appointment.duration / 30);
-        // let str = `calc(${settings.slotHeight} * Math.floor(${appointment.duration} / 30))`;
-        // console.log(`calcAppointmentHeight str`, str);
+        let duration = (services.getDuration(appointment.service) || 0);
+
+        return Math.floor((duration || 0) / 30);
     };
 
     const calcAppointmentY = (slot) => {
@@ -111,7 +112,11 @@
     };
 
     const getSlotAppointment = (slot) => {
-        return blocks.find(b => b.slot === slot);
+        let block = blocks.find(b => b.slot === slot);
+        return {
+            ...block,
+            serviceName: services.all.find(s => s.id === (block?.service || 0))?.name
+        };
     };
 
     const hasAppointment = (slot) => {
@@ -121,24 +126,27 @@
         return !!appointment;
     };
 
-    const setSlot = (slot) => {
+    /* const setSlot = (slot, disabled) => {
+        if (disabled === true) { return; }
+
+        // calendarData.block = null;
+        calendarData.slot = slot;
+        // calendarData.block = blocks.find(b => b.slot === slot);
+        onslotselect();
+    }; */
+
+    const showAppointment = (slot, disabled) => {
+        if (disabled === true) { return; }
+
         calendarData.slot = slot;
         onslotselect();
-    };
-
-    const showAppointment = (slot) => {
-        calendarData.block = null;
-        calendarData.block = blocks.find(b => b.slot === slot);
-        onslotselect();
-        // alert(`showAppointment slot = ${slot}`);
-        // calcAppointmentCoords(slot);
     };
 </script>
 
 <div class="day-wrapper {isToday ? 'today' : ''}">
     {#each slots as slot, i}
         <div data-slot={slot.value}
-            onclick={() => setSlot(slot.value)}
+            onclick={() => showAppointment(slot.value, slot.disabled)}
             class="slot
                 {slot.disabled === true ? 'slot-disabled' : ''}
                 {i < slots.length - 1 && slot.value.indexOf('30') > 0 ? 'slot-end' : ''}"
@@ -152,7 +160,7 @@
                 style="top:calc(2.5rem * {calcAppointmentY(block.slot)}); height:calc((2.5rem * {calcAppointmentHeight(block.slot)}) - 1px);"
             >
                 <span class="customer">{getSlotAppointment(block.slot).customer}</span>
-                <span class="service">{getSlotAppointment(block.slot).service}</span>
+                <span class="service">{getSlotAppointment(block.slot).serviceName}</span>
             </div>
         {/if}
     {/each}
@@ -179,9 +187,9 @@
         position: relative;
         z-index: 0;
     }
-    /* .slot:not(.slot-disabled):hover {
-        background-color: var(--accent-light);
-    } */
+    .slot:not(.slot-disabled):hover {
+        background-color: var(--border-lightest);
+    }
     .slot-disabled {
         background-color: var(--lightest);
         cursor: not-allowed;
