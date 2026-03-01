@@ -1,10 +1,10 @@
 let calendarData = $state({
     selectedBlock: null,
     blocks: [
-        { id: 1, slot: '2026/2/26 10:00', customer: 'Apple Villarama', service: 1, email: 'apple.v@gmail.com', phone: '0227000215' },
-        { id: 2, slot: '2026/2/26 11:30', customer: 'Marlongst Villarama', service: 5, email: 'apple.v11@gmail.com', phone: '0227000222' },
-        { id: 3, slot: '2026/2/27 10:30', customer: 'Marlonger Villaramer', service: 4, email: 'apple.v22@gmail.com', phone: '0227000217' },
-        { id: 4, slot: '2026/2/27 11:30', customer: 'Apfel V', service: 3, email: 'apple.v34345234523@gmail.com', phone: '0227000214' },
+        { id: 1, slot: '2026-2-26 9:00', customer: 'Apple Villarama', service: 1, email: 'apple.v@gmail.com', phone: '0227000215' },
+        { id: 2, slot: '2026-2-26 11:30', customer: 'Marlongst Villarama', service: 5, email: 'apple.v11@gmail.com', phone: '0227000222' },
+        { id: 3, slot: '2026-2-27 10:30', customer: 'Marlonger Villaramer', service: 4, email: 'apple.v22@gmail.com', phone: '0227000217' },
+        { id: 4, slot: '2026-2-27 11:30', customer: 'Apfel V', service: 3, email: 'apple.v34345234523@gmail.com', phone: '0227000214' },
     ],
     slot: ''
 });
@@ -20,7 +20,7 @@ export const createCalendarData  = () => {
         set slot (value) {
             calendarData.slot = value;
             calendarData.selectedBlock = calendarData.blocks.find(b => b.slot === value);
-            console.log(`createCalendarData slot > selectedBlock`, calendarData.selectedBlock);
+            console.log(`createCalendarData slot > selectedBlock ==>`, calendarData.selectedBlock)
         },
 
         deleteSlotBlock (slot) {
@@ -28,11 +28,12 @@ export const createCalendarData  = () => {
         },
         updateSlotBlock (data) {
             console.log(`* calendar input data =>`, data);
-            let selectedBlock = calendarData.blocks.find(b => b.slot === data.slot);
+            let selectedBlock = calendarData.blocks.find(b => b.id === data.id);
 
             if (selectedBlock) {
                 console.log(`* calendar updating selectedBlock =>`, selectedBlock);
                 for (const [k, v] of Object.entries(data)) {
+                    console.log(`* calendar updating selectedBlock; k = "${k}"; v = "${v}"`);
                     if (k !== 'id') selectedBlock[k] = v;
                 }
             }
@@ -45,5 +46,19 @@ export const createCalendarData  = () => {
             }
             console.log(`* calendar updateSlotBlock; new blocks =>`, calendarData.blocks);
         },
+
+        parseDate (dt) {
+            return `${dt.getFullYear()}-${(dt.getMonth() + 1)}-${dt.getDate()}`;
+        },
+
+        parseDateTime (dt) {
+            return `${this.parseDate(dt)} ${this.parseTime(dt)}`;
+            // return `${dt.getFullYear()}-${(dt.getMonth() + 1)}-${dt.getDate()} ${dt.getHours()}:${dt.getMinutes().toString().padStart(2, '0')}`;
+        },
+
+        parseTime (dt) {
+            return `${dt.getHours().toString().padStart(2, '0')}:${dt.getMinutes().toString().padStart(2, '0')}`;
+        }
+
     };
 };

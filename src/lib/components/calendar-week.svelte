@@ -51,11 +51,15 @@
     let slotDate = $derived.by(() => {
         if (!calendar.slot) { return ''; }
 
-        return (new Date(calendar.slot)).toLocaleDateString('en-NZ', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        });
+        return appointment.date;
+        // let dt = new Date(calendar.slot);
+        // let str = `${dt.getFullYear()}-${(dt.getMonth()+1).toString().padStart(2, '0')}-${dt.getDate().toString().padStart(2, '0')}`;
+        // return str;
+        // return (new Date(calendar.slot)).toLocaleDateString('en-NZ', {
+        //     year: 'numeric',
+        //     month: 'long',
+        //     day: 'numeric'
+        // });
     });
 
     let slotDay = $derived.by(() => {
@@ -80,7 +84,11 @@
     const showForm = () => {
         appointment.setValues(calendar.selectedBlock);
 
-        dialogDate = calendar.slot;
+        // if (!calendar.selectedBlock) {
+        //     appointment.slot = calendar.slot;
+        // }
+        // dialogDate = calendar.slot;
+        console.log(`showForm calendar.slot = ${calendar.slot}; appointment =>`, appointment.values);
         slotDialog.showModal();
     };
 
@@ -98,7 +106,10 @@
     };
 
     const saveAppointment = () => {
-        appointment.slot = `${appointment.date} ${appointment.time}`;
+        let dt = new Date(`${appointment.date} ${appointment.time}`);
+        // let dateString = `${dt.getFullYear()}-${dt.getMonth()+1}-${dt.getDate()}`;
+        // let timeString = `${dt.getHours()}:${dt.getMinutes().toString().padStart(2, '0')}`;
+        appointment.slot = `${calendar.parseDate(dt)} ${calendar.parseTime(dt)}`;
         console.log(`* saveAppointment slot = ${calendar.slot}`, appointment.values);
 
         if (validateAppointment() === false) { return; }
@@ -134,6 +145,10 @@
         calendar.deleteSlotBlock(calendar.slot);
         slotDialog.close();
     };
+
+    $effect(() => {
+        console.log(`changed appointment.time => ${appointment?.time || ''}`);
+    });
 </script>
 
 <div class="wrapper">

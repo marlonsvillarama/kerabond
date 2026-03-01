@@ -3,7 +3,7 @@
     import { createServicesData } from "$lib/data/services.svelte";
     import { createSettingsData } from "$lib/data/settings.svelte";
 
-    const calendarData = createCalendarData();
+    const calendar = createCalendarData();
     const services = createServicesData();
     const settings = createSettingsData();
 
@@ -21,22 +21,22 @@
         onblockselect
     } = $props();
 
-    const parseDate = (dt) => {
-        return `${dt.getFullYear()}/${(dt.getMonth() + 1)}/${dt.getDate()}`;
-    };
+    // const parseDate = (dt) => {
+    //     return `${dt.getFullYear()}-${(dt.getMonth() + 1)}-${dt.getDate()}`;
+    // };
 
-    const parseDateTime = (dt) => {
-        return `${dt.getFullYear()}/${(dt.getMonth() + 1)}/${dt.getDate()} ${dt.getHours()}:${dt.getMinutes().toString().padStart(2, '0')}`;
-    };
-
+    // const parseDateTime = (dt) => {
+    //     return `${dt.getFullYear()}-${(dt.getMonth() + 1)}-${dt.getDate()} ${dt.getHours()}:${dt.getMinutes().toString().padStart(2, '0')}`;
+    // };
+        
     const toTimeInt = (dt) => {
         return parseInt(`${dt.getHours()}${dt.getMinutes().toString().padStart(2, '0')}`);
     }
 
     let today = new Date();
     let isToday = $derived.by(() => {
-        console.log(`* isToday >> today = ${parseDate(today)}, value = ${parseDate(value)}`);
-        return parseDate(today) === parseDate(value);
+        // console.log(`* isToday >> today = ${parseDate(today)}, value = ${parseDate(value)}`);
+        return calendar.parseDate(today) === calendar.parseDate(value);
     });
     let slots = $derived.by(() => {
         let output = [];
@@ -56,14 +56,17 @@
                 }
             });
             output.push({
-                value: parseDateTime(currentDay),
+                value: calendar.parseDateTime(currentDay),
                 disabled: (
-                    toTimeInt(currentDay) < parseInt(startShift) ||
-                    toTimeInt(currentDay) >= parseInt(endShift)
-                ) ||
-                settings.daysOff.indexOf(value.getDay()) >= 0 ||
-                isBlockedSlot === true
-            })
+                    (
+                        toTimeInt(currentDay) < parseInt(startShift) ||
+                        toTimeInt(currentDay) >= parseInt(endShift)
+                    ) ||
+                    settings.daysOff.indexOf(value.getDay()) >= 0 ||
+                    isBlockedSlot === true
+                )
+            });
+
             currentDay.setMinutes(currentDay.getMinutes() + interval);
             currentDay = new Date(
                 value.getFullYear(),
@@ -74,7 +77,7 @@
             );
             // console.log(`* > weekday day.getHours() = ${currentDay.getHours()}; endDay.slice = ${endDay.slice(0, 2)}`);
         } while (currentDay.getHours() < parseInt(endDay.slice(0, 2)));
-        // console.log('* weekday slots', output);
+        console.log('* weekday slots', output);
 
         return output;
     });
@@ -138,7 +141,7 @@
     const showAppointment = (slot, disabled) => {
         if (disabled === true) { return; }
 
-        calendarData.slot = slot;
+        calendar.slot = slot;
         onslotselect();
     };
 </script>
