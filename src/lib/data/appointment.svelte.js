@@ -1,20 +1,34 @@
 import { createCalendarData } from "./calendar.svelte";
 
 let calendar = createCalendarData();
-let appointment = $state({
-    customer: '',
-    date: '',
-    email: '',
-    id: '',
-    phone: '',
-    service: '',
-    slot: '',
-    time: '',
-});
+/* function appointment () {
+    this.customer = '';
+    this.date = '';
+    this.email = '';
+    this.id = '';
+    this.phone = '';
+    this.service = '';
+    this.slot = '';
+    this.time = '';
+} */
+let appointment = $state();
 
 export const createAppointmentData  = () => {
     return {
-        get customer () { return appointment.customer },
+        initialize () {
+            return {
+                customer: '',
+                date: '',
+                email: '',
+                id: '',
+                phone: '',
+                service: '',
+                slot: '',
+                time: '',
+            };
+            // return appointment;
+        },
+        /* get customer () { return appointment.customer },
         get date () { return appointment.date },
         get email () { return appointment.email },
         get id () { return appointment.id },
@@ -56,8 +70,8 @@ export const createAppointmentData  = () => {
             appointment.id = value?.id || '';
             appointment.phone = value?.phone || '';
             appointment.service = value?.service || '';
-            appointment.slot = value?.slot || '';
-            if (!appointment.slot) { return }
+            appointment.slot = value?.slot || calendar.slot;
+            // if (!appointment.slot) { return }
 
             let dt = new Date(appointment.slot);
             console.log(`appointment setValues; dt =>`, dt);
@@ -66,6 +80,6 @@ export const createAppointmentData  = () => {
             appointment.time = calendar.parseTime(dt);
             // appointment.time = `${dt.getHours().toString().padStart(2, '0')}:${dt.getMinutes().toString().padStart(2, '0')}`;
             console.log(`appointment setValues; output =>`, appointment);
-        }
+        } */
     };
 };

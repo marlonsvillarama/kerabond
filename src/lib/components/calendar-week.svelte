@@ -17,8 +17,9 @@
         value = new Date()
     } = $props();
 
+    // let dialogDate = $state('');
+    let tempValues = $state({});
     let timeSlots = $state([]);
-    let dialogDate = $state('');
 
     const blockDay = (id) => {
         alert(`blocking day ${id}...`);
@@ -81,14 +82,35 @@
 
     let slotDialog = $state(null);
 
+    const setAppointmentValues = (values) => {
+        console.log(`appointment setValues; value =>`, values);
+        tempValues.customer = values?.customer || '';
+        tempValues.email = values?.email || '';
+        tempValues.id = values?.id || '';
+        tempValues.phone = values?.phone || '';
+        tempValues.service = values?.service || '';
+        tempValues.slot = values?.slot || calendar.slot;
+        // if (!appointment.slot) { return }
+
+        let dt = new Date(tempValues.slot);
+        console.log(`appointment setValues; dt =>`, dt);
+        tempValues.date = calendar.parseDate(dt);
+        // appointment.date = `${dt.getFullYear()}-${dt.getMonth()+1}-${dt.getDate().toString().padStart(2, '0')}`;
+        tempValues.time = calendar.parseTime(dt);
+        // appointment.time = `${dt.getHours().toString().padStart(2, '0')}:${dt.getMinutes().toString().padStart(2, '0')}`;
+        console.log(`appointment setValues; output =>`, tempValues);
+    }
+
     const showForm = () => {
-        appointment.setValues(calendar.selectedBlock);
+        tempValues = appointment.initialize();
+        setAppointmentValues(calendar.selectedBlock);
+        // appointment.setValues(calendar.selectedBlock);
 
         // if (!calendar.selectedBlock) {
         //     appointment.slot = calendar.slot;
         // }
         // dialogDate = calendar.slot;
-        console.log(`showForm calendar.slot = ${calendar.slot}; appointment =>`, appointment.values);
+        console.log(`showForm calendar.slot = ${calendar.slot}; appointment =>`, tempValues);
         slotDialog.showModal();
     };
 
@@ -97,7 +119,7 @@
     };
 
     const validateAppointment = () => {
-        if (!appointment.service) {
+        if (!tempValues.service) {
             alert('Please select a service from the list.');
             return false;
         }
@@ -106,36 +128,42 @@
     };
 
     const saveAppointment = () => {
-        let dt = new Date(`${appointment.date} ${appointment.time}`);
-        // let dateString = `${dt.getFullYear()}-${dt.getMonth()+1}-${dt.getDate()}`;
-        // let timeString = `${dt.getHours()}:${dt.getMinutes().toString().padStart(2, '0')}`;
-        appointment.slot = `${calendar.parseDate(dt)} ${calendar.parseTime(dt)}`;
-        console.log(`* saveAppointment slot = ${calendar.slot}`, appointment.values);
+        // let dt = new Date(`${appointment.date} ${appointment.time}`);
+        // // let dateString = `${dt.getFullYear()}-${dt.getMonth()+1}-${dt.getDate()}`;
+        // // let timeString = `${dt.getHours()}:${dt.getMinutes().toString().padStart(2, '0')}`;
+        // appointment.slot = `${calendar.parseDate(dt)} ${calendar.parseTime(dt)}`;
+        // console.log(`* saveAppointment slot = ${calendar.slot}`, appointment.values);
+        console.log(`* saveAppointment slot = ${calendar.slot}; tempValues`, tempValues);
 
         if (validateAppointment() === false) { return; }
 
         // TODO - Implement save to db
-        calendar.updateSlotBlock(appointment.values);
+        calendar.updateSlotBlock(tempValues);
+        // calendar.updateSlotBlock(appointment.values);
         slotDialog.close();
     };
 
-    let isDirty = $derived.by(() => {
+    /* let isDirty = $derived.by(() => {
         return (
-            appointment.customer !== calendar.selectedBlock?.customer ||
-            appointment.phone !== calendar.selectedBlock?.phone ||
-            appointment.email !== calendar.selectedBlock?.email ||
-            appointment.service !== calendar.selectedBlock?.service
+            tempValues.customer !== calendar.selectedBlock?.customer ||
+            // appointment.customer !== calendar.selectedBlock?.customer ||
+            tempValues.phone !== calendar.selectedBlock?.phone ||
+            // appointment.phone !== calendar.selectedBlock?.phone ||
+            tempValues.email !== calendar.selectedBlock?.email ||
+            // appointment.email !== calendar.selectedBlock?.email ||
+            tempValues.service !== calendar.selectedBlock?.service
+            // appointment.service !== calendar.selectedBlock?.service
         )
-    });
+    }); */
 
     const deleteAppointment = () => {
         console.log(`deleting appointment at slot ${calendar.slot}`);
-        if (isDirty) {
-            if (confirm('You have unsaved changes. Are you sure you want to delete this?') === false) {
-                return;
-            }
-            return;
-        }
+        // if (isDirty) {
+        //     if (confirm('You have unsaved changes. Are you sure you want to delete this?') === false) {
+        //         return;
+        //     }
+        //     return;
+        // }
 
         if (confirm('This will permanently remove the appointment. Are you sure?') === false) {
             return;
@@ -147,7 +175,8 @@
     };
 
     $effect(() => {
-        console.log(`changed appointment.time => ${appointment?.time || ''}`);
+        // console.log(`changed appointment.time => ${appointment?.time || ''}`);
+        console.log(`changed appointment.time => ${tempValues?.time || ''}`);
     });
 </script>
 
@@ -157,10 +186,10 @@
         {#each currentWeekDays as cd, i}
             <div class="week-day {i < settings.weekDays.length - 1 ? 'border-r border-(--border)' : ''}">
                 <span class="date">{cd.date.getDate().toString()}</span>
-                <span class="name">{cd.name.slice(0, 3).toUpperCase()}</span>
-                <button class="menu" title="Menu" onclick={blockDay(i)}>
-                    <i class="ph ph-gear-six"></i>
-                </button>
+                <span class="name">{cd.name.slice(0, 3)}</span>
+                <!-- <button class="menu" title="Menu" onclick={blockDay(i)}>
+                    <i class="ph ph-x"></i>
+                </button> -->
             </div>
         {/each}
     </div>
@@ -200,11 +229,13 @@
         <div class="dlg-slot-2">
             <div class="row">
                 <label for="serviceDate">Date</label>
-                <input type="date" id="serviceDate" name="serviceDate" bind:value={appointment.date} />
+                <!-- <input type="date" id="serviceDate" name="serviceDate" bind:value={appointment.date} /> -->
+                <input type="date" id="serviceDate" name="serviceDate" bind:value={tempValues.date} />
             </div>
             <div class="row">
                 <label for="serviceTime">Time</label>
-                <input type="time" id="serviceTime" name="serviceTime" bind:value={appointment.time} />
+                <!-- <input type="time" id="serviceTime" name="serviceTime" bind:value={appointment.time} /> -->
+                <input type="time" id="serviceTime" name="serviceTime" bind:value={tempValues.time} />
             </div>
             <!-- <div class="flex align-center justify-between">
                 <span class="slot-day">{slotDay}</span>
@@ -215,24 +246,28 @@
 
         <div class="row">
             <label for="customer">Customer Name</label>
-            <input type="text" id="customer" name="customer" bind:value={appointment.customer}>
+            <input type="text" id="customer" name="customer" bind:value={tempValues.customer}>
+            <!-- <input type="text" id="customer" name="customer" bind:value={appointment.customer}> -->
         </div>
         <div class="row">
             <div class="contact-details">
                 <div class="phone">
                     <label for="phone">Phone</label>
-                    <input type="tel" id="phone" name="phone" bind:value={appointment.phone}>
+                    <input type="tel" id="phone" name="phone" bind:value={tempValues.phone}>
+                    <!-- <input type="tel" id="phone" name="phone" bind:value={appointment.phone}> -->
                 </div>
                 <div class="email">
                     <label for="email">Email</label>
-                    <input type="email" id="email" name="email" bind:value={appointment.email}>
+                    <input type="email" id="email" name="email" bind:value={tempValues.email}>
+                    <!-- <input type="email" id="email" name="email" bind:value={appointment.email}> -->
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="service">
                 <label for="service">Service Requested</label>
-                <select id="service" name="service" bind:value={appointment.service}>
+                <select id="service" name="service" bind:value={tempValues.service}>
+                <!-- <select id="service" name="service" bind:value={appointment.service}> -->
                     {#each services.listByCategory as category}
                     <optgroup label={category.name}>
                         {#each category.services as item}
@@ -244,10 +279,12 @@
             </div>
         </div>
 
-        {#if appointment.service}
+        <!-- {#if appointment.service} -->
+        {#if tempValues.service}
         <div class="row service-details">
             <i class="ph ph-clock"></i>
-            <span class="service-duration">Usually takes {services.getDuration(appointment.service)} minutes</span>
+            <!-- <span class="service-duration">Usually takes {services.getDuration(appointment.service)} minutes</span> -->
+            <span class="service-duration">Usually takes {services.getDuration(tempValues.service)} minutes</span>
         </div>
         {/if}
 
@@ -289,7 +326,7 @@
     }
     .week-day {
         /* background-color: var(--accent-lighter); */
-        padding: 0.25rem 0.5rem 0.25rem 0.75rem;
+        padding: 0.5rem 0.5rem 0.5rem 0.75rem;
         font-weight: 500;
         display: flex;
         align-items: center;
@@ -307,7 +344,7 @@
     } */
     .week-day .date {
         /* color: var(--dark); */
-        font-size: 1.5rem;
+        font-size: 1.375rem;
         font-weight: 400;
         /* border: 1px solid red; */
         line-height: 1.5rem;
