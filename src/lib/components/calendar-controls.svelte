@@ -41,13 +41,13 @@
 </script>
 
 <div class="controls-container">
+    <button onclick={moveToToday} title="Today" class="today">
+        Today
+    </button>
     <button onclick={moveToPrevious} title="Previous">
         <i class="ph ph-caret-left"></i>
         <!-- Previous -->
         <!-- Previous {mode} -->
-    </button>
-    <button onclick={moveToToday} title="Today" class="today">
-        Today
     </button>
     <button onclick={moveToNext} title="Next">
         <!-- Next -->

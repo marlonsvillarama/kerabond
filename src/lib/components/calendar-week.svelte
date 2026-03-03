@@ -103,7 +103,7 @@
 
     const showForm = () => {
         tempValues = appointment.initialize();
-        setAppointmentValues(calendar.selectedBlock);
+        setAppointmentValues(calendar.selectedItem);
         // appointment.setValues(calendar.selectedBlock);
 
         // if (!calendar.selectedBlock) {
@@ -138,7 +138,7 @@
         if (validateAppointment() === false) { return; }
 
         // TODO - Implement save to db
-        calendar.updateSlotBlock(tempValues);
+        calendar.updateSlotItem(tempValues);
         // calendar.updateSlotBlock(appointment.values);
         slotDialog.close();
     };
@@ -170,7 +170,7 @@
         }
 
         // TODO - implement delete from db
-        calendar.deleteSlotBlock(calendar.slot);
+        calendar.deleteSlotItem(calendar.slot);
         slotDialog.close();
     };
 
@@ -203,7 +203,7 @@
                 <CalendarWeekDay
                     value={cd.date}
                     blocked={false}
-                    blocks={calendar.blocks}
+                    items={calendar.items}
                     onslotselect={showForm}
                 />
             {/each}
@@ -219,7 +219,7 @@
                 Close<!-- <i class="ph ph-x"></i> -->
             </button>
         </div>
-        {#if calendar.selectedBlock}
+        {#if calendar.selectedItem}
             <span class="dlg-desc">Update your appointment details here</span>
         {:else}
             <span class="dlg-desc">Add an appointment</span>
@@ -290,9 +290,9 @@
 
         <div class="dlg-actions">
             <button class="btn-save" onclick={saveAppointment}>
-                {calendar.selectedBlock ? 'Update' : 'Create'} this appointment
+                {calendar.selectedItem ? 'Update' : 'Create'} this appointment
             </button>
-            {#if calendar.selectedBlock}
+            {#if calendar.selectedItem}
                 <button class="btn-delete" onclick={deleteAppointment}>
                     Delete
                 </button>

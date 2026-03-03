@@ -1,6 +1,6 @@
 let calendarData = $state({
-    selectedBlock: null,
-    blocks: [
+    selectedItem: null,
+    items: [
         { id: 1, slot: '2026-02-26 09:00', customer: 'Apple Villarama', service: 1, email: 'apple.v@gmail.com', phone: '0227000215' },
         { id: 2, slot: '2026-02-26 11:30', customer: 'Marlongst Villarama', service: 5, email: 'apple.v11@gmail.com', phone: '0227000222' },
         { id: 3, slot: '2026-02-27 10:30', customer: 'Marlonger Villaramer', service: 4, email: 'apple.v22@gmail.com', phone: '0227000217' },
@@ -8,45 +8,58 @@ let calendarData = $state({
         { id: 5, slot: '2026-03-06 09:30', customer: 'Apfel V', service: 5, email: 'apple.v34345234523@gmail.com', phone: '0227000214' },
         { id: 6, slot: '2026-03-06 11:30', customer: 'Apfel V', service: 4, email: 'apple.v34345234523@gmail.com', phone: '0227000214' },
     ],
-    slot: ''
+    slot: '',
+    blocks: [
+        { id: 1, date: '2026-03-16', start: '06:00', end: '19:00' },
+        { id: 1, date: '2026-03-16', start: '06:00', end: '19:00' },
+        { id: 1, date: '2026-03-16', start: '06:00', end: '19:00' },
+    ]
 });
 
 export const createCalendarData  = () => {
     return {
         get blocks () { return calendarData.blocks },
-        get selectedBlock () { return calendarData.selectedBlock },
+        get items () { return calendarData.items },
+        get selectedItem () { return calendarData.selectedItem },
         get slot () { return calendarData.slot },
 
-        set blocks (value) { calendarData.blocks = value },
-        set block (value) { calendarData.block = value },
+        set items (value) { calendarData.items = value },
+        set item (value) { calendarData.item = value },
         set slot (value) {
             calendarData.slot = value;
-            calendarData.selectedBlock = calendarData.blocks.find(b => b.slot === value);
-            console.log(`createCalendarData slot > selectedBlock ==>`, calendarData.selectedBlock)
+            calendarData.selectedItem = calendarData.items.find(b => b.slot === value);
+            console.log(`createCalendarData slot > selectedItem ==>`, calendarData.selectedItem)
         },
 
-        deleteSlotBlock (slot) {
-            calendarData.blocks = calendarData.blocks.filter(b => b.slot !== slot)
+        deleteBlock (id) {
+            calendarData.blocks = calendarData.blocks.filter(b => b.id !== id);
         },
-        updateSlotBlock (data) {
+
+        // TODO Implement updateBlock
+        updateBlock (id) {},
+
+        deleteSlotItem (slot) {
+            calendarData.items = calendarData.items.filter(b => b.slot !== slot)
+        },
+
+        updateSlotItem (data) {
             console.log(`* calendar input data =>`, data);
-            let selectedBlock = calendarData.blocks.find(b => b.slot === data.slot);
+            let slotItem = calendarData.items.find(b => b.slot === data.slot);
 
-            if (selectedBlock) {
-                console.log(`* calendar updating selectedBlock =>`, selectedBlock);
+            if (slotItem) {
+                console.log(`* calendar updating slotItem =>`, slotItem);
                 for (const [k, v] of Object.entries(data)) {
-                    console.log(`* calendar updating selectedBlock; k = "${k}"; v = "${v}"`);
-                    if (k !== 'id') selectedBlock[k] = v;
+                    console.log(`* calendar updating slotItem; k = "${k}"; v = "${v}"`);
+                    if (k !== 'id') slotItem[k] = v;
                 }
             }
             else {
-                // let maxId = Math.max(...calendarData.blocks.map(b => b.id));
                 data.id = (new Date()).getTime();
                 console.log(`* calendar adding new data =>`, data);
-                calendarData.blocks.push(data);
-                calendarData.blocks = calendarData.blocks;
+                calendarData.items.push(data);
+                calendarData.items = calendarData.items;
             }
-            console.log(`* calendar updateSlotBlock; new blocks =>`, calendarData.blocks);
+            console.log(`* calendar updateSlotItem; new items =>`, calendarData.items);
         },
 
         parseDate (dt) {

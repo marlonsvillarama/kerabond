@@ -5,10 +5,11 @@
         Studio 4
     </div>
     <div class="menu flex align-center justify-center gap-16">
-        <a href="#">Dashboard</a>
-        <a href="#">Calendar</a>
-        <a href="#">Clients</a>
-        <a href="#">Services</a>
+        <!-- <a href="#">Dashboard</a> -->
+        <a href="/calendar">Calendar</a>
+        <a href="/settings">Settings</a>
+        <!-- <a href="#">Clients</a>
+        <a href="#">Services</a> -->
     </div>
     <div class="account flex align-center">
         <i class="user ph ph-user-circle"></i>

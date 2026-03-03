@@ -9,7 +9,7 @@
 
     let {
         blocked = false,
-        blocks = [],
+        items = [],
         data = [],
         startDay = settings.startDay,
         startShift = settings.startShift,
@@ -50,7 +50,7 @@
         // console.log(`* weekday slots day`, currentDay);
         do {
             let isBlockedSlot = false;
-            blocks.forEach(b => {
+            items.forEach(b => {
                 if (parseInt(b.start) <= toTimeInt(currentDay) && parseInt(b.end) > toTimeInt(currentDay)) {
                     isBlockedSlot = true;
                 }
@@ -92,7 +92,7 @@
     // };
 
     const calcAppointmentHeight = (slot) => {
-        let appointment = blocks.find(b => b.slot === slot);
+        let appointment = items.find(b => b.slot === slot);
         let duration = (services.getDuration(appointment.service) || 0);
 
         return Math.floor((duration || 0) / 30);
@@ -115,10 +115,10 @@
     };
 
     const getSlotAppointment = (slot) => {
-        let block = blocks.find(b => b.slot === slot);
+        let item = items.find(b => b.slot === slot);
         return {
-            ...block,
-            serviceName: services.all.find(s => s.id === (block?.service || 0))?.name
+            ...item,
+            serviceName: services.all.find(s => s.id === (item?.service || 0))?.name
         };
     };
 
@@ -157,13 +157,13 @@
             <!-- {slot.value} -->
         </div>
     {/each}
-    {#each blocks as block, i}
-        {#if hasAppointment(block.slot)}
-            <div class="appointment" onclick={() => showAppointment(block.slot)}
-                style="top:calc(2.5rem * {calcAppointmentY(block.slot)}); height:calc((2.5rem * {calcAppointmentHeight(block.slot)}) - 1px);"
+    {#each items as item, i}
+        {#if hasAppointment(item.slot)}
+            <div class="appointment" onclick={() => showAppointment(item.slot)}
+                style="top:calc(2.5rem * {calcAppointmentY(item.slot)}); height:calc((2.5rem * {calcAppointmentHeight(item.slot)}) - 1px);"
             >
-                <span class="customer">{getSlotAppointment(block.slot).customer}</span>
-                <span class="service">{getSlotAppointment(block.slot).serviceName}</span>
+                <span class="customer">{getSlotAppointment(item.slot).customer}</span>
+                <span class="service">{getSlotAppointment(item.slot).serviceName}</span>
             </div>
         {/if}
     {/each}
