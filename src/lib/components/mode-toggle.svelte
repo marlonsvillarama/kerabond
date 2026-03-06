@@ -6,11 +6,11 @@
 </script>
 
 <div class="toggle-wrapper">
-    <button onclick={() => { mode = 'week' }}
-        class={mode === 'week' ? 'selected' : ''}>Week</button>
-    <div class="separator">&nbsp;</div>
     <button onclick={() => { mode = 'month' }}
         class={mode === 'month' ? 'selected' : ''}>Month</button>
+    <div class="separator">&nbsp;</div>
+    <button onclick={() => { mode = 'week' }}
+        class={mode === 'week' ? 'selected' : ''}>Week</button>
 </div>
 
 <style>

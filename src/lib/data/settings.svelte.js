@@ -34,11 +34,15 @@ const getDayTimeSlots = () => {
 
     let output = [];
     do {
-        output.push({ value: day, text: parseTime(day) });
-        day.setMinutes(day.getMinutes() + (2 * settingsData.interval));
+        output.push({
+            value: day,
+            text: parseTime(day, true),
+            time: parseTime(day)
+        });
+        day.setMinutes(day.getMinutes() + settingsData.interval);
     } while (day.getHours() < endHour);
 
-    // console.log('getDayTimeSlots output', output);
+    console.log('getDayTimeSlots output', output);
     return output;
 
 };
@@ -51,11 +55,21 @@ const getWeekDays = () => {
     return DAYS.slice(0, 7);
 };
 
-    const parseTime = (dt) => {
-        let hours = dt.getHours();
-        let output = `${hours > 12 ? hours - 12 : hours}:00 ${hours >= 12 ? 'PM' : 'AM'}`;
-        return output;
-    };
+const parseDate = (dt) => {
+    return `${dt.getFullYear()}-${(dt.getMonth() + 1).toString().padStart(2, '0')}-${dt.getDate().toString().padStart(2, '0')}`;
+};
+
+const parseSlot = (dt) => {
+    return `${parseDate(dt)} ${parseTime(dt)}`;
+};
+
+const parseTime = (dt, text = false) => {
+    let hours = dt.getHours();
+    let output = text === true ?
+        `${hours > 12 ? hours - 12 : hours}:${dt.getMinutes().toString().padStart(2, '0')} ${hours >= 12 ? 'PM' : 'AM'}` :
+        `${dt.getHours().toString().padStart(2, '0')}:${dt.getMinutes().toString().padStart(2, '0')}`;
+    return output;
+};
 
 export const createSettingsData = () => {
     return {
@@ -70,6 +84,9 @@ export const createSettingsData = () => {
         get timeSlots () { return getDayTimeSlots(); },
         get slotHeight () { return this.slotHeight },
 
+        parseDate,
+        parseSlot,
+        parseTime
         // set startDay (value) { settingsData.startDay; },
         // set startShift (value) { return settingsData.startShift; },
         // set endDay (value) { return settingsData.endDay; },

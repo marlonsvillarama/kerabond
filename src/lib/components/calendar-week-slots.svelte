@@ -5,11 +5,12 @@
 
     let settings = createSettingsData();
     // console.log('week-slots timeSlots', settings.timeSlots);
+    let timeSlots = settings.timeSlots;
 </script>
 
 <div class="time-col">
-    {#each settings.timeSlots as slot, i}
-        <div class="slot {i < settings.timeSlots.length - 1 ? 'border-b' : ''} border-(--border-light)">
+    {#each timeSlots as slot, i}
+        <div class="slot {i < timeSlots.length - 1 ? 'border-b' : ''} border-(--border-light)">
             {slot.text}
         </div>
     {/each}

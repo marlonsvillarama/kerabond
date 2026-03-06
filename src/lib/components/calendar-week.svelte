@@ -6,6 +6,7 @@
 
     import CalendarWeekSlots from "./calendar-week-slots.svelte";
     import CalendarWeekDay from "./calendar-week-day.svelte";
+    import DialogAppointment from "./dialog-appointment.svelte";
 
     let appointment = createAppointmentData();
     let calendar = createCalendarData();
@@ -94,16 +95,16 @@
 
         let dt = new Date(tempValues.slot);
         console.log(`appointment setValues; dt =>`, dt);
-        tempValues.date = calendar.parseDate(dt);
+        tempValues.date = settings.parseDate(dt);
         // appointment.date = `${dt.getFullYear()}-${dt.getMonth()+1}-${dt.getDate().toString().padStart(2, '0')}`;
-        tempValues.time = calendar.parseTime(dt);
+        tempValues.time = settings.parseTime(dt);
         // appointment.time = `${dt.getHours().toString().padStart(2, '0')}:${dt.getMinutes().toString().padStart(2, '0')}`;
         console.log(`appointment setValues; output =>`, tempValues);
     }
 
     const showForm = () => {
         tempValues = appointment.initialize();
-        setAppointmentValues(calendar.selectedItem);
+        setAppointmentValues(calendar.activeItem);
         // appointment.setValues(calendar.selectedBlock);
 
         // if (!calendar.selectedBlock) {
@@ -118,30 +119,30 @@
         slotDialog.close();
     };
 
-    const validateAppointment = () => {
+    /* const validateAppointment = () => {
         if (!tempValues.service) {
             alert('Please select a service from the list.');
             return false;
         }
 
         return true;
-    };
+    }; */
 
-    const saveAppointment = () => {
+    // const saveAppointment = () => {
         // let dt = new Date(`${appointment.date} ${appointment.time}`);
         // // let dateString = `${dt.getFullYear()}-${dt.getMonth()+1}-${dt.getDate()}`;
         // // let timeString = `${dt.getHours()}:${dt.getMinutes().toString().padStart(2, '0')}`;
         // appointment.slot = `${calendar.parseDate(dt)} ${calendar.parseTime(dt)}`;
         // console.log(`* saveAppointment slot = ${calendar.slot}`, appointment.values);
-        console.log(`* saveAppointment slot = ${calendar.slot}; tempValues`, tempValues);
+        // console.log(`* saveAppointment slot = ${calendar.slot}; tempValues`, tempValues);
 
-        if (validateAppointment() === false) { return; }
+        // if (validateAppointment() === false) { return; }
 
         // TODO - Implement save to db
-        calendar.updateSlotItem(tempValues);
+        // calendar.updateItem(tempValues);
         // calendar.updateSlotBlock(appointment.values);
-        slotDialog.close();
-    };
+    //     slotDialog.close();
+    // };
 
     /* let isDirty = $derived.by(() => {
         return (
@@ -156,8 +157,8 @@
         )
     }); */
 
-    const deleteAppointment = () => {
-        console.log(`deleting appointment at slot ${calendar.slot}`);
+    // const deleteAppointment = () => {
+        // console.log(`deleting appointment at slot ${calendar.slot}`);
         // if (isDirty) {
         //     if (confirm('You have unsaved changes. Are you sure you want to delete this?') === false) {
         //         return;
@@ -165,23 +166,23 @@
         //     return;
         // }
 
-        if (confirm('This will permanently remove the appointment. Are you sure?') === false) {
-            return;
-        }
+        // if (confirm('This will permanently remove the appointment. Are you sure?') === false) {
+        //     return;
+        // }
 
         // TODO - implement delete from db
-        calendar.deleteSlotItem(calendar.slot);
-        slotDialog.close();
-    };
+        // calendar.deleteSlotItem(calendar.slot);
+    //     slotDialog.close();
+    // };
 
-    $effect(() => {
+    // $effect(() => {
         // console.log(`changed appointment.time => ${appointment?.time || ''}`);
-        console.log(`changed appointment.time => ${tempValues?.time || ''}`);
-    });
+    //     console.log(`changed appointment.time => ${tempValues?.time || ''}`);
+    // });
 </script>
 
 <div class="wrapper">
-    <div class="header border-b-2 border-(--accent)">
+    <div class="header border-b-1 border-(--border)">
         <div class="time-col border-r border-(--border)"></div>
         {#each currentWeekDays as cd, i}
             <div class="week-day {i < settings.weekDays.length - 1 ? 'border-r border-(--border)' : ''}">
@@ -212,14 +213,15 @@
 </div>
 
 <dialog class="day-dialog" bind:this={slotDialog}>
-    <div class="dlg-header">
+    <DialogAppointment bind:data={tempValues} onclose={closeForm} />
+    <!-- <div class="dlg-header">
         <div class="dlg-title">
             <span>Appointment Details</span>
             <button class="dlg-close" onclick={closeForm}>
-                Close<!-- <i class="ph ph-x"></i> -->
+                Close
             </button>
         </div>
-        {#if calendar.selectedItem}
+        {#if calendar.activeItem}
             <span class="dlg-desc">Update your appointment details here</span>
         {:else}
             <span class="dlg-desc">Add an appointment</span>
@@ -229,37 +231,27 @@
         <div class="dlg-slot-2">
             <div class="row">
                 <label for="serviceDate">Date</label>
-                <!-- <input type="date" id="serviceDate" name="serviceDate" bind:value={appointment.date} /> -->
                 <input type="date" id="serviceDate" name="serviceDate" bind:value={tempValues.date} />
             </div>
             <div class="row">
                 <label for="serviceTime">Time</label>
-                <!-- <input type="time" id="serviceTime" name="serviceTime" bind:value={appointment.time} /> -->
                 <input type="time" id="serviceTime" name="serviceTime" bind:value={tempValues.time} />
             </div>
-            <!-- <div class="flex align-center justify-between">
-                <span class="slot-day">{slotDay}</span>
-                <span class="slot-time">{slotTime}</span>
-            </div>
-            <span class="slot-date">{slotDate}</span> -->
         </div>
 
         <div class="row">
             <label for="customer">Customer Name</label>
             <input type="text" id="customer" name="customer" bind:value={tempValues.customer}>
-            <!-- <input type="text" id="customer" name="customer" bind:value={appointment.customer}> -->
         </div>
         <div class="row">
             <div class="contact-details">
                 <div class="phone">
                     <label for="phone">Phone</label>
                     <input type="tel" id="phone" name="phone" bind:value={tempValues.phone}>
-                    <!-- <input type="tel" id="phone" name="phone" bind:value={appointment.phone}> -->
                 </div>
                 <div class="email">
                     <label for="email">Email</label>
                     <input type="email" id="email" name="email" bind:value={tempValues.email}>
-                    <!-- <input type="email" id="email" name="email" bind:value={appointment.email}> -->
                 </div>
             </div>
         </div>
@@ -267,38 +259,35 @@
             <div class="service">
                 <label for="service">Service Requested</label>
                 <select id="service" name="service" bind:value={tempValues.service}>
-                <!-- <select id="service" name="service" bind:value={appointment.service}> -->
                     {#each services.listByCategory as category}
-                    <optgroup label={category.name}>
-                        {#each category.services as item}
-                            <option value={item.id}>{item.name}</option>
-                        {/each}
-                    </optgroup>
+                        <optgroup label={category.name}>
+                            {#each category.services as item}
+                                <option value={item.id}>{item.name}</option>
+                            {/each}
+                        </optgroup>
                     {/each}
                 </select>
             </div>
         </div>
 
-        <!-- {#if appointment.service} -->
         {#if tempValues.service}
-        <div class="row service-details">
-            <i class="ph ph-clock"></i>
-            <!-- <span class="service-duration">Usually takes {services.getDuration(appointment.service)} minutes</span> -->
-            <span class="service-duration">Usually takes {services.getDuration(tempValues.service)} minutes</span>
-        </div>
+            <div class="row service-details">
+                <i class="ph ph-clock"></i>
+                <span class="service-duration">Usually takes {services.getDuration(tempValues.service)} minutes</span>
+            </div>
         {/if}
 
         <div class="dlg-actions">
             <button class="btn-save" onclick={saveAppointment}>
-                {calendar.selectedItem ? 'Update' : 'Create'} this appointment
+                {calendar.activeItem ? 'Update' : 'Create'} this appointment
             </button>
-            {#if calendar.selectedItem}
+            {#if calendar.activeItem}
                 <button class="btn-delete" onclick={deleteAppointment}>
                     Delete
                 </button>
             {/if}
         </div>
-    </div>
+    </div> -->
 </dialog>
 
 <style>
@@ -359,8 +348,8 @@
     /* .slot {
         height: 4rem;
     } */
-    .menu {
-        /* position: absolute; */
+    /* .menu {
+        * position: absolute; *
         top: 0.25rem;
         right: 0.25rem;
         padding: 0.25rem 0.375rem 0.125rem;
@@ -375,18 +364,18 @@
     }
     .menu:hover {
         background-color: var(--border-lightest);
-    }
+    } */
     .day-dialog {
-        padding: 1rem 1.5rem 1.5rem;
+        /* padding: 1rem 1.5rem 1.5rem; */
         top: 50%;
         left: 50%;
         transform: translateX(-50%) translateY(-50%);
-        border: 1px solid var(--border-light);
+        /* border: 1px solid var(--border-light); */
         border-radius: 0.5rem;
         outline: 0;
         width: 30rem;
     }
-    .dlg-header {
+    /* .dlg-header {
         display: grid;
         gap: 0rem;
         margin-bottom: 2rem;
@@ -422,7 +411,7 @@
         font-size: 0.875rem;
     }
     .row label {
-        /* border: 1px solid red; */
+        * border: 1px solid red; *
         color: var(--medium);
         font-weight: 500;
     }
@@ -442,11 +431,11 @@
         border-radius: 0.375rem;
         padding: 0.375rem 0.75rem;
         width: 100%;
-        /* outline: 1px solid var(--accent); */
+        * outline: 1px solid var(--accent); *
     }
-    /* input[type=tel] {
+    * input[type=tel] {
         width: 10rem;
-    } */
+    } *
     input[type=date]:focus,
     input[type=email]:focus,
     input[type=tel]:focus,
@@ -457,7 +446,7 @@
         box-shadow: 0 0 5px var(--accent-light);
         outline: none;
         transition: var(--transition);
-        /* outline: 2px solid var(--accent); */
+        * outline: 2px solid var(--accent); *
     }
     .dlg-slot-2 {
         display: grid;
@@ -524,7 +513,7 @@
     .btn-save {
         background-color: var(--accent-light);
         border: 0;
-        /* border: 1px solid var(--accent-light); */
+        * border: 1px solid var(--accent-light); *
         color: var(--dark);
         font-weight: 600;
     }
@@ -537,5 +526,5 @@
     .btn-delete:hover {
         background-color: var(--border-lightest);
         color: red;
-    }
+    } */
 </style>

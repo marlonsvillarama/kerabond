@@ -26,7 +26,6 @@ export const createAppointmentData  = () => {
                 slot: '',
                 time: '',
             };
-            // return appointment;
         },
         /* get customer () { return appointment.customer },
         get date () { return appointment.date },

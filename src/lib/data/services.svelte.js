@@ -2,6 +2,7 @@ let allServices = [
     { id: 1, category: 'Haircut', name: "Men's Haircut", duration: 30 },
     { id: 2, category: 'Haircut', name: "Women's Haircut", duration: 30 },
     { id: 3, category: 'Haircut', name: "Under 16 years old", duration: 30 },
+    { id: 6, category: 'Haircut', name: "Men's Haircut (Gold Card Member) Men's Haircut (Gold Card Member)", duration: 60 },
     { id: 4, category: 'Others', name: "Keratin", duration: 60 },
     { id: 5, category: 'Others', name: "Kerabond", duration: 90 },
 ];
@@ -24,6 +25,11 @@ export const createServicesData = () => {
         getDuration (id) {
             let svc = allServices.find(s => s.id === id);
             return svc?.duration || 0;
+        },
+
+        getServiceName (id) {
+            let svc = allServices.find(s => s.id === id);
+            return svc ? svc.name : ''; 
         }
     };
 };

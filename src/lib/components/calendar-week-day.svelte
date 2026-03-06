@@ -33,11 +33,8 @@
         return parseInt(`${dt.getHours()}${dt.getMinutes().toString().padStart(2, '0')}`);
     }
 
-    let today = new Date();
-    let isToday = $derived.by(() => {
-        // console.log(`* isToday >> today = ${parseDate(today)}, value = ${parseDate(value)}`);
-        return calendar.parseDate(today) === calendar.parseDate(value);
-    });
+    // let today = new Date();
+    // let isToday = $derived(settings.parseDate(today) === settings.parseDate(value));
     let slots = $derived.by(() => {
         let output = [];
         let currentDay = new Date(
@@ -56,7 +53,7 @@
                 }
             });
             output.push({
-                value: calendar.parseDateTime(currentDay),
+                value: settings.parseSlot(currentDay),
                 disabled: (
                     (
                         toTimeInt(currentDay) < parseInt(startShift) ||
@@ -146,7 +143,7 @@
     };
 </script>
 
-<div class="day-wrapper {isToday ? 'today' : ''}">
+<div class="day-wrapper {calendar.isToday(value) ? 'today' : ''}">
     {#each slots as slot, i}
         <div data-slot={slot.value}
             onclick={() => showAppointment(slot.value, slot.disabled)}
@@ -172,6 +169,7 @@
 <style>
     .day-wrapper {
         position: relative;
+        width: 100%;
         /* border: 2px solid red; */
     }
     .day-wrapper.today {
