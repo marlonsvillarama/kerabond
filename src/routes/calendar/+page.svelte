@@ -5,7 +5,7 @@
     import CalendarMonth from "$lib/components/calendar-month.svelte";
     import ModeToggle from "$lib/components/mode-toggle.svelte";
 
-    let mode = $state('week');
+    let mode = $state('month');
     let date = $state(new Date());
 
     const refreshCalendar = () => {

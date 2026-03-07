@@ -20,23 +20,28 @@
         onslotselect,
         onblockselect
     } = $props();
-
-    // const parseDate = (dt) => {
-    //     return `${dt.getFullYear()}-${(dt.getMonth() + 1)}-${dt.getDate()}`;
-    // };
-
-    // const parseDateTime = (dt) => {
-    //     return `${dt.getFullYear()}-${(dt.getMonth() + 1)}-${dt.getDate()} ${dt.getHours()}:${dt.getMinutes().toString().padStart(2, '0')}`;
-    // };
-        
+    
+    // let slots = $derived(settings.getDayTimeSlots(value));
     const toTimeInt = (dt) => {
         return parseInt(`${dt.getHours()}${dt.getMinutes().toString().padStart(2, '0')}`);
     }
 
-    // let today = new Date();
-    // let isToday = $derived(settings.parseDate(today) === settings.parseDate(value));
     let slots = $derived.by(() => {
-        let output = [];
+        let daySlots = settings.getDayTimeSlots(value);
+        return daySlots.map(slot => {
+            // console.log(`weekday slot`, slot);
+            return {
+                ...slot,
+                disabled: (
+                    (
+                        toTimeInt(slot.date) < parseInt(startShift) ||
+                        toTimeInt(slot.date) >= parseInt(endShift)
+                    ) ||
+                    settings.daysOff.indexOf(value.getDay()) >= 0
+                )
+            };
+        });
+        /* let output = [];
         let currentDay = new Date(
             value.getFullYear(),
             value.getMonth(),
@@ -44,7 +49,6 @@
             parseInt(startDay.slice(0, 2)),
             parseInt(startDay.slice(2))
         );
-        // console.log(`* weekday slots day`, currentDay);
         do {
             let isBlockedSlot = false;
             items.forEach(b => {
@@ -76,9 +80,9 @@
         } while (currentDay.getHours() < parseInt(endDay.slice(0, 2)));
         console.log('* weekday slots', output);
 
-        return output;
+        return output; */
     });
-    // console.log('*** START day', day);
+    /* // console.log('*** START day', day);
     // let timeSlots = $state([]);
 
     // const showForm = (value) => {
@@ -86,7 +90,7 @@
         // document.getElementById('day-dialog').showModal();
         // dialogDate = value;
         // console.log(`dialogDate = "${dialogDate}"`)
-    // };
+    // }; */
 
     const calcAppointmentHeight = (slot) => {
         let appointment = items.find(b => b.slot === slot);
@@ -121,7 +125,7 @@
 
     const hasAppointment = (slot) => {
         // let appointment = blocks.find(b => b.slot === slot);
-        let appointment = slots.find(s => s.value === slot);
+        let appointment = slots.find(s => s.slot === slot);
         // console.log(`hasAppointment; slot = ${slot}`, appointment);
         return !!appointment;
     };
@@ -144,14 +148,13 @@
 </script>
 
 <div class="day-wrapper {calendar.isToday(value) ? 'today' : ''}">
-    {#each slots as slot, i}
-        <div data-slot={slot.value}
-            onclick={() => showAppointment(slot.value, slot.disabled)}
+    {#each slots as dateSlot, i}
+        <div data-slot={dateSlot.slot}
+            onclick={() => showAppointment(dateSlot.slot, dateSlot.disabled)}
             class="slot
-                {slot.disabled === true ? 'slot-disabled' : ''}
-                {i < slots.length - 1 && slot.value.indexOf('30') > 0 ? 'slot-end' : ''}"
+                {dateSlot.disabled === true ? 'slot-disabled' : ''}
+                {i < slots.length - 1 && dateSlot.slot.indexOf('30') > 0 ? 'slot-end' : ''}"
         >
-            <!-- {slot.value} -->
         </div>
     {/each}
     {#each items as item, i}

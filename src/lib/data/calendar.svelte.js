@@ -21,7 +21,6 @@ let calendarData = $state({
     ]
 });
 
-
 export const createCalendarData  = () => {
     return {
         get blocks () { return calendarData.blocks },

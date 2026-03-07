@@ -20,14 +20,14 @@ const DAYS = [
     { id: 7, name: 'Sunday' },
 ];
 
-const getDayTimeSlots = () => {
+const getDayTimeSlots = (dt = new Date()) => {
     let startHour = settingsData.startDay.slice(0, 2);
     let endHour = settingsData.endDay.slice(0, 2);
-    let now = new Date();
+    // let now = new Date();
     let day = new Date(
-        now.getFullYear(),
-        now.getMonth(),
-        now.getDate(),
+        dt.getFullYear(),
+        dt.getMonth(),
+        dt.getDate(),
         parseInt(startHour),
         0
     );
@@ -35,14 +35,15 @@ const getDayTimeSlots = () => {
     let output = [];
     do {
         output.push({
-            value: day,
+            date: new Date(day.getFullYear(), day.getMonth(), day.getDate(), day.getHours(), day.getMinutes()),
+            slot: parseSlot(day),
             text: parseTime(day, true),
-            time: parseTime(day)
+            time: parseTime(day),
         });
         day.setMinutes(day.getMinutes() + settingsData.interval);
     } while (day.getHours() < endHour);
 
-    console.log('getDayTimeSlots output', output);
+    // console.log('getDayTimeSlots output', output);
     return output;
 
 };
@@ -84,6 +85,7 @@ export const createSettingsData = () => {
         get timeSlots () { return getDayTimeSlots(); },
         get slotHeight () { return this.slotHeight },
 
+        getDayTimeSlots,
         parseDate,
         parseSlot,
         parseTime

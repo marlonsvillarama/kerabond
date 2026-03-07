@@ -1,17 +1,19 @@
 <script>
     import { createCalendarData } from "$lib/data/calendar.svelte";
     import { createServicesData } from "$lib/data/services.svelte";
+    import { createSettingsData } from "$lib/data/settings.svelte";
 
     let {
         day = null,
         disabled = false,
         onitemclick,
         onaddclick,
-        onmenuclick
+        onviewclick
     } = $props();
 
     let calendar = createCalendarData();
     let services = createServicesData();
+    let settings = createSettingsData();
 
     const isToday = $derived.by(() => {
         if (!day) {
@@ -21,15 +23,15 @@
 
         let now = new Date();
         let output = day.date.toLocaleDateString('en-NZ') === now.toLocaleDateString('en-NZ');
-        console.log(`isToday output = ${output}`);
+        // console.log(`isToday output = ${output}`);
         return output;
     });
 
     let items = $derived.by(() => {
-        console.log('* monthday > day', day);
+        // console.log('* monthday > day', day);
         if (!day) { return []; }
         
-        let dateString = calendar.parseDate(day.date);
+        let dateString = settings.parseDate(day.date);
         let dayItems = calendar.items
             .map(d => {
                 return { ...d, epoch: (new Date(d.slot)).getTime() }
@@ -37,7 +39,7 @@
             .filter(d => d.slot.indexOf(dateString) === 0);
             // d.epoch >= (new Date()).getTime()
         dayItems.sort((a, b) => a.epoch - b.epoch);
-        console.log('* monthday > dayItems', dayItems);
+        // console.log('* monthday > dayItems', dayItems);
         return dayItems;
     });
 
@@ -49,7 +51,7 @@
     });
 
     const showDay = () => {
-        alert(`showDay slot = ${calendar.parseDate(day.date)}`);
+        alert(`showDay slot = ${settings.parseDate(day.date)}`);
     };
 
     const showBooking = (id) => {
@@ -59,13 +61,13 @@
     };
 
     const showAdd = () => {
-        console.log(`showAdd slot = ${calendar.parseDate(day.date)}`);
+        console.log(`showAdd slot = ${settings.parseDate(day.date)}`);
         onaddclick();
     };
 
     const showMenu = () => {
-        console.log(`showMenu slot = ${calendar.parseDate(day.date)}`);
-        onmenuclick();
+        console.log(`showMenu slot = ${settings.parseDate(day.date)}`);
+        onviewclick();
     };
 </script>
 

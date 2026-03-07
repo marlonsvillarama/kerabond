@@ -81,7 +81,7 @@
             </div>
             <div class="row">
                 <label for="serviceTime">Time</label>
-                <input type="time" id="serviceTime" name="serviceTime" bind:value={data.time} />
+                <input type="time" id="serviceTime" name="serviceTime" step="1800" bind:value={data.time} />
             </div>
         </div>
 
@@ -139,7 +139,7 @@
 <style>
     .dlg-container {
         padding: 1rem 1.5rem 1.5rem;
-        border: 1px solid var(--border-light);
+        /* border: 1px solid var(--border-light); */
         border-radius: 0.5rem;
         outline: 0;
         width: 100%;
