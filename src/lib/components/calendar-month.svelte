@@ -1,4 +1,5 @@
 <script>
+    import { createAppointmentData } from "$lib/data/appointment.svelte";
     import { createCalendarData } from "$lib/data/calendar.svelte";
     import { createServicesData } from "$lib/data/services.svelte";
     import { createSettingsData } from "$lib/data/settings.svelte";
@@ -13,6 +14,7 @@
         value = new Date()
     } = $props();
 
+    const appointment = createAppointmentData();
     const calendar = createCalendarData();
     const services = createServicesData();
     const settings = createSettingsData();
@@ -130,7 +132,10 @@
     //     viewDialog.showModal();
     // };
 
-    const onItemClick = () => {
+    const onItemClick = (update = true) => {
+        if (update !== true) {
+            tempValues = appointment.initialize();
+        }
         setAppointmentValues(calendar.activeItem);
         appointmentDialog.showModal();
     };
@@ -138,6 +143,11 @@
     const hideAdd = () => {
         appointmentDialog.close();
     };
+
+    // const showAdd = () => {
+    //     tempValues = appointment.initialize();
+    //     setAppointmentValues(calendar.activeItem);
+    // };
 
     // const hideAppointment = () => {
     //     appointmentDialog.close();
@@ -166,7 +176,7 @@
                     day={week[i]}
                     disabled={settings.daysOff.indexOf(day.id) >= 0}
                     onitemclick={onItemClick}
-                    onaddclick={() => appointmentDialog.showModal()}
+                    onaddclick={onItemClick}
                     onviewclick={() => viewDialog.showModal()}
                 />
                 {/each}
