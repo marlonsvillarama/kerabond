@@ -16,6 +16,7 @@ let appointment = $state();
 export const createAppointmentData  = () => {
     return {
         initialize () {
+            console.log(`appointmnet initialize`);
             return {
                 customer: '',
                 date: '',

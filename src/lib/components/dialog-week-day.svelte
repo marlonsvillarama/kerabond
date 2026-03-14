@@ -6,7 +6,7 @@
 
     let calendar = createCalendarData();
     let {
-        value,
+        value = new Date(),
         onclose
     } = $props();
 </script>
@@ -14,7 +14,7 @@
 <div class="dlg-container">
     <div class="dlg-header">
         <div class="dlg-title">
-            <span>{value.toLocaleDateString('en-NZ', {   })}</span>
+            <span>{value ? value.toLocaleDateString('en-NZ') : ''}</span>
             <button class="dlg-close" onclick={onclose}>
                 Close<!-- <i class="ph ph-x"></i> -->
             </button>

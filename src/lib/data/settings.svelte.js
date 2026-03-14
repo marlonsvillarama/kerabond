@@ -72,6 +72,15 @@ const parseTime = (dt, text = false) => {
     return output;
 };
 
+const parseStringAsTime = (value) => {
+    let output = '';
+    let hours = value.slice(0, 2);
+    let intHours = parseInt(hours);
+    let minutes = value.slice(2);
+
+    return `${hours}:${minutes}`;
+};
+
 export const createSettingsData = () => {
     return {
         get startDay () { return settingsData.startDay; },
@@ -88,7 +97,9 @@ export const createSettingsData = () => {
         getDayTimeSlots,
         parseDate,
         parseSlot,
-        parseTime
+        parseTime,
+
+        parseStringAsTime
         // set startDay (value) { settingsData.startDay; },
         // set startShift (value) { return settingsData.startShift; },
         // set endDay (value) { return settingsData.endDay; },

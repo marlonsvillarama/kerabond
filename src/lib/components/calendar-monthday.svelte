@@ -28,7 +28,6 @@
     });
 
     let items = $derived.by(() => {
-        // console.log('* monthday > day', day);
         if (!day) { return []; }
         
         let dateString = settings.parseDate(day.date);
@@ -43,15 +42,16 @@
         return dayItems;
     });
 
-    let nextItem = $derived.by(() => {
+    /* let nextItem = $derived.by(() => {
         // let arr = items.filter(d => d.epoch >= (new Date()).getTime());
         let arr = items; //.filter(d => d.epoch >= (new Date()).getTime());
         console.log('* monthday > arr', arr);
         return arr.length > 0 ? arr[0] : null;
-    });
+    }); */
 
     const showDay = () => {
-        alert(`showDay slot = ${settings.parseDate(day.date)}`);
+        // alert(`showDay slot = ${settings.parseDate(day.date)}`);
+        onviewclick();
     };
 
     const showBooking = (id) => {
@@ -61,14 +61,15 @@
     };
 
     const showAdd = () => {
-        console.log(`showAdd slot = ${settings.parseDate(day.date)}`);
+        console.log(`showAdd slot = ${settings.parseDate(day.date)}; startShift = ${settings.startShift}`);
+        calendar.slot = `${settings.parseDate(day.date)} 12:00`;
         onaddclick();
     };
 
-    const showMenu = () => {
-        console.log(`showMenu slot = ${settings.parseDate(day.date)}`);
-        onviewclick();
-    };
+    // const showMenu = () => {
+    //     console.log(`showMenu slot = ${settings.parseDate(day.date)}`);
+    //     onviewclick();
+    // };
 </script>
 
 <div class="slot{day && disabled === false ? '' : '-disabled'} {isToday ? 'today' : ''}">
@@ -77,7 +78,10 @@
             <div class="title">
                 <span>{day.date.getDate()}</span>
                 {#if items.length > 0}
-                <i class="ph-fill ph-dot-outline"></i>
+                <div class="badge">
+                    <i class="ph ph-user"></i>
+                    {items.length}
+                </div>
                 {/if}
             </div>
 
@@ -86,9 +90,9 @@
                     <button class="add" title="Add" onclick={showAdd}>
                         <i class="ph ph-plus"></i>
                     </button>
-                    <button class="menu" title="Menu" onclick={showMenu}>
+                    <!-- <button class="menu" title="Menu" onclick={showDay}>
                         <i class="ph ph-eye"></i>
-                    </button>
+                    </button> -->
                 </div>
             {/if}
         </div>
@@ -150,9 +154,24 @@
         left: 0.5rem; */
         font-size: 1.25rem;
         font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
     }
-    .title i {
+    /* .title i {
         color: var(--accent);
+    } */
+    .title > .badge {
+        align-items: center;
+        background-color: var(--medium);
+        border: 0;
+        border-radius: 1rem;
+        color: white;
+        display: flex;
+        font-size: 0.75rem;
+        gap: 0.375rem;
+        padding: 0.25rem 0.625rem;
+        /* border-top-right-radius: 0.5rem; */
     }
     .controls {
         display: flex;

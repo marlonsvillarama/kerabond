@@ -18,9 +18,16 @@
     const calendar = createCalendarData();
     const services = createServicesData();
     const settings = createSettingsData();
-    // let weekDays = settings.weekDays;
-    // console.log('weekDays', weekDays);
 
+    let selectedDay = $state(null);
+    let selectedDayItems = $derived.by(() => {
+        if (!selectedDay) return [];
+        
+        let slotDate = settings.parseDate(selectedDay);
+        let slotItems = calendar.items.filter(d => d.slot.indexOf(slotDate) === 0);
+        console.log(`* derived selectedDayItems slotDate ==> ${slotDate}`, slotItems);
+        return slotItems;
+    })
     let tempValues = $state({});
     let weeks = $derived.by(() => {
         let output = [];
@@ -44,7 +51,6 @@
                 week = [];
                 let count = 0;
 
-                // if start with Sunday
                 if (settings.weekStart === 0) {
                     if (dayOfWeek === 0) count = 0;
                     else count = dayOfWeek;
@@ -86,7 +92,7 @@
     };
 
     const setAppointmentValues = (values) => {
-        console.log(`appointment setValues; value =>`, values);
+        console.log(`calendarMonth appointment setValues; value =>`, values);
         tempValues.customer = values?.customer || '';
         tempValues.email = values?.email || '';
         tempValues.id = values?.id || '';
@@ -128,11 +134,14 @@
     //     appointmentDialog.showModal();
     // };
 
-    // const onViewClick = () => {
-    //     viewDialog.showModal();
-    // };
+    const onViewClick = (dt) => {
+        selectedDay = dt.date;
+        console.log('calendarMonth onViewClick; dt ==>', dt);
+        viewDialog.showModal();
+    };
 
     const onItemClick = (update = true) => {
+        console.log(`calendarMonth onItemClick; update = ${update}`);
         if (update !== true) {
             tempValues = appointment.initialize();
         }
@@ -176,8 +185,8 @@
                     day={week[i]}
                     disabled={settings.daysOff.indexOf(day.id) >= 0}
                     onitemclick={onItemClick}
-                    onaddclick={onItemClick}
-                    onviewclick={() => viewDialog.showModal()}
+                    onaddclick={() => onItemClick(false)}
+                    onviewclick={() => onViewClick(week[i])}
                 />
                 {/each}
             </div>
@@ -198,7 +207,8 @@
 </dialog> -->
 
 <dialog id="viewDialog" bind:this={viewDialog}>
-    <DialogWeekDay {value} onclose={() => viewDialog.close()} />
+    <DialogWeekDay value={selectedDay} items={selectedDayItems}
+        onclose={() => viewDialog.close()} />
     <!-- <div class="dlg-header">
         <div class="dlg-title">
             <span>{value.toLocaleDateString('en-NZ', {   })}</span>

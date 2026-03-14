@@ -84,7 +84,7 @@
     let slotDialog = $state(null);
 
     const setAppointmentValues = (values) => {
-        console.log(`appointment setValues; value =>`, values);
+        console.log(`calendarWeek appointment setValues; value =>`, values);
         tempValues.customer = values?.customer || '';
         tempValues.email = values?.email || '';
         tempValues.id = values?.id || '';

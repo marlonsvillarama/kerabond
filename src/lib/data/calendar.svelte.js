@@ -4,6 +4,7 @@ let settings = createSettingsData();
 
 let calendarData = $state({
     activeItem: null,
+    activeDate: new Date(),
     activeSlot: '',
     items: [
         { id: 1, slot: '2026-03-05 09:00', customer: 'Apple Villarama', service: 6, email: 'apple.v@gmail.com', phone: '0227000215' },
@@ -15,9 +16,9 @@ let calendarData = $state({
     ],
     slot: '',
     blocks: [
-        { id: 1, date: '2026-03-16', start: '06:00', end: '19:00' },
-        { id: 1, date: '2026-03-16', start: '06:00', end: '19:00' },
-        { id: 1, date: '2026-03-16', start: '06:00', end: '19:00' },
+        { id: 1, date: '2026-03-16', allday: true },
+        { id: 2, date: '2026-03-17', start: '10:00', end: '12:00' },
+        { id: 3, date: '2026-03-16', start: '11:00', end: '14:30' },
     ]
 });
 
@@ -25,6 +26,7 @@ export const createCalendarData  = () => {
     return {
         get blocks () { return calendarData.blocks },
         get items () { return calendarData.items },
+        get activeDate () { return calendarData.activeDate },
         get activeItem () { return calendarData.activeItem },
         get slot () { return calendarData.slot },
 
@@ -32,8 +34,9 @@ export const createCalendarData  = () => {
         set items (value) { calendarData.items = value },
         set slot (value) {
             calendarData.slot = value;
-            calendarData.activeItem = calendarData.items.find(b => b.slot === value);
-            console.log(`createCalendarData slot > activeItem ==>`, calendarData.activeItem)
+            calendarData.activeItem = calendarData.items.find(b => b.slot.indexOf(value) === 0);
+            // console.log(`createCalendarData slot > items ==>`, calendarData.items);
+            console.log(`createCalendarData slot = "${value}" > activeItem ==>`, calendarData.activeItem);
         },
 
         deleteBlock (id) {
@@ -45,7 +48,9 @@ export const createCalendarData  = () => {
         },
 
         isToday (value) {
-            return settings.parseDate(new Date()) === settings.parseDate(value)
+            let output = settings.parseDate(new Date()) === settings.parseDate(value);
+            console.log(`calendar isToday = ${output}`);
+            return output;
         },
 
         slotHasAppointment (slot) {
@@ -56,6 +61,11 @@ export const createCalendarData  = () => {
         getItemById (id) {
             calendarData.activeItem = calendarData.items.find(b => b.id === id);
             console.log(`createCalendarData getItemById(${id}) ==>`, calendarData.activeItem)
+        },
+
+        getItemsByDate (dt) {
+            let date = settings.parseDate(dt);
+            return calendarData.items.filter(d => d.slot.indexOf(date) === 0);
         },
 
         getSlots (dt) {
