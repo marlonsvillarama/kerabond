@@ -19,9 +19,13 @@
 
 <style>
     .time-col {
-        min-width: 5rem;
+        min-width: 4.5rem;
+        width: 4.5rem;
     }
     .slot {
+        font-size: 0.75rem;
         height: 5rem;
+        text-align: right;
+        padding-right: 0.5rem;
     }
 </style>

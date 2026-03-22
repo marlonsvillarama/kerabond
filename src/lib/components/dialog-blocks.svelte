@@ -90,12 +90,12 @@
 <div class="dlg-container">
     <div class="dlg-header">
         <div class="dlg-title">
-                <span>Blocked Dates</span>
+                <span>Closed Dates</span>
             <button class="dlg-close" onclick={closeForm}>
                 Close
             </button>
         </div>
-        <span class="dlg-desc">Manage your calendar blocks here</span>
+        <span class="dlg-desc">Manage your closed dates/times here</span>
     </div>
     <!-- <div class="dlg-contents"> -->
         <!-- <div class="blocks-header">

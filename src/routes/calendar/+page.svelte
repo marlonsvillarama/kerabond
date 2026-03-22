@@ -26,7 +26,7 @@
 <main>
     <section class="header">
         <button type="button" class="button-lock" onclick={blocksClick}>
-            <i class="ph ph-lock"></i>
+            <i class="ph ph-calendar-slash"></i>
         </button>
         <!-- <ModeToggle bind:mode={mode} /> -->
         <div class="flex align-center gap-[0.5rem]">
