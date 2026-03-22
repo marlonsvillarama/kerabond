@@ -186,7 +186,7 @@
         border-left: 1px solid var(--border-lightest);
         border-bottom: 1px solid var(--border-lightest);
         /* cursor: pointer; */
-        height: 2.5rem;
+        height: 2rem;
         transition: var(--transition);
         position: relative;
         z-index: 0;

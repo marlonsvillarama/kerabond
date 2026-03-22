@@ -73,7 +73,7 @@
         /* background-color: aliceblue; */
         /* border: 1px solid var(--lightest); */
         border: 0px solid transparent;
-        border-radius: 0.5rem;
+        border-radius: 0.25rem;
         box-shadow: var(--shadow-sm);
         cursor: pointer;
         /* box-shadow: var(--shadow-sm); */
@@ -89,12 +89,15 @@
     }
     button.today {
         background-color: var(--accent-light);
-        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        padding: 0.375rem 1rem;
+        margin-right: 1rem;
     }
     button.today:hover {
         background-color: var(--accent);
     }
     button > i {
-        font-size: 1.25rem;
+        font-size: 1rem;
     }
 </style>

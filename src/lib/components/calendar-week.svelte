@@ -301,7 +301,7 @@
     .header {
         width: 100%;
         display: grid;
-        grid-template-columns: 100px repeat(7, 1fr);
+        grid-template-columns: 4.5rem repeat(7, 1fr);
     }
     .calendar-contents {
         flex: 1;
@@ -311,11 +311,11 @@
     .calendar-grid {
         width: 100%;
         display: grid;
-        grid-template-columns: 100px repeat(7, 1fr);
+        grid-template-columns: 4.5rem repeat(7, 1fr);
     }
     .week-day {
         /* background-color: var(--accent-lighter); */
-        padding: 0.5rem 0.5rem 0.5rem 0.75rem;
+        padding: 0.375rem 0.5rem 0.375rem 0.75rem;
         font-weight: 500;
         display: flex;
         align-items: center;
@@ -333,15 +333,15 @@
     } */
     .week-day .date {
         /* color: var(--dark); */
-        font-size: 1.375rem;
+        font-size: 1rem;
         font-weight: 400;
         /* border: 1px solid red; */
         line-height: 1.5rem;
     }
     .week-day .name {
         color: var(--medium);
-        /* font-size: 1.25rem; */
-        font-weight: 400;
+        font-size: 0.875rem;
+        font-weight: 500;
         /* border: 1px solid red; */
         line-height: 1.25rem;
     }

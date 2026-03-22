@@ -53,9 +53,9 @@
             <button type="button" onclick={menuClick}>
                 <i class="ph ph-list"></i>
             </button> -->
-            <button type="button" onclick={refreshClick}>
+            <!-- <button type="button" onclick={refreshClick}>
                 <i class="ph ph-arrows-clockwise"></i>
-            </button>
+            </button> -->
     <!-- </div> -->
 </div>
 
@@ -93,6 +93,8 @@
         font-size: 1.125rem;
         font-weight: 600;
         /* margin-bottom: 0.5rem; */
-        /* border: 1px solid red; */
+        /* border: 1px solid var(--border); */
+        /* background-color: var(--border) / 0.5; */
+        padding: 0.25rem 1rem;
     }
 </style>

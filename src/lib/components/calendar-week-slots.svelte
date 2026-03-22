@@ -24,7 +24,7 @@
     }
     .slot {
         font-size: 0.75rem;
-        height: 5rem;
+        height: 4rem;
         text-align: right;
         padding-right: 0.5rem;
     }

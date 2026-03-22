@@ -101,7 +101,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row service-row">
             <div class="service">
                 <label for="service">Service Requested</label>
                 <select id="service" name="service" bind:value={data.service}>
@@ -114,14 +114,14 @@
                     {/each}
                 </select>
             </div>
-        </div>
 
-        {#if data.service}
-            <div class="row service-details">
-                <i class="ph ph-clock"></i>
-                <span class="service-duration">Usually takes {services.getDuration(data.service)} minutes</span>
-            </div>
-        {/if}
+            {#if data.service}
+                <div class="row service-details">
+                    <i class="ph ph-clock"></i>
+                    <span class="service-duration">Usually takes {services.getDuration(data.service)} minutes</span>
+                </div>
+            {/if}
+        </div>
 
         <div class="dlg-actions">
             <button class="btn-save" onclick={saveData}>
@@ -170,10 +170,11 @@
     }
     .dlg-desc {
         color: var(--medium);
+        font-size: 0.875rem;
     }
     .dlg-contents {
         display: grid;
-        gap: 1.75rem;
+        gap: 1.5rem;
     }
     .row * {
         display: grid;
@@ -197,7 +198,8 @@
     select
     {
         border: 1px solid var(--border-light);
-        border-radius: 0.375rem;
+        border-radius: 0.25rem;
+        font-size: 0.875rem;
         padding: 0.375rem 0.75rem;
         width: 100%;
         /* outline: 1px solid var(--accent); */
@@ -256,10 +258,14 @@
         font-size: 1rem;
         font-weight: 600;
     } */
+    .service-row {
+        display: grid;
+        gap: 0.25rem;
+    }
     .service-details {
         align-items: center;
-        border: 0;
-        border-radius: 0.375rem;
+        /* border: 0;
+        border-radius: 0.25rem; */
         display: flex;
         gap: 1rem;
         padding: 0.25rem 0.5rem;
@@ -274,18 +280,20 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-top: 0rem;
+        margin-top: 1rem;
     }
     .dlg-actions > button {
-        padding: 0.375rem 1rem;
-        border-radius: 0.375rem;
+        border-radius: 0.25rem;
         cursor: pointer;
+        font-size: 0.875rem;
+        padding: 0.375rem 1rem;
         transition: var(--transition);
     }
     .btn-save {
         background-color: var(--accent-light);
         border: 0;
         /* border: 1px solid var(--accent-light); */
+        box-shadow: var(--shadow-sm);
         color: var(--dark);
         font-weight: 600;
     }
@@ -294,6 +302,7 @@
     }
     .btn-delete {
         border: 1px solid transparent;
+        /* font-size: 0.75rem; */
     }
     .btn-delete:hover {
         background-color: var(--border-lightest);

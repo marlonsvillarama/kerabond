@@ -2,8 +2,8 @@ let settingsData = $state({
     slotHeight: '2.5rem',
     startDay: '0600',
     startShift: '0830',
-    endDay: '1900',
-    endShift: '1730',
+    endDay: '2200',
+    endShift: '2000',
     interval: 30,
     weekStart: 0,
     daysOff: [ 0 ]
