@@ -6,6 +6,7 @@
     import DialogBlocks from "$lib/components/dialog-blocks.svelte";
     import ModeToggle from "$lib/components/mode-toggle.svelte";
 
+    let { data } = $props();
     let mode = $state('week');
     let date = $state(new Date());
     let blockDialog = $state(null);
@@ -25,9 +26,14 @@
 
 <main>
     <section class="header">
-        <button type="button" class="button-lock" onclick={blocksClick}>
-            <i class="ph ph-calendar-slash"></i>
-        </button>
+        <div class="header-menu">
+            <button type="button" class="button-lock" onclick={blocksClick}>
+                <i class="ph ph-gear-six"></i>
+            </button>
+            <button type="button" class="button-lock" onclick={blocksClick}>
+                <i class="ph ph-calendar-slash"></i>
+            </button>
+        </div>
         <!-- <ModeToggle bind:mode={mode} /> -->
         <div class="flex align-center gap-[0.5rem]">
             <CalendarTitle {date} {mode} onrefresh={refreshCalendar} />
@@ -69,6 +75,10 @@
         justify-content: space-between;
         border-bottom: 1px solid var(--border-light);
     }
+    .header-menu {
+        display: flex;
+        gap: 0.5rem;
+    }
     .content {
         flex: 1;
         overflow-y: auto;
@@ -82,7 +92,7 @@
         /* background-color: aliceblue; */
         /* border: 1px solid var(--lightest); */
         border: 0px solid transparent;
-        border-radius: 0.5rem;
+        border-radius: 0.25rem;
         box-shadow: var(--shadow-sm);
         cursor: pointer;
         /* box-shadow: var(--shadow-sm); */

@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flowly — Wellness Scheduling, Reimagined</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal: #3A9B8E;
+    --teal-dark: #2B7A6E;
+    --teal-light: #D4EFEB;
+    --teal-pale: #EEF8F6;
+    --sand: #F2E8D5;
+    --sand-dark: #E4D4B8;
+    --charcoal: #1E2A28;
+    --charcoal-mid: #3D4D4A;
+    --muted: #7A8C89;
+    --white: #FDFCFB;
+    --coral: #E07060;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--white);
+    color: var(--charcoal);
+    overflow-x: hidden;
+  }
+
+  /* ---- NAV ---- */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 20px 48px;
+    background: rgba(253,252,251,0.88);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(58,155,142,0.12);
+  }
+  .logo {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 26px;
+    color: var(--charcoal);
+    letter-spacing: -0.5px;
+    text-decoration: none;
+  }
+  .logo span { color: var(--teal); }
+  nav .nav-cta {
+    background: var(--teal);
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 100px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.15s;
+  }
+  nav .nav-cta:hover { background: var(--teal-dark); transform: translateY(-1px); }
+
+  /* ---- HERO ---- */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 120px 24px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0; z-index: 0;
+    background:
+      radial-gradient(ellipse 70% 60% at 50% -10%, rgba(58,155,142,0.13) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 50% at 80% 80%, rgba(224,112,96,0.07) 0%, transparent 60%),
+      var(--white);
+  }
+
+  /* Decorative floating circles */
+  .hero-bg::before {
+    content: '';
+    position: absolute;
+    width: 480px; height: 480px;
+    border-radius: 50%;
+    border: 1px solid rgba(58,155,142,0.12);
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    animation: pulse-ring 6s ease-in-out infinite;
+  }
+  .hero-bg::after {
+    content: '';
+    position: absolute;
+    width: 700px; height: 700px;
+    border-radius: 50%;
+    border: 1px solid rgba(58,155,142,0.07);
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    animation: pulse-ring 6s ease-in-out infinite 1.5s;
+  }
+
+  @keyframes pulse-ring {
+    0%, 100% { transform: translate(-50%,-50%) scale(1); opacity: 0.6; }
+    50% { transform: translate(-50%,-50%) scale(1.04); opacity: 1; }
+  }
+
+  .hero-content { position: relative; z-index: 1; max-width: 720px; }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--teal-pale);
+    border: 1px solid rgba(58,155,142,0.25);
+    color: var(--teal-dark);
+    font-size: 13px;
+    font-weight: 500;
+    padding: 6px 16px;
+    border-radius: 100px;
+    margin-bottom: 32px;
+    animation: fade-up 0.7s ease both;
+  }
+  .hero-badge .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--teal);
+    animation: blink 2s ease-in-out infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: clamp(44px, 7vw, 80px);
+    line-height: 1.05;
+    letter-spacing: -2px;
+    color: var(--charcoal);
+    margin-bottom: 24px;
+    animation: fade-up 0.7s ease 0.1s both;
+  }
+  h1 em {
+    font-style: italic;
+    font-weight: 300;
+    color: var(--teal);
+  }
+
+  .hero-sub {
+    font-size: 18px;
+    line-height: 1.7;
+    color: var(--charcoal-mid);
+    max-width: 540px;
+    margin: 0 auto 48px;
+    font-weight: 300;
+    animation: fade-up 0.7s ease 0.2s both;
+  }
+
+  /* Email form */
+  .waitlist-form {
+    display: flex; gap: 10px;
+    max-width: 460px; margin: 0 auto;
+    animation: fade-up 0.7s ease 0.3s both;
+  }
+  .waitlist-form input[type="email"] {
+    flex: 1;
+    padding: 14px 20px;
+    border-radius: 100px;
+    border: 1.5px solid rgba(58,155,142,0.25);
+    background: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: var(--charcoal);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .waitlist-form input[type="email"]:focus { border-color: var(--teal); }
+  .waitlist-form input::placeholder { color: var(--muted); }
+
+  .btn-primary {
+    background: var(--teal);
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 100px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  }
+  .btn-primary:hover {
+    background: var(--teal-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(58,155,142,0.3);
+  }
+
+  .form-note {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 12px;
+    animation: fade-up 0.7s ease 0.4s both;
+  }
+
+  .success-msg {
+    display: none;
+    background: var(--teal-pale);
+    border: 1px solid rgba(58,155,142,0.3);
+    color: var(--teal-dark);
+    padding: 14px 24px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 500;
+    max-width: 460px;
+    margin: 0 auto;
+  }
+
+  /* Scroll cue */
+  .scroll-cue {
+    position: absolute; bottom: 36px; left: 50%;
+    transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    color: var(--muted); font-size: 12px;
+    animation: fade-up 1s ease 0.8s both;
+  }
+  .scroll-cue .arrow {
+    width: 20px; height: 20px;
+    border-right: 1.5px solid var(--muted);
+    border-bottom: 1.5px solid var(--muted);
+    transform: rotate(45deg);
+    animation: bounce 2s ease-in-out infinite;
+  }
+  @keyframes bounce { 0%,100%{transform:rotate(45deg) translateY(0)} 50%{transform:rotate(45deg) translateY(5px)} }
+
+  /* ---- SOCIAL PROOF BAR ---- */
+  .proof-bar {
+    background: var(--sand);
+    padding: 16px 48px;
+    display: flex; justify-content: center; align-items: center; gap: 48px;
+    flex-wrap: wrap;
+    border-top: 1px solid var(--sand-dark);
+    border-bottom: 1px solid var(--sand-dark);
+  }
+  .proof-item {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 14px; color: var(--charcoal-mid);
+  }
+  .proof-icon {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--teal-light);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+  }
+
+  /* ---- FEATURES / VALUE PROPS ---- */
+  section { padding: 100px 48px; }
+
+  .section-label {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 16px;
+  }
+
+  h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: clamp(32px, 4vw, 52px);
+    letter-spacing: -1.5px;
+    line-height: 1.1;
+    margin-bottom: 20px;
+  }
+
+  .section-sub {
+    font-size: 17px;
+    color: var(--charcoal-mid);
+    max-width: 520px;
+    line-height: 1.7;
+    font-weight: 300;
+    margin-bottom: 64px;
+  }
+
+  /* Value prop grid */
+  .vp-section { background: var(--white); }
+  .vp-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .vp-card {
+    background: var(--teal-pale);
+    border: 1px solid rgba(58,155,142,0.15);
+    border-radius: 20px;
+    padding: 36px 32px;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .vp-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(58,155,142,0.12); }
+  .vp-card:nth-child(2) { background: var(--sand); border-color: var(--sand-dark); }
+  .vp-card:nth-child(3) { background: #FBF0EF; border-color: rgba(224,112,96,0.2); }
+
+  .card-icon {
+    width: 48px; height: 48px; border-radius: 14px;
+    background: white;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .vp-card h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    letter-spacing: -0.5px;
+  }
+  .vp-card p {
+    font-size: 15px;
+    color: var(--charcoal-mid);
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  /* ---- HOW IT WORKS ---- */
+  .hiw-section {
+    background: var(--charcoal);
+    color: white;
+  }
+  .hiw-section .section-label { color: var(--teal-light); }
+  .hiw-section h2 { color: white; }
+  .hiw-section .section-sub { color: rgba(255,255,255,0.6); }
+
+  .hiw-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .hiw-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2px;
+  }
+  .hiw-step {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 32px 28px;
+  }
+  .step-num {
+    font-family: 'Fraunces', serif;
+    font-size: 48px;
+    font-weight: 300;
+    color: rgba(58,155,142,0.5);
+    line-height: 1;
+    margin-bottom: 16px;
+  }
+  .hiw-step h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 10px;
+  }
+  .hiw-step p {
+    font-size: 14px;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.65;
+    font-weight: 300;
+  }
+
+  /* ---- COMPARISON TABLE ---- */
+  .compare-section { background: var(--sand); }
+  .compare-inner { max-width: 900px; margin: 0 auto; }
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+  }
+  .compare-table th {
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 16px 20px;
+    text-align: left;
+    border-bottom: 2px solid var(--sand-dark);
+    color: var(--charcoal);
+  }
+  .compare-table th.flowly-col {
+    color: var(--teal-dark);
+  }
+  .compare-table td {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--sand-dark);
+    color: var(--charcoal-mid);
+    vertical-align: middle;
+  }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table .check { color: var(--teal); font-size: 18px; }
+  .compare-table .cross { color: #CCC; font-size: 18px; }
+  .compare-table .flowly-col { background: rgba(58,155,142,0.06); }
+  .compare-table tr:hover td { background: rgba(58,155,142,0.04); }
+
+  /* ---- TESTIMONIALS / SOCIAL PROOF ---- */
+  .testi-section { background: var(--white); }
+  .testi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .testi-card {
+    background: var(--teal-pale);
+    border: 1px solid rgba(58,155,142,0.15);
+    border-radius: 20px;
+    padding: 32px 28px;
+  }
+  .testi-stars { color: #F0C93A; font-size: 16px; margin-bottom: 14px; }
+  .testi-quote {
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1.6;
+    color: var(--charcoal);
+    margin-bottom: 20px;
+  }
+  .testi-author { font-size: 13px; font-weight: 500; color: var(--muted); }
+  .testi-role { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+  /* ---- FINAL CTA SECTION ---- */
+  .cta-section {
+    background: linear-gradient(135deg, var(--teal-dark) 0%, #1E6B60 100%);
+    color: white;
+    text-align: center;
+    padding: 120px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+    top: -200px; right: -200px;
+  }
+  .cta-section::after {
+    content: '';
+    position: absolute;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+    bottom: -150px; left: -100px;
+  }
+  .cta-inner { position: relative; z-index: 1; max-width: 600px; margin: 0 auto; }
+  .cta-section h2 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(36px, 5vw, 58px);
+    color: white;
+    margin-bottom: 20px;
+    letter-spacing: -1.5px;
+  }
+  .cta-section h2 em { color: var(--teal-light); font-style: italic; font-weight: 300; }
+  .cta-section p {
+    color: rgba(255,255,255,0.75);
+    font-size: 17px;
+    font-weight: 300;
+    margin-bottom: 48px;
+    line-height: 1.7;
+  }
+  .cta-form {
+    display: flex; gap: 10px; max-width: 440px; margin: 0 auto;
+  }
+  .cta-form input[type="email"] {
+    flex: 1;
+    padding: 15px 22px;
+    border-radius: 100px;
+    border: 1.5px solid rgba(255,255,255,0.25);
+    background: rgba(255,255,255,0.1);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: white;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .cta-form input[type="email"]::placeholder { color: rgba(255,255,255,0.5); }
+  .cta-form input[type="email"]:focus { border-color: white; background: rgba(255,255,255,0.15); }
+  .btn-white {
+    background: white;
+    color: var(--teal-dark);
+    border: none;
+    padding: 15px 28px;
+    border-radius: 100px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: transform 0.15s, box-shadow 0.2s;
+  }
+  .btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
+  .cta-note { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 14px; }
+  .cta-success {
+    display: none;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: white;
+    padding: 16px 24px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 500;
+    max-width: 440px;
+    margin: 0 auto;
+  }
+
+  /* ---- FOOTER ---- */
+  footer {
+    background: var(--charcoal);
+    color: rgba(255,255,255,0.45);
+    text-align: center;
+    padding: 40px 48px;
+    font-size: 13px;
+  }
+  footer .footer-logo {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    color: white;
+    margin-bottom: 12px;
+    display: block;
+  }
+  footer .footer-logo span { color: var(--teal); }
+  footer a { color: rgba(255,255,255,0.45); text-decoration: none; }
+  footer a:hover { color: var(--teal-light); }
+
+  /* ---- ANIMATIONS ---- */
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ---- RESPONSIVE ---- */
+  @media (max-width: 700px) {
+    nav { padding: 16px 20px; }
+    section { padding: 70px 20px; }
+    .waitlist-form, .cta-form { flex-direction: column; }
+    .waitlist-form input[type="email"],
+    .cta-form input[type="email"],
+    .btn-primary, .btn-white { width: 100%; border-radius: 16px; }
+    .proof-bar { padding: 16px 20px; gap: 20px; }
+    .hiw-steps { gap: 12px; }
+  }
+
+  /* Center section headings */
+  .section-center { text-align: center; }
+  .section-center .section-sub { margin-left: auto; margin-right: auto; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">Flow<span>ly</span></a>
+  <a href="#waitlist" class="nav-cta">Join Waitlist</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="dot"></span>
+      Now accepting early access sign-ups — NZ &amp; AU
+    </div>
+    <h1>Bookings that<br><em>actually flow.</em></h1>
+    <p class="hero-sub">
+      The scheduling platform built for wellness businesses in Aotearoa and Australia. Less admin, more time doing what you love.
+    </p>
+
+    <form class="waitlist-form" id="hero-form" onsubmit="handleHeroSubmit(event)">
+      <input type="email" placeholder="Your work email" required autocomplete="email">
+      <button type="submit" class="btn-primary">Get Early Access</button>
+    </form>
+    <div class="success-msg" id="hero-success">
+      ✓ You're on the list! We'll be in touch soon.
+    </div>
+    <p class="form-note">Free during beta · No credit card needed · Cancel anytime</p>
+  </div>
+  <div class="scroll-cue">
+    <span>Explore</span>
+    <div class="arrow"></div>
+  </div>
+</section>
+
+<!-- SOCIAL PROOF BAR -->
+<div class="proof-bar">
+  <div class="proof-item"><div class="proof-icon">🏥</div>Built for wellness pros</div>
+  <div class="proof-item"><div class="proof-icon">🇳🇿</div>Made for NZ &amp; AU</div>
+  <div class="proof-item"><div class="proof-icon">⚡</div>Set up in under 10 min</div>
+  <div class="proof-item"><div class="proof-icon">📱</div>Works on any device</div>
+</div>
+
+<!-- VALUE PROPS -->
+<section class="vp-section">
+  <div class="reveal section-center" style="max-width:1100px;margin:0 auto 64px">
+    <p class="section-label">Why Flowly</p>
+    <h2>Your business deserves<br>better than a spreadsheet.</h2>
+    <p class="section-sub">Flowly gives wellness practitioners everything they need to run bookings smoothly — without the bloat of tools built for someone else.</p>
+  </div>
+  <div class="vp-grid">
+    <div class="vp-card reveal">
+      <div class="card-icon">🌊</div>
+      <h3>Effortless Scheduling</h3>
+      <p>Clients book online 24/7. Automated reminders cut no-shows by up to 60%. Your calendar, finally under control.</p>
+    </div>
+    <div class="vp-card reveal">
+      <div class="card-icon">💚</div>
+      <h3>Built for Wellness</h3>
+      <p>Designed specifically for yoga studios, clinics, salons, and therapists — not adapted from generic booking tools.</p>
+    </div>
+    <div class="vp-card reveal">
+      <div class="card-icon">🎯</div>
+      <h3>Grow Your Practice</h3>
+      <p>Client profiles, rebooking nudges, waitlists, and insights that help you fill your schedule and retain clients.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="hiw-section">
+  <div class="hiw-inner">
+    <div class="reveal section-center" style="margin-bottom:56px">
+      <p class="section-label">How it works</p>
+      <h2>Live in minutes,<br>not days.</h2>
+      <p class="section-sub" style="color:rgba(255,255,255,0.6)">No tech skills needed. No lengthy onboarding. Just a smooth, simple setup so you can focus on clients.</p>
+    </div>
+    <div class="hiw-steps">
+      <div class="hiw-step reveal">
+        <div class="step-num">01</div>
+        <h3>Create Your Page</h3>
+        <p>Set up your services, availability, and pricing in minutes. Your booking page is ready to share instantly.</p>
+      </div>
+      <div class="hiw-step reveal">
+        <div class="step-num">02</div>
+        <h3>Share the Link</h3>
+        <p>Drop your booking link in your bio, website, or messages. Clients book directly — no back-and-forth.</p>
+      </div>
+      <div class="hiw-step reveal">
+        <div class="step-num">03</div>
+        <h3>Get Notified</h3>
+        <p>Instant confirmations for you and your client. Automated reminders handle the follow-up.</p>
+      </div>
+      <div class="hiw-step reveal">
+        <div class="step-num">04</div>
+        <h3>Grow &amp; Retain</h3>
+        <p>Track client history, prompt rebookings, and use waitlists to fill every slot in your calendar.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARISON TABLE -->
+<section class="compare-section">
+  <div class="compare-inner">
+    <div class="reveal section-center" style="margin-bottom:48px">
+      <p class="section-label">Comparison</p>
+      <h2>Why switch to Flowly?</h2>
+      <p class="section-sub">Other platforms were built for global enterprise. Flowly is built for wellness practitioners right here in NZ &amp; AU.</p>
+    </div>
+    <div class="reveal">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th class="flowly-col">✦ Flowly</th>
+            <th>Fresha</th>
+            <th>Timely</th>
+            <th>Calendly</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Wellness-specific workflows</td>
+            <td class="flowly-col check">✓</td>
+            <td class="check">✓</td>
+            <td class="check">✓</td>
+            <td class="cross">✗</td>
+          </tr>
+          <tr>
+            <td>No commission on bookings</td>
+            <td class="flowly-col check">✓</td>
+            <td class="cross">✗</td>
+            <td class="check">✓</td>
+            <td class="check">✓</td>
+          </tr>
+          <tr>
+            <td>NZ/AU local support &amp; timezone</td>
+            <td class="flowly-col check">✓</td>
+            <td class="cross">✗</td>
+            <td class="check">✓</td>
+            <td class="cross">✗</td>
+          </tr>
+          <tr>
+            <td>Client rebooking nudges</td>
+            <td class="flowly-col check">✓</td>
+            <td class="cross">✗</td>
+            <td class="check">✓</td>
+            <td class="cross">✗</td>
+          </tr>
+          <tr>
+            <td>Built-in waitlist management</td>
+            <td class="flowly-col check">✓</td>
+            <td class="cross">✗</td>
+            <td class="cross">✗</td>
+            <td class="cross">✗</td>
+          </tr>
+          <tr>
+            <td>Setup time under 10 min</td>
+            <td class="flowly-col check">✓</td>
+            <td class="cross">✗</td>
+            <td class="cross">✗</td>
+            <td class="check">✓</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS (placeholder / anticipatory social proof) -->
+<section class="testi-section">
+  <div style="max-width:1100px;margin:0 auto">
+    <div class="reveal section-center" style="margin-bottom:56px">
+      <p class="section-label">Early Community</p>
+      <h2>What wellness pros are saying.</h2>
+      <p class="section-sub">We're talking to practitioners across NZ and AU. Here's what they told us they needed most.</p>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card reveal">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"I've been waiting for something like this. Existing tools just weren't designed with a yoga studio in mind."</p>
+        <div class="testi-author">Aroha T.</div>
+        <div class="testi-role">Yoga Studio Owner · Wellington, NZ</div>
+      </div>
+      <div class="testi-card reveal">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"The no-commission model alone makes it worth switching. I keep what I earn."</p>
+        <div class="testi-author">James R.</div>
+        <div class="testi-role">Physio Practitioner · Melbourne, AU</div>
+      </div>
+      <div class="testi-card reveal">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"I spend more time with clients and less time on the phone chasing bookings. That's all I ever wanted."</p>
+        <div class="testi-author">Sophie M.</div>
+        <div class="testi-role">Massage Therapist · Auckland, NZ</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="cta-section" id="waitlist">
+  <div class="cta-inner">
+    <h2>Be first when<br><em>Flowly</em> launches.</h2>
+    <p>Join our waitlist to get early access, founding member pricing, and a say in what we build next.</p>
+
+    <form class="cta-form" id="cta-form" onsubmit="handleCtaSubmit(event)">
+      <input type="email" placeholder="Your email address" required autocomplete="email">
+      <button type="submit" class="btn-white">Join the Waitlist</button>
+    </form>
+    <div class="cta-success" id="cta-success">
+      🌿 You're in! Welcome to the Flowly community.
+    </div>
+    <p class="cta-note">No spam. Ever. Just launch updates and exclusive early access.</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo">Flow<span>ly</span></span>
+  <p>Wellness scheduling for New Zealand &amp; Australia.</p>
+  <br>
+  <p>
+    <a href="#">Privacy Policy</a> &nbsp;·&nbsp;
+    <a href="#">Terms</a> &nbsp;·&nbsp;
+    <a href="mailto:hello@flowly.app">hello@flowly.app</a>
+  </p>
+  <br>
+  <p style="font-size:12px;opacity:0.5">© 2025 Flowly Ltd. All rights reserved.</p>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Email storage
+  const emails = [];
+
+  function handleHeroSubmit(e) {
+    e.preventDefault();
+    const email = e.target.querySelector('input[type=email]').value;
+    emails.push({ source: 'hero', email, ts: new Date().toISOString() });
+    console.log('Waitlist emails:', emails);
+    document.getElementById('hero-form').style.display = 'none';
+    document.getElementById('hero-success').style.display = 'block';
+    document.querySelector('.form-note').style.display = 'none';
+  }
+
+  function handleCtaSubmit(e) {
+    e.preventDefault();
+    const email = e.target.querySelector('input[type=email]').value;
+    emails.push({ source: 'cta', email, ts: new Date().toISOString() });
+    console.log('Waitlist emails:', emails);
+    document.getElementById('cta-form').style.display = 'none';
+    document.getElementById('cta-success').style.display = 'block';
+    document.querySelector('.cta-note').style.display = 'none';
+  }
+</script>
+</body>
+</html>
