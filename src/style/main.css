@@ -1,0 +1,14 @@
+@import url(./root.css);
+
+.flex-center {
+    align-items: center;
+    display: flex;
+}
+.between {
+    /* align-items: center; */
+    /* display: flex; */
+    justify-content: space-between;
+}
+.shadow {
+    box-shadow: var(--shadow);
+}
