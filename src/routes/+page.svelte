@@ -1,5 +1,5 @@
 <script>
-    import Calendar from "$lib/components/calendar.svelte";
+    // import Calendar from "$lib/components/calendar.svelte";
 </script>
 
 <main>
@@ -7,7 +7,7 @@
         Controls
     </div>
     <div class="content">
-        <Calendar />
+        <!-- <Calendar /> -->
     </div>
 </main>
 
@@ -18,7 +18,7 @@
         display: flex;
         flex-direction: column;
         flex: auto 1fr;
-        padding: 0.5rem 0.75rem;
+        /* padding: 0.5rem 0.75rem; */
     }
     .controls {
         border-bottom: 1px solid var(--border-light);
