@@ -1,0 +1,231 @@
+<script>
+    import { createCalendarData } from "$lib/data/calendar.svelte";
+    import { createServicesData } from "$lib/data/services.svelte";
+    import { createSettingsData } from "$lib/data/settings.svelte";
+
+    const calendar = createCalendarData();
+    const services = createServicesData();
+    const settings = createSettingsData();
+
+    let {
+        blocked = false,
+        items = [],
+        data = [],
+        startDay = settings.startDay,
+        startShift = settings.startShift,
+        endDay = settings.endDay,
+        endShift = settings.endShift,
+        interval = settings.interval,
+        value = new Date(),
+        onslotselect,
+        onblockselect
+    } = $props();
+    
+    // let slots = $derived(settings.getDayTimeSlots(value));
+    const toTimeInt = (dt) => {
+        return parseInt(`${dt.getHours()}${dt.getMinutes().toString().padStart(2, '0')}`);
+    }
+
+    let slots = $derived.by(() => {
+        let daySlots = settings.getDayTimeSlots(value);
+        return daySlots.map(slot => {
+            // console.log(`weekday slot`, slot);
+            return {
+                ...slot,
+                disabled: (
+                    (
+                        toTimeInt(slot.date) < parseInt(startShift) ||
+                        toTimeInt(slot.date) >= parseInt(endShift)
+                    ) ||
+                    settings.daysOff.indexOf(value.getDay()) >= 0
+                )
+            };
+        });
+        /* let output = [];
+        let currentDay = new Date(
+            value.getFullYear(),
+            value.getMonth(),
+            value.getDate(),
+            parseInt(startDay.slice(0, 2)),
+            parseInt(startDay.slice(2))
+        );
+        do {
+            let isBlockedSlot = false;
+            items.forEach(b => {
+                if (parseInt(b.start) <= toTimeInt(currentDay) && parseInt(b.end) > toTimeInt(currentDay)) {
+                    isBlockedSlot = true;
+                }
+            });
+            output.push({
+                value: settings.parseSlot(currentDay),
+                disabled: (
+                    (
+                        toTimeInt(currentDay) < parseInt(startShift) ||
+                        toTimeInt(currentDay) >= parseInt(endShift)
+                    ) ||
+                    settings.daysOff.indexOf(value.getDay()) >= 0 ||
+                    isBlockedSlot === true
+                )
+            });
+
+            currentDay.setMinutes(currentDay.getMinutes() + interval);
+            currentDay = new Date(
+                value.getFullYear(),
+                value.getMonth(),
+                value.getDate(),
+                currentDay.getHours(),
+                currentDay.getMinutes()
+            );
+            // console.log(`* > weekday day.getHours() = ${currentDay.getHours()}; endDay.slice = ${endDay.slice(0, 2)}`);
+        } while (currentDay.getHours() < parseInt(endDay.slice(0, 2)));
+        console.log('* weekday slots', output);
+
+        return output; */
+    });
+    /* // console.log('*** START day', day);
+    // let timeSlots = $state([]);
+
+    // const showForm = (value) => {
+        // alert(`showForm value = ${value}`);
+        // document.getElementById('day-dialog').showModal();
+        // dialogDate = value;
+        // console.log(`dialogDate = "${dialogDate}"`)
+    // }; */
+
+    const calcAppointmentHeight = (slot) => {
+        let appointment = items.find(b => b.slot === slot);
+        let duration = (services.getDuration(appointment.service) || 0);
+
+        return Math.floor((duration || 0) / 30);
+    };
+
+    const calcAppointmentY = (slot) => {
+        let dt = new Date(slot);
+        let start = new Date(
+            dt.getFullYear(),
+            dt.getMonth(),
+            dt.getDate(),
+            parseInt(settings.startDay.slice(0, 2)),
+            parseInt(settings.startDay.slice(2))
+        );
+        // console.log(`calcAppointmentCoords dt`, dt);
+        // console.log(`calcAppointmentCoords start`, start);
+        let interval = Math.floor((dt.getTime() - start.getTime()) / 1800000);
+        // console.log(`interval = ${interval}`);
+        return interval;
+    };
+
+    const getSlotAppointment = (slot) => {
+        let item = items.find(b => b.slot === slot);
+        return {
+            ...item,
+            serviceName: services.all.find(s => s.id === (item?.service || 0))?.name
+        };
+    };
+
+    const hasAppointment = (slot) => {
+        // let appointment = blocks.find(b => b.slot === slot);
+        let appointment = slots.find(s => s.slot === slot);
+        // console.log(`hasAppointment; slot = ${slot}`, appointment);
+        return !!appointment;
+    };
+
+    /* const setSlot = (slot, disabled) => {
+        if (disabled === true) { return; }
+
+        // calendarData.block = null;
+        calendarData.slot = slot;
+        // calendarData.block = blocks.find(b => b.slot === slot);
+        onslotselect();
+    }; */
+
+    const showAppointment = (slot, disabled) => {
+        if (disabled === true) { return; }
+
+        calendar.slot = slot;
+        onslotselect();
+    };
+</script>
+
+<div class="day-wrapper {calendar.isToday(value) ? 'today' : ''}">
+    {#each slots as dateSlot, i}
+        <div data-slot={dateSlot.slot}
+            onclick={() => showAppointment(dateSlot.slot, dateSlot.disabled)}
+            class="slot
+                {dateSlot.disabled === true ? 'slot-disabled' : ''}
+                {i < slots.length - 1 && dateSlot.slot.indexOf('30') > 0 ? 'slot-end' : ''}"
+        >
+        </div>
+    {/each}
+    {#each items as item, i}
+        {#if hasAppointment(item.slot)}
+            <div class="appointment" onclick={() => showAppointment(item.slot)}
+                style="top:calc(2.5rem * {calcAppointmentY(item.slot)}); height:calc((2.5rem * {calcAppointmentHeight(item.slot)}) - 1px);"
+            >
+                <span class="customer">{getSlotAppointment(item.slot).customer}</span>
+                <span class="service">{getSlotAppointment(item.slot).serviceName}</span>
+            </div>
+        {/if}
+    {/each}
+</div>
+
+<style>
+    .day-wrapper {
+        position: relative;
+        width: 100%;
+        /* border: 2px solid red; */
+    }
+    .day-wrapper.today {
+        border: 0;
+        border-left: 2px solid var(--accent);
+        border-right: 2px solid var(--accent);
+    }
+    .slot {
+        /* border: 1px solid var(--light); */
+        border: 0;
+        border-left: 1px solid var(--border-lightest);
+        border-bottom: 1px solid var(--border-lightest);
+        /* cursor: pointer; */
+        height: 2rem;
+        transition: var(--transition);
+        position: relative;
+        z-index: 0;
+    }
+    .slot:not(.slot-disabled):hover {
+        background-color: var(--border-lightest);
+    }
+    .slot-disabled {
+        background-color: var(--lightest);
+        cursor: not-allowed;
+    }
+    .slot-end {
+        border-bottom: 1px solid var(--border-light);
+    }
+    .appointment {
+        border: 1px solid var(--border-lighter);
+        border-radius: 3px;
+        background-color: var(--slot-bg);
+        /* margin: 1px; */
+        position: absolute;
+        top: 1px;
+        left: 1px;
+        right: 1px;
+        /* height: 6rem; */
+        /* bottom: 1px; */
+        z-index: 100;
+        padding: 0rem 0.25rem;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+    .appointment > .customer {
+        font-size: 0.75rem;
+        font-weight: 500;
+    }
+    .appointment > .service {
+        font-size: 0.75rem;
+        font-weight: 300;
+        color: var(--font-medium);
+    }
+</style>

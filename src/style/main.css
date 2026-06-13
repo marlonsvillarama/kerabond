@@ -11,4 +11,12 @@
 }
 .shadow {
     box-shadow: var(--shadow);
+    transition: box-shadow 100ms ease-in-out;
+}
+.shadow:hover {
+    box-shadow: var(--shadow-hover);
+}
+.flat {
+    background-color: var(--ivory);
+    box-shadow: none;
 }
