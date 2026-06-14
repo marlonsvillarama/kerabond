@@ -17,10 +17,10 @@
 
     import { page } from "$app/state";
     import { goto } from "$app/navigation";
-    import Button from "$lib/components/controls/button.svelte";
-    import InputSearch from "$lib/components/controls/input-search.svelte";
-    import InputText from "$lib/components/controls/input-text.svelte";
-    import Select from "$lib/components/controls/select.svelte";
+    import Button from "$lib/components/ui/button.svelte";
+    import InputSearch from "$lib/components/ui/input-search.svelte";
+    import InputText from "$lib/components/ui/input-text.svelte";
+    import Select from "$lib/components/ui/select.svelte";
 
     let items = [
         { value: 1, text: "First Pick" },
@@ -29,10 +29,6 @@
     ];
 
     let activeTab = $derived(page.url.pathname);
-    const navigateToPage = (url) => {
-        // alert(`navigating to ${url}`);
-        goto(url);
-    };
 </script>
 
 <div class="fl-app-header flex-center between">
@@ -43,23 +39,15 @@
 
         <!-- <div class="fl-app-header-actions flex-center"> -->
             <!-- <Button flat={true} Icon={Plus} /> -->
-        <Button active={activeTab === '/'} flat={true} Icon={Calendar} onclick={() => navigateToPage('/')}>Calendar</Button>
-        <!-- <Button flat={true} Icon={User} onclick={() => navigateToPage('/clients')}></Button> -->
-        <Button active={activeTab.startsWith('/sales')} flat={true} Icon={DollarSign} onclick={() => navigateToPage('/sales')}>Sales</Button>
-        <!-- <Button flat={true} Icon={IdCardLanyard} onclick={() => navigateToPage('/staff')}></Button> -->
-        <!-- <Button flat={true} Icon={Tag} onclick={() => navigateToPage('/inventory')}></Button> -->
-        <Button active={activeTab.startsWith('/reports')} flat={true} Icon={ChartLine} onclick={() => navigateToPage('/reports')}>Reports</Button>
-
-        <!-- <Button flat={true}>
-        <User size={24} />
-        </Button> -->
-        <Button active={activeTab.startsWith('/setup')} flat={true} Icon={Settings} onclick={() => navigateToPage('/setup')}>Setup</Button>
+        <Button active={activeTab === '/'} flat={true} Icon={Calendar} onclick={() => goto('/')}>Calendar</Button>
+        <Button active={activeTab.startsWith('/sales')} flat={true} Icon={DollarSign} onclick={() => goto('/sales')}>Sales</Button>
+        <Button active={activeTab.startsWith('/reports')} flat={true} Icon={ChartLine} onclick={() => goto('/reports')}>Reports</Button>
+        <Button active={activeTab.startsWith('/setup')} flat={true} Icon={Settings} onclick={() => goto('/setup')}>Setup</Button>
         <!-- <Select {items} id="top-list" style="width: 12rem;" /> -->
     </div>
     
     <!-- <div class="fl-user"></div> -->
     <div class="fl-app-header-controls flex-center">
-        <!-- <Button flat={true} Icon={CircleQuestionMark}>Help</Button> -->
         <Button flat={true} Icon={LogOut}>Log Out</Button>
         <!-- </div> -->
     </div>

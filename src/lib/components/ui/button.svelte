@@ -25,6 +25,7 @@
 <style>
     .fl-button {
         background-color: var(--white);
+        /* background-color: transparent; */
         border: 0;
         border-radius: var(--border-radius);
         cursor: pointer;
@@ -38,7 +39,8 @@
         padding: 0.7rem 1rem 0.7rem 1rem;
     }
     :global(.fl-button.flat) {
-        background-color: var(--ivory);
+        /* background-color: var(--ivory); */
+        background-color: transparent;
         box-shadow: none;
     }
     .fl-button-active,

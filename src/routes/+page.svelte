@@ -1,7 +1,7 @@
 <script>
     import AppHeader from "$lib/components/global/app-header.svelte";
     // import CommanddHeader from "$lib/components/global/cmd-header.svelte";
-    import Calendar from "$lib/components/controls/calendar/calendar.svelte";
+    import Calendar from "$lib/components/ui/calendar/calendar.svelte";
 </script>
 
 <!-- <div class="fl-wrapper"> -->

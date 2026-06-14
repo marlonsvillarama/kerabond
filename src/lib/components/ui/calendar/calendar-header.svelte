@@ -8,7 +8,7 @@
         Plus
     } from "@lucide/svelte";
 
-    import Button from "$lib/components/controls/button.svelte";
+    import Button from "$lib/components/ui/button.svelte";
     import ButtonGroup from "../button-group.svelte";
     import CmdHeader from "$lib/components/global/cmd-header.svelte";
   import Select from "../select.svelte";

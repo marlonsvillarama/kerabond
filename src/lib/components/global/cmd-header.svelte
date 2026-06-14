@@ -10,7 +10,7 @@
     } from "@lucide/svelte";
 
     import { goto } from "$app/navigation";
-    import Button from "$lib/components/controls/button.svelte";
+    import Button from "$lib/components/ui/button.svelte";
 
     const navigateToPage = (url) => {
         alert(`navigating to ${url}`);
