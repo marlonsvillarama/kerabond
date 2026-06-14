@@ -20,3 +20,21 @@
     background-color: var(--ivory);
     box-shadow: none;
 }
+.fl-content {
+    /* border: 2px solid blue; */
+    /* height: 100%; */
+    overflow-y: auto;
+    flex: 1;
+}
+.fl-sub-wrapper {
+    /* border: 2px solid red; */
+    display: grid;
+    flex: 1;
+    grid-template-rows: auto 1fr;
+    /* flex-direction: column; */
+    height: 100%;
+}
+.fl-full-scrollable {
+    /* height: 100%; */
+    overflow-y: auto;
+}

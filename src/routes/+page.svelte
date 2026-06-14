@@ -13,19 +13,19 @@
 <!-- </div> -->
 
 <style>
-    .fl-wrapper {
+    /* .fl-wrapper {
         display: flex;
-        /* grid-template-rows: auto auto 1fr; */
+        * grid-template-rows: auto auto 1fr; *
         flex-direction: column;
         height: 100vh;
-    }
-    .fl-wrapper > *:not(:last-child) {
+    } */
+    /* .fl-wrapper > *:not(:last-child) {
         flex-shrink: 0;
-    }
-    .fl-content {
-        /* border: 2px solid blue; */
-        /* height: 100%; */
+    } */
+    /* .fl-content {
+        * border: 2px solid blue; *
+        * height: 100%; *
         overflow-y: auto;
         flex: 1;
-    }
+    } */
 </style>

@@ -41,12 +41,10 @@
         background-color: var(--ivory);
         box-shadow: none;
     }
-    .fl-button-active {
+    .fl-button-active,
+    .fl-button:not(.fl-button-active):hover {
         background-color: var(--accent);
         color: var(--white);
-    }
-    .fl-button:not(.fl-button-active):hover {
-        background-color: var(--accent-pale);
     }
     /* .fl-button::before {
         content: attr(data-tooltip);
