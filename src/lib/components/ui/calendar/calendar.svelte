@@ -1,6 +1,7 @@
 <script>
     import CalendarHeader from "./calendar-header.svelte";
     import CalendarMonthView from "./calendar-month-view.svelte";
+    import CalendarTimelineView from "./calendar-timeline-view.svelte";
 
     // let { mode = '' } = $props();
     let mode = $state('timeline');
@@ -15,8 +16,8 @@
             <!-- <CalendarMonthView /> -->
             <span>Week Calendar</span>
         {:else if mode === 'timeline'}
-            <!-- <CalendarMonthView /> -->
-            <span>Timeline</span>
+            <CalendarTimelineView />
+            <!-- <span>Timeline</span> -->
         {:else}
             <CalendarMonthView />
         {/if}
