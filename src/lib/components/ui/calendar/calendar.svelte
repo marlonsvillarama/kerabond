@@ -1,13 +1,26 @@
 <script>
     import CalendarHeader from "./calendar-header.svelte";
     import CalendarMonthView from "./calendar-month-view.svelte";
+
+    // let { mode = '' } = $props();
+    let mode = $state('timeline');
 </script>
 
 <div class="fl-sub-wrapper">
-    <CalendarHeader />
-    <div class="fl-full-scrollable fl-cal">
+    <CalendarHeader bind:mode />
+    <div class="fl-cal">
         <!-- <div class="fl-cal-content">content</div> -->
-        <CalendarMonthView />
+        <!-- <div class=""> -->
+        {#if mode === 'week'}
+            <!-- <CalendarMonthView /> -->
+            <span>Week Calendar</span>
+        {:else if mode === 'timeline'}
+            <!-- <CalendarMonthView /> -->
+            <span>Timeline</span>
+        {:else}
+            <CalendarMonthView />
+        {/if}
+        <!-- </div> -->
     </div>
 </div>
 
@@ -18,7 +31,10 @@
         /* display: grid; */
         flex: 1;
         /* margin: 1rem; */
-        /* grid-template-rows: auto 1fr; */
+        display: grid;
+        grid-template-rows: auto 1fr;
+        overflow-y: auto;
+        gap: 0.5rem;
         /* * flex-direction: column; * */
         /* height: 100%; */
     }

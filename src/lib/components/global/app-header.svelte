@@ -55,6 +55,7 @@
 
 <style>
     .fl-app-header {
+        background-color: var(--white);
         border-bottom: 1px solid var(--border);
         padding: 0.625rem 1.25rem;
         /* padding-left: 1.25rem; */

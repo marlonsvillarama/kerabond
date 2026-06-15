@@ -50,7 +50,7 @@
     .fl-sidebar {
         /* background-color: var(--accent); */
         /* color: var(--white); */
-        /* border-right: 1px solid var(--border); */
+        border-right: 1px solid var(--border);
         width: 14rem;
         padding: 0.5rem;
         /* display: flex; */

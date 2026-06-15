@@ -1,6 +1,7 @@
 :root {
     --accent: #AF45C5;
-    --accent-pale: #AF45C51A;
+    --accent-border: #AF45C544;
+    --accent-pale: #AF45C511;
     /* --accent: #C5A35A; */
     --border: #E6E6E6;
     --border-radius: 0.375rem;

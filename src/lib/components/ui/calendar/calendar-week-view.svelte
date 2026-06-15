@@ -1,6 +1,7 @@
 <script></script>
 
 <div class="fl-cal-timeline">
+Week
 </div>
 
 <style>
