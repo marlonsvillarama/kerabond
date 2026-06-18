@@ -12,9 +12,9 @@
 
 <button {onclick} data-tooltip={tip}
     class="fl-button flex-center shadow {className}"
-    class:fl-button-active={active === true}
     class:flat={flat === true}
     class:fl-button-text={!!children === true && !!Icon === false}
+    class:fl-button-active={active === true}
 >
     {#if Icon}
         <Icon size={20} />
@@ -45,7 +45,7 @@
     }
     .fl-button-active,
     .fl-button:not(.fl-button-active):hover {
-        background-color: var(--accent);
+        background-color: var(--accent) !important;
         color: var(--white);
     }
     /* .fl-button::before {
