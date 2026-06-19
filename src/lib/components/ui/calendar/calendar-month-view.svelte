@@ -8,7 +8,7 @@
 
     let {
         data = [],
-        onselectdate
+        // onselectdate
     } = $props();
     let calendarStore = CalendarStore();
     // let calendarStore = getContext('calendarStore');
@@ -101,9 +101,11 @@
     });
 
     const clickCell = (day) => {
-        console.log('clicked day cell', day);
+        console.log('month; clickCell; clicked day cell', day);
         calendarStore.date = new Date(day.value);
-        onselectdate?.();
+        console.log('month; selected date', calendarStore.date);
+        calendarStore.mode = 'day';
+        // onselectdate?.();
     };
 </script>
 

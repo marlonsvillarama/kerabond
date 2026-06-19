@@ -1,14 +1,16 @@
 <script>
     import { setContext } from "svelte";
-    import { CalendarStore } from "./calendar-store.svelte";
+    import { SvelteDate } from "svelte/reactivity";
+    // import { CalendarStore } from "./calendar-store.svelte";
     import CalendarHeader from "./calendar-header.svelte";
     import CalendarMonthView from "./calendar-month-view.svelte";
     import CalendarTimelineView from "./calendar-timeline-view.svelte";
 
-    let calendarStore = CalendarStore();
+    // const { date, mode, updateDate, updateMode } = CalendarStore();
+    // let calendarStore = CalendarStore();
     // setContext('calendarStore', calendarStore);
 
-    let { data } = $props();
+    let props = $props();
     // let { mode = '' } = $props();
     // let date = $state(new Date());
     // let mode = $state('month');
@@ -26,10 +28,46 @@
     //     { id: 1, date: '2026-06-18', slot: '1300', duration: 120, name: 'iksjngljsdbfglkjbsdfgjb' },
     // ];
 
-    const viewDay = () => {
-        console.log(`selected date ==>`, calendarStore.date);
-        calendarStore.mode = 'day';
-    };
+    // const viewDay = () => {
+    //     console.log(`calendar; selected date ==>`, calendarStore.date);
+    //     // calendarStore.date = calendarStore.date;
+    //     calendarStore.mode = 'day';
+    // };
+    // let currentView = $derived(mode());
+
+    class CalendarState {
+        date = $state(new SvelteDate(new Date()));
+        mode = $state('month');
+        dateDisplay = $derived(`${this.date.toLocaleDateString('en-NZ', { weekday: 'long' })} -
+            ${this.date.toLocaleDateString('en-NZ', { year: 'numeric', month: 'long', day: 'numeric' })}`);
+        
+        constructor (initialDate) {
+            if (initialDate) {
+                this.date = new SvelteDate(initialDate);
+            }
+        }
+
+        prevDate () {
+            console.log('prevDate, this.date', this.date);
+            const prevDay = new Date(this.date.getTime());
+            console.log('prevDate; prevDay', prevDay)
+            prevDay.setDate(prevDay.getDate() - 1);
+            // let dt = new Date(this.date.getFullYear(), this.date.getMonth(), this.date.getDate());
+            // dt.setDate(dt.getDate() - 1);
+            this.date = new SvelteDate(prevDay);
+        };
+        nextDate () {
+            let dt = new Date(this.date.getFullYear(), this.date.getMonth(), this.date.getDate());
+            dt.setDate(dt.getDate() + 1);
+            this.date = new Date(dt.getFullYear(), dt.getMonth(), dt.getDate());
+        };
+        todayDate () {
+            this.date = new Date();
+        }
+    }
+
+    const calendarState = new CalendarState();
+    setContext('CALENDAR_STATE', calendarState);
 </script>
 
 <div class="fl-sub-wrapper">
@@ -38,17 +76,14 @@
     <div class="fl-cal">
         <!-- <div class="fl-cal-content">content</div> -->
         <!-- <div class=""> -->
-        {#if calendarStore.mode === 'week' || calendarStore.mode === 'day'}
+        <!-- {#if calendarStore.mode === 'week'}
             <CalendarTimelineView {data} />
-             <!-- timleine -->
-            <!-- <span>Week Calendar</span> -->
-        <!-- {:else if calendarState.mode === 'day'} -->
-            <!-- <CalendarTimelineView view='day' {data} /> -->
-            <!-- <span>Timeline</span> -->
+        {:else if calendarStore.mode === 'day'}
+            <CalendarTimelineView {data} />
         {:else}
-            <CalendarMonthView {data} onselectdate={viewDay} />
-             <!-- month -->
-        {/if}
+            <CalendarMonthView {data} />
+        {/if} -->
+        {calendarState.mode}
         <!-- </div> -->
     </div>
 </div>

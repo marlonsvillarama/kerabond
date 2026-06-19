@@ -28,12 +28,12 @@
         do {
             dt.setDate(dt.getDate() + 1);
 
-            let year = dt.getFullYear();
-            let month = (dt.getMonth() + 1).toString().padStart(2, '0');
-            let date = dt.getDate().toString().padStart(2, '0');
+            // let year = dt.getFullYear();
+            // let month = (dt.getMonth() + 1).toString().padStart(2, '0');
+            // let date = dt.getDate().toString().padStart(2, '0');
             output.push({
                 day: dt.toLocaleDateString('en-NZ', { weekday: 'short' }),
-                date: `${year}-${month}-${date}`,
+                date: calendarStore.formatDate(dt),
                 long: dt.toLocaleDateString('en-NZ', { month: 'long', day: 'numeric', weekday: 'short' }),
                 short: dt.toLocaleDateString('en-NZ', { month: 'short', day: 'numeric' }),
             });
@@ -60,7 +60,7 @@
                 // date: `${year}-${month}-${date}`,
             output.push({
                 id: `${hours}${minutes}`,
-                date: formatDate(dt),
+                date: calendarStore.formatDate(dt),
                 slot: dt.toLocaleTimeString('en-NZ', { hour: 'numeric', minute: '2-digit', hour12: true }),
                 value: `${hours}${minutes}`,
                 hourStart: dt.getMinutes() === 0

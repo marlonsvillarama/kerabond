@@ -10,14 +10,16 @@
         Settings
     } from "@lucide/svelte";
 
-    // import { getContext, setContext } from "svelte";
-    import { CalendarStore } from "./calendar-store.svelte";
+    import { getContext, setContext } from "svelte";
+    // import { CalendarStore } from "./calendar-store.svelte";
     import Button from "$lib/components/ui/button.svelte";
     import ButtonGroup from "$lib/components/ui/button-group.svelte";
     import Select from "$lib/components/ui/select.svelte";
 
-    // let calendarStore = getContext('calendarStore');
-    let calendarStore = CalendarStore();
+    const calendarState = getContext('CALENDAR_STATE');
+    console.log(calendarState);
+
+    // const { date, dateDisplay, mode, updateDate, updateMode } = CalendarStore();
     // let {
     //     date = $bindable(new Date),
     //     mode = $bindable('month')
@@ -34,25 +36,35 @@
     // let dateDisplay = $state(calendarStore.displayDate());
 
     const viewPreviousDay = () => {
-        calendarStore.date.setDate(calendarStore.date.getDate() - 1);
-        calendarStore.date = calendarStore.date;
+        calendarState.date.setDate(calendarState.date.getDate() - 1);
+        calendarState.date = calendarState.date;
+        // updateDate(date().setDate(date().getDate() - 1));
+        // calendarStore.setDatedate;
         // dateDisplay = calendarStore.displayDate();
-        console.log('viewPreviousDay', calendarStore.date);
+        // console.log('viewPreviousDay', calendarStore.date);
     };
 
     const viewNextDay = () => {
-        calendarStore.date.setDate(calendarStore.date.getDate() + 1);
-        calendarStore.date = calendarStore.date;
+        calendarState.date.setDate(calendarState.date.getDate() + 1);
+        calendarState.date = calendarState.date;
+        // updateDate(date().setDate(date().getDate() + 1));
+        // calendarStore.date.setDate(calendarStore.date.getDate() + 1);
+        // calendarStore.date = calendarStore.date;
         // dateDisplay = calendarStore.displayDate();
-        console.log('viewNextDay', calendarStore.date);
+        // console.log('viewNextDay', calendarStore.date);
         // console.log('viewNextDay', calendarStore.dateDisplay);
     };
 
     const viewToday = () => {
-        calendarStore.date = new Date();
+        calendarState.date = new Date();
+        // updateDate(new Date());
+        // calendarStore.date = new Date();
         // dateDisplay = calendarStore.displayDate();
-        console.log('viewNextDay', calendarStore.date);
+        // console.log('viewToday', calendarStore.date);
     };
+
+    let dateDisplay = $derived(`${calendarState.date.toLocaleDateString('en-NZ', { weekday: 'long' })} -
+            ${calendarState.date.toLocaleDateString('en-NZ', { year: 'numeric', month: 'long', day: 'numeric' })}`);
 </script>
 
 <div class="fl-cal-header flex-center between">
@@ -62,21 +74,22 @@
             {locationText}
         </Button>
         <ButtonGroup>
-            <Button active={calendarStore.mode === 'month'} flat={true} onclick={() => calendarStore.mode = 'month'}>Month</Button>
-            <Button active={calendarStore.mode === 'week'} flat={true} onclick={() => calendarStore.mode = 'week'}>Week</Button>
-            <Button active={calendarStore.mode === 'day'} flat={true} onclick={() => calendarStore.mode = 'day'}>Day</Button>
+            <Button active={calendarState.mode === 'month'} flat={true} onclick={() => calendarState.mode = 'month'}>Month</Button>
+            <Button active={calendarState.mode === 'week'} flat={true} onclick={() => calendarState.mode = 'week'}>Week</Button>
+            <Button active={calendarState.mode === 'day'} flat={true} onclick={() => calendarState.mode = 'day'}>Day</Button>
         </ButtonGroup>
     </div>
 
     <div class="fl-cal-nav flex-center">
         <Button class="btn-today btn-emphasize" Icon={CalendarArrowDown}>
-            {calendarStore.dateDisplay}
+            {dateDisplay}
+             <!-- {calendarState.dateDisplay} -->
         </Button>
 
         <ButtonGroup>
-            <Button flat={true} Icon={ChevronLeft} onclick={viewPreviousDay} />
-            <Button flat={true} Icon={Armchair} onclick={viewToday}>Today</Button>
-            <Button flat={true} Icon={ChevronRight} onclick={viewNextDay} />
+            <Button flat={true} Icon={ChevronLeft} onclick={calendarState.prevDate} />
+            <Button flat={true} Icon={Armchair} onclick={calendarState.todayDate}>Today</Button>
+            <Button flat={true} Icon={ChevronRight} onclick={calendarState.nextDay} />
         </ButtonGroup>
 
         <Button Icon={Plus} />
