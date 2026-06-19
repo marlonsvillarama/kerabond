@@ -1,19 +1,23 @@
 <script>
+    // import { getContext } from "svelte";
+    import { CalendarStore } from "./calendar-store.svelte";
     import { Check, Eye, EyeClosed } from "@lucide/svelte";
     import Avatar from "../avatar.svelte";
 
     let {
         data = [],
-        date = $bindable(new Date()),
-        view = 'day',
+        // date = $bindable(new Date()),
+        // view = 'day',
     } = $props();
-
+    // let calendarStore = getContext('calendarStore');
+    let calendarStore = CalendarStore();
+    
     const interval = 15;
     const startHour = 8;
     const endHour = 21;
     
     let daySlots = $derived.by(() => {
-        let now = new Date();
+        let now = calendarStore.date;
         // let today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
         let output = [];
 
@@ -42,7 +46,7 @@
 
     let timeSlots = $derived.by(() => {
         let output = [];
-        let now = new Date();
+        let now = calendarStore.date;
         let dt = new Date(now.getFullYear(), now.getMonth(), now.getDate(), startHour);
 
         let i = 0;
@@ -53,9 +57,10 @@
             let hours = dt.getHours().toString().padStart(2, '0')
             let minutes = dt.getMinutes().toString().padStart(2, '0');
 
+                // date: `${year}-${month}-${date}`,
             output.push({
                 id: `${hours}${minutes}`,
-                date: `${year}-${month}-${date}`,
+                date: formatDate(dt),
                 slot: dt.toLocaleTimeString('en-NZ', { hour: 'numeric', minute: '2-digit', hour12: true }),
                 value: `${hours}${minutes}`,
                 hourStart: dt.getMinutes() === 0
@@ -140,12 +145,12 @@
             </div>
             {/each}
         </div>
-        {date}
+        {calendarStore.date}
     </div>
 
     <div class="fl-content fl-page">
         <div class="fl-timeline-header">
-            <div class="fl-timeline-corner" class:day={view === 'day'} class:week={view === 'week'}></div>
+            <div class="fl-timeline-corner" class:day={calendarStore.mode === 'day'} class:week={calendarStore.mode === 'week'}></div>
             <div class="fl-timeline-staff" style="grid-template-columns: repeat({timelineStaff.length}, 1fr);">
                 {#each timelineStaff as staff}
                     <div class="fl-timeline-staff-header">
@@ -158,7 +163,7 @@
         </div>
 
         <div class="fl-timeline-grid fl-full-scrollable">
-            {#if view === 'day'}
+            {#if calendarStore.mode === 'day'}
                 {#each timeSlots as slot}
                     <div class="fl-timeline-row"
                         class:fl-slot-start={slot.hourStart === true}
@@ -180,7 +185,7 @@
                         </div>
                     </div>
                 {/each}
-            {:else if view === 'week'}
+            {:else if calendarStore.mode === 'week'}
                 {#each daySlots as slot}
                     <div class="fl-timeline-row fl-slot-start">
                         <div class="fl-timeline-slot-header week">

@@ -1,12 +1,17 @@
 <script>
+    // import { getContext, setContext } from "svelte";
+    import { CalendarStore } from "./calendar-store.svelte";
+    // import { formatDate, parseDate } from "./calendar-store.svelte";
     import { ArrowRight } from "@lucide/svelte";
     import CalendarMonthData from "./calendar-month-data.svelte";
+    import Calendar from "./calendar.svelte";
 
     let {
         data = [],
-        date = $bindable(new Date()),
         onselectdate
     } = $props();
+    let calendarStore = CalendarStore();
+    // let calendarStore = getContext('calendarStore');
 
     let daysOfWeek = [
         { day: 0, short: 'Sun', long: 'Sunday' },
@@ -17,11 +22,11 @@
         { day: 5, short: 'Fri', long: 'Friday' },
         { day: 6, short: 'Sat', long: 'Saturday' },
     ];
-    let dateObject = $derived(new Date(date));
-    let year = $derived(dateObject.getMonth());
-    let month = $derived(dateObject.getMonth());
-    let day = $derived(dateObject.getDate());
-    let dayOfWeek = $derived(dateObject.getDay());
+    // let dateObject = $derived(new Date(date));
+    let year = $derived(calendarStore.date.getMonth());
+    let month = $derived(calendarStore.date.getMonth());
+    let day = $derived(calendarStore.date.getDate());
+    let dayOfWeek = $derived(calendarStore.date.getDay());
 
     const sortByKey = (list, key) => {
         if (key) {
@@ -46,10 +51,10 @@
     let monthDates = $derived.by(() => {
         let output = [];
 
-        let year = dateObject.getFullYear();
-        let month = dateObject.getMonth();
-        let day = dateObject.getDate();
-        let dayOfWeek = dateObject.getDay();
+        let year = calendarStore.date.getFullYear();
+        let month = calendarStore.date.getMonth();
+        let day = calendarStore.date.getDate();
+        let dayOfWeek = calendarStore.date.getDay();
         let startOfMonth = new Date(year, month, 1);
         let startOfMonthDay = startOfMonth.getDay();
 
@@ -71,7 +76,8 @@
             let dt = new Date(year, month, 1);
             dt.setDate(dt.getDate() + i);
 
-            let dateValue = `${year}-${(month + 1).toString().padStart(2, '0')}-${dt.getDate().toString().padStart(2, '0')}`;
+            // let dateValue = `${year}-${(month + 1).toString().padStart(2, '0')}-${dt.getDate().toString().padStart(2, '0')}`;
+            let dateValue = calendarStore.formatDate(dt);
             output.push({
                 date: dt.getDate(),
                 value: dateValue,
@@ -85,9 +91,10 @@
             output.push({
                 date: dt.getDate(),
                 data: [],
-                value: `${year}-${(month + 1).toString().padStart(2, '0')}-${dt.getDate().toString().padStart(2, '0')}`,
+                value: calendarStore.formatDate(dt),
                 inMonth: false
             });
+                // value: `${year}-${(month + 1).toString().padStart(2, '0')}-${dt.getDate().toString().padStart(2, '0')}`,
         }
         
         return output;
@@ -95,7 +102,7 @@
 
     const clickCell = (day) => {
         console.log('clicked day cell', day);
-        date = new Date(day.value);
+        calendarStore.date = new Date(day.value);
         onselectdate?.();
     };
 </script>
