@@ -1,10 +1,19 @@
 <script>
 	import '../style/main.css';
+    import { getContext, setContext } from 'svelte';
 	import favicon from '$lib/assets/favicon.svg';
 	import AppHeader from '$lib/components/global/app-header.svelte';
 	import CmdHeader from '$lib/components/global/cmd-header.svelte';
 
 	let { children } = $props();
+
+    let staffState = $state([
+        { id: 1, name: 'John', initials: 'JF', image: '/images/avatars/jf.png' },
+        { id: 2, name: 'Apple', initials: 'AV', image: '/images/avatars/av.png' },
+        { id: 3, name: 'Marlong2', initials: 'MV', image: 'images/avatars/mv2.png' },
+        { id: 4, name: 'Marlong', initials: 'MV' },
+    ]);
+    setContext('STAFF_STATE', staffState);
 </script>
 
 <svelte:head>

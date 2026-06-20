@@ -66,7 +66,7 @@
     /* .fl-button:hover::before {
         opacity: 1;
     } */
-    .fl-button:active {
-        transform: translateY(2px);
-    }
+    /* .fl-button:active {
+        transform: translateY(1px);
+    } */
 </style>

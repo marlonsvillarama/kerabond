@@ -4,6 +4,7 @@
     let {
         flat = false,
         items = [],
+        placeholder = '...',
         style = ''
     } = $props();
 
@@ -23,7 +24,7 @@
     let optionsPopover = $state();
     let targetId = $state('');
     let selectedValue = $state('');
-    let selectedText = $derived(items.find(d => d.value === selectedValue)?.text || '...');
+    let selectedText = $derived(items.find(d => d.value === selectedValue)?.text || placeholder);
 
     const selectOption = (v) => {
         selectedValue = v;
@@ -31,7 +32,9 @@
     };
 </script>
 
-<button type="button" class="fl-select flex-center between shadow" popovertarget="options-{targetId}" {style} class:flat={flat === true}>
+<button type="button" class="fl-select flex-center between shadow" popovertarget="options-{targetId}" {style}
+    class:flat={flat === true}
+    class:placeholder={selectedText === placeholder}>
     {selectedText || ''}
     <ChevronDown size={20} class="fl-select-icon" />
 </button>
@@ -50,7 +53,8 @@
         border-radius: var(--border-radius);
         color: var(--espresso);
         cursor: pointer;
-        font-size: 1rem;
+        font-size: 0.875rem;
+        min-width: 10rem;
         outline: none;
         padding: 0.65rem 0.5rem 0.625rem 1rem;
         position: relative;
@@ -78,6 +82,7 @@
         display: block;
         cursor: pointer;
         font-size: 0.875rem;
+        min-width: 10rem;
         padding: 0.5rem 1rem;
         text-align: left;
         transition: all 100ms ease-in-out;
@@ -87,5 +92,8 @@
         background-color: var(--accent);
         border-radius: var(--border-radius);
         color: var(--white);
+    }
+    :global(.fl-select.placeholder) {
+        opacity: 0.6;
     }
 </style>

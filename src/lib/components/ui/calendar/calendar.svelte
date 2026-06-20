@@ -1,69 +1,73 @@
 <script>
     import { setContext } from "svelte";
-    import { SvelteDate } from "svelte/reactivity";
-    // import { CalendarStore } from "./calendar-store.svelte";
     import CalendarHeader from "./calendar-header.svelte";
     import CalendarMonthView from "./calendar-month-view.svelte";
-    import CalendarTimelineView from "./calendar-timeline-view.svelte";
+    import CalendarTimelineView from "./timeline/calendar-timeline-view.svelte";
+    import { formatDate, parseDate } from "./calendar-helper.svelte";
 
-    // const { date, mode, updateDate, updateMode } = CalendarStore();
-    // let calendarStore = CalendarStore();
-    // setContext('calendarStore', calendarStore);
-
-    let props = $props();
-    // let { mode = '' } = $props();
-    // let date = $state(new Date());
-    // let mode = $state('month');
-
-    // let data = [
-    //     { id: 1, date: '2026-06-15', slot: '1100', duration: 120, name: 'John' },
-    //     { id: 1, date: '2026-06-15', slot: '1430', duration: 60, name: 'Apple' },
-    //     { id: 1, date: '2026-06-15', slot: '1545', duration: 30, name: 'Mayey' },
-    //     { id: 1, date: '2026-06-17', slot: '1015', duration: 90, name: 'Linda' },
-    //     { id: 1, date: '2026-06-18', slot: '0930', duration: 60, name: 'Jheng' },
-    //     { id: 1, date: '2026-06-18', slot: '1045', duration: 30, name: 'Ice' },
-    //     { id: 1, date: '2026-06-18', slot: '1300', duration: 120, name: 'Marlong' },
-    //     { id: 1, date: '2026-06-18', slot: '1300', duration: 120, name: 'fssgdfgdfg' },
-    //     { id: 1, date: '2026-06-18', slot: '1300', duration: 120, name: 'aaaa' },
-    //     { id: 1, date: '2026-06-18', slot: '1300', duration: 120, name: 'iksjngljsdbfglkjbsdfgjb' },
-    // ];
-
-    // const viewDay = () => {
-    //     console.log(`calendar; selected date ==>`, calendarStore.date);
-    //     // calendarStore.date = calendarStore.date;
-    //     calendarStore.mode = 'day';
-    // };
-    // let currentView = $derived(mode());
+    // let { } = $props();
+    let data = [
+        { id: 1, date: '2026-06-15', slot: '1100', staff: 1, duration: 120, name: 'John' },
+        { id: 2, date: '2026-06-15', slot: '1430', staff: 2, duration: 60, name: 'Apple' },
+        { id: 3, date: '2026-06-15', slot: '1545', staff: 3, duration: 30, name: 'Mayey' },
+        { id: 4, date: '2026-06-17', slot: '1015', staff: 4, duration: 90, name: 'Linda' },
+        { id: 5, date: '2026-06-18', slot: '0930', staff: 1, duration: 60, name: 'Jheng' },
+        { id: 6, date: '2026-06-18', slot: '1045', staff: 2, duration: 30, name: 'Ice' },
+        { id: 7, date: '2026-06-18', slot: '1300', staff: 3, duration: 120, name: 'Marlong' },
+        { id: 8, date: '2026-06-18', slot: '1300', staff: 4, duration: 120, name: 'fssgdfgdfg' },
+        { id: 9, date: '2026-06-18', slot: '1300', staff: 1, duration: 120, name: 'aaaa' },
+        { id: 10, date: '2026-06-18', slot: '1300', staff: 2, duration: 120, name: 'iksjngljsdbfglkjbsdfgjb' },
+    ];
 
     class CalendarState {
-        date = $state(new SvelteDate(new Date()));
+        date = $state('');
         mode = $state('month');
-        dateDisplay = $derived(`${this.date.toLocaleDateString('en-NZ', { weekday: 'long' })} -
-            ${this.date.toLocaleDateString('en-NZ', { year: 'numeric', month: 'long', day: 'numeric' })}`);
+        // staff = $state([
+        //     { id: 1, name: 'John', initials: 'JF', image: '/images/avatars/jf.png' },
+        //     { id: 2, name: 'Apple', initials: 'AV', image: '/images/avatars/av.png' },
+        //     { id: 3, name: 'Marlong2', initials: 'MV', image: 'images/avatars/mv2.png' },
+        //     { id: 4, name: 'Marlong', initials: 'MV' },
+        // ]);
+        // dateDisplay = $derived.by(() => {
+        //     let now = date ? new Date(this.date) : new Date();
+        //     return `${now.toLocaleDateString('en-NZ', { weekday: 'long' })} -
+        //                 ${now.toLocaleDateString('en-NZ', { year: 'numeric', month: 'long', day: 'numeric' })}`
+        // });
         
         constructor (initialDate) {
+            let dt = new Date();
             if (initialDate) {
-                this.date = new SvelteDate(initialDate);
+                dt = new Date(initialDate);
             }
+
+            this.date = formatDate(dt);
         }
 
         prevDate () {
-            console.log('prevDate, this.date', this.date);
-            const prevDay = new Date(this.date.getTime());
-            console.log('prevDate; prevDay', prevDay)
-            prevDay.setDate(prevDay.getDate() - 1);
-            // let dt = new Date(this.date.getFullYear(), this.date.getMonth(), this.date.getDate());
-            // dt.setDate(dt.getDate() - 1);
-            this.date = new SvelteDate(prevDay);
+            let dt = new Date(this.date);
+            const prevDay = new Date(dt.getTime());
+            switch (this.mode) {
+                case 'month': { prevDay.setMonth(prevDay.getMonth() - 1); break }
+                case 'week': { prevDay.setDate(prevDay.getDate() - 7); break }
+                case 'day': { prevDay.setDate(prevDay.getDate() - 1); break }
+            }
+            this.date = formatDate(prevDay);
         };
+
         nextDate () {
-            let dt = new Date(this.date.getFullYear(), this.date.getMonth(), this.date.getDate());
-            dt.setDate(dt.getDate() + 1);
-            this.date = new Date(dt.getFullYear(), dt.getMonth(), dt.getDate());
+            let dt = new Date(this.date);
+            const prevDay = new Date(dt.getTime());
+            switch (this.mode) {
+                case 'month': { prevDay.setMonth(prevDay.getMonth() + 1); break }
+                case 'week': { prevDay.setDate(prevDay.getDate() + 7); break }
+                case 'day': { prevDay.setDate(prevDay.getDate() + 1); break }
+            }
+            this.date = formatDate(prevDay);
         };
-        todayDate () {
-            this.date = new Date();
-        }
+
+        today () {
+            this.date = formatDate(new Date());
+        };
     }
 
     const calendarState = new CalendarState();
@@ -74,39 +78,22 @@
     <CalendarHeader />
 
     <div class="fl-cal">
-        <!-- <div class="fl-cal-content">content</div> -->
-        <!-- <div class=""> -->
-        <!-- {#if calendarStore.mode === 'week'}
+        {#if calendarState.mode === 'week'}
             <CalendarTimelineView {data} />
-        {:else if calendarStore.mode === 'day'}
+        {:else if calendarState.mode === 'day'}
             <CalendarTimelineView {data} />
         {:else}
             <CalendarMonthView {data} />
-        {/if} -->
-        {calendarState.mode}
-        <!-- </div> -->
+        {/if}
     </div>
 </div>
 
 <style>
     .fl-cal {
-        /* background-color: red; */
-        /* border: 2px solid red; */
-        /* display: grid; */
         flex: 1;
-        /* margin: 1rem; */
         display: grid;
         grid-template-rows: auto 1fr;
         overflow-y: auto;
         gap: 0.5rem;
-        /* * flex-direction: column; * */
-        /* height: 100%; */
     }
-    /* .fl-cal-content-wrapper {
-        * height: 100%; *
-        overflow-y: auto;
-    } */
-    /* .fl-cal-content {
-        height: 1000px;
-    } */
 </style>

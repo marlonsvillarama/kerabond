@@ -1,24 +1,18 @@
 <script>
-    // import { getContext } from "svelte";
-    import { CalendarStore } from "./calendar-store.svelte";
+    import { getContext } from "svelte";
+    import { formatDate } from "../calendar-helper.svelte";
     import { Check, Eye, EyeClosed } from "@lucide/svelte";
-    import Avatar from "../avatar.svelte";
+    import Avatar from "../../avatar.svelte";
 
-    let {
-        data = [],
-        // date = $bindable(new Date()),
-        // view = 'day',
-    } = $props();
-    // let calendarStore = getContext('calendarStore');
-    let calendarStore = CalendarStore();
+    let { data = [] } = $props();
+    let calendarState = getContext('CALENDAR_STATE');
     
     const interval = 15;
     const startHour = 8;
     const endHour = 21;
     
     let daySlots = $derived.by(() => {
-        let now = calendarStore.date;
-        // let today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        let now = new Date(calendarState.date);
         let output = [];
 
         let dt = new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -28,12 +22,9 @@
         do {
             dt.setDate(dt.getDate() + 1);
 
-            // let year = dt.getFullYear();
-            // let month = (dt.getMonth() + 1).toString().padStart(2, '0');
-            // let date = dt.getDate().toString().padStart(2, '0');
             output.push({
                 day: dt.toLocaleDateString('en-NZ', { weekday: 'short' }),
-                date: calendarStore.formatDate(dt),
+                date: formatDate(dt),
                 long: dt.toLocaleDateString('en-NZ', { month: 'long', day: 'numeric', weekday: 'short' }),
                 short: dt.toLocaleDateString('en-NZ', { month: 'short', day: 'numeric' }),
             });
@@ -46,7 +37,7 @@
 
     let timeSlots = $derived.by(() => {
         let output = [];
-        let now = calendarStore.date;
+        let now = new Date(calendarState.date);
         let dt = new Date(now.getFullYear(), now.getMonth(), now.getDate(), startHour);
 
         let i = 0;
@@ -57,14 +48,14 @@
             let hours = dt.getHours().toString().padStart(2, '0')
             let minutes = dt.getMinutes().toString().padStart(2, '0');
 
-                // date: `${year}-${month}-${date}`,
             output.push({
                 id: `${hours}${minutes}`,
-                date: calendarStore.formatDate(dt),
+                date: formatDate(dt),
                 slot: dt.toLocaleTimeString('en-NZ', { hour: 'numeric', minute: '2-digit', hour12: true }),
                 value: `${hours}${minutes}`,
                 hourStart: dt.getMinutes() === 0
             });
+
             dt.setMinutes(dt.getMinutes() + interval);
             dt = new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), dt.getHours(), dt.getMinutes());
             i++;
@@ -126,7 +117,6 @@
 </script>
 
 <div class="fl-cal-timeline">
-    <!-- <Sidebar root="/setup" items={sidebarItems} onselect={updateSetup} /> -->
     <div class="fl-sidebar">
         <div class="fl-staff-list">
             {#each allStaff as staff}
@@ -145,12 +135,12 @@
             </div>
             {/each}
         </div>
-        {calendarStore.date}
+        {calendarState.date}
     </div>
 
     <div class="fl-content fl-page">
         <div class="fl-timeline-header">
-            <div class="fl-timeline-corner" class:day={calendarStore.mode === 'day'} class:week={calendarStore.mode === 'week'}></div>
+            <div class="fl-timeline-corner" class:day={calendarState.mode === 'day'} class:week={calendarState.mode === 'week'}></div>
             <div class="fl-timeline-staff" style="grid-template-columns: repeat({timelineStaff.length}, 1fr);">
                 {#each timelineStaff as staff}
                     <div class="fl-timeline-staff-header">
@@ -163,7 +153,7 @@
         </div>
 
         <div class="fl-timeline-grid fl-full-scrollable">
-            {#if calendarStore.mode === 'day'}
+            {#if calendarState.mode === 'day'}
                 {#each timeSlots as slot}
                     <div class="fl-timeline-row"
                         class:fl-slot-start={slot.hourStart === true}
@@ -185,9 +175,9 @@
                         </div>
                     </div>
                 {/each}
-            {:else if calendarStore.mode === 'week'}
+            {:else if calendarState.mode === 'week'}
                 {#each daySlots as slot}
-                    <div class="fl-timeline-row fl-slot-start">
+                    <div class="fl-timeline-row fl-slot-start" class:today={calendarState.date === slot.date}>
                         <div class="fl-timeline-slot-header week">
                             <span class="date">{slot.short}</span>
                             <span class="day">{slot.day}</span>
@@ -289,9 +279,9 @@
     .fl-timeline-slot-header span {
         padding: 0 0.5rem;
     }
-    .fl-timeline-slot-header.day span {
+    /* .fl-timeline-slot-header.day span {
         padding-top: 0.5rem;
-    }
+    } */
     .fl-timeline-slot-header.week span.date {
         font-size: 1rem;
         font-weight: 600;
@@ -339,6 +329,10 @@
     }
     .fl-staff-slot:hover {
         background-color: var(--accent-pale);
+    }
+    :global(.fl-timeline-row.today) {
+        /* background-color: var(--border-pale); */
+        box-shadow: inset 0 0 0 3px var(--accent-border);
     }
     .fl-staff-list {
         /* border: 1px solid red; */

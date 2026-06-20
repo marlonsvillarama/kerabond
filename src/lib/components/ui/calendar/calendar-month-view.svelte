@@ -1,17 +1,14 @@
 <script>
-    // import { getContext, setContext } from "svelte";
-    import { CalendarStore } from "./calendar-store.svelte";
-    // import { formatDate, parseDate } from "./calendar-store.svelte";
+    import { getContext } from "svelte";
+    import { formatDate } from "./calendar-helper.svelte";
     import { ArrowRight } from "@lucide/svelte";
     import CalendarMonthData from "./calendar-month-data.svelte";
     import Calendar from "./calendar.svelte";
 
     let {
         data = [],
-        // onselectdate
     } = $props();
-    let calendarStore = CalendarStore();
-    // let calendarStore = getContext('calendarStore');
+    let calendarState = getContext('CALENDAR_STATE');
 
     let daysOfWeek = [
         { day: 0, short: 'Sun', long: 'Sunday' },
@@ -22,11 +19,11 @@
         { day: 5, short: 'Fri', long: 'Friday' },
         { day: 6, short: 'Sat', long: 'Saturday' },
     ];
-    // let dateObject = $derived(new Date(date));
-    let year = $derived(calendarStore.date.getMonth());
-    let month = $derived(calendarStore.date.getMonth());
-    let day = $derived(calendarStore.date.getDate());
-    let dayOfWeek = $derived(calendarStore.date.getDay());
+    let dateObject = $derived(new Date(calendarState.date));
+    let year = $derived(dateObject.getMonth());
+    let month = $derived(dateObject.getMonth());
+    let day = $derived(dateObject.getDate());
+    let dayOfWeek = $derived(dateObject.getDay());
 
     const sortByKey = (list, key) => {
         if (key) {
@@ -51,10 +48,10 @@
     let monthDates = $derived.by(() => {
         let output = [];
 
-        let year = calendarStore.date.getFullYear();
-        let month = calendarStore.date.getMonth();
-        let day = calendarStore.date.getDate();
-        let dayOfWeek = calendarStore.date.getDay();
+        let year = dateObject.getFullYear();
+        let month = dateObject.getMonth();
+        let day = dateObject.getDate();
+        let dayOfWeek = dateObject.getDay();
         let startOfMonth = new Date(year, month, 1);
         let startOfMonthDay = startOfMonth.getDay();
 
@@ -76,8 +73,7 @@
             let dt = new Date(year, month, 1);
             dt.setDate(dt.getDate() + i);
 
-            // let dateValue = `${year}-${(month + 1).toString().padStart(2, '0')}-${dt.getDate().toString().padStart(2, '0')}`;
-            let dateValue = calendarStore.formatDate(dt);
+            let dateValue = formatDate(dt);
             output.push({
                 date: dt.getDate(),
                 value: dateValue,
@@ -91,21 +87,17 @@
             output.push({
                 date: dt.getDate(),
                 data: [],
-                value: calendarStore.formatDate(dt),
+                value: formatDate(dt),
                 inMonth: false
             });
-                // value: `${year}-${(month + 1).toString().padStart(2, '0')}-${dt.getDate().toString().padStart(2, '0')}`,
         }
         
         return output;
     });
 
     const clickCell = (day) => {
-        console.log('month; clickCell; clicked day cell', day);
-        calendarStore.date = new Date(day.value);
-        console.log('month; selected date', calendarStore.date);
-        calendarStore.mode = 'day';
-        // onselectdate?.();
+        calendarState.date = day.value;
+        calendarState.mode = 'day';
     };
 </script>
 
@@ -123,6 +115,7 @@
             <!-- svelte-ignore a11y_no_static_element_interactions -->
             <div class="fl-cell"
                 class:fl-out-of-month={day.inMonth === false}
+                class:today={day.value === calendarState.date}
                 data-date={day.value}
                 onclick={() => clickCell(day)}
             >
@@ -150,27 +143,22 @@
 
 <style>
     .fl-cal-month {
-        /* border: 2px solid red; */
         display: grid;
         grid-template-rows: auto 1fr;
         margin: 1rem;
         margin-top: 0;
-        /* margin: 1rem 0.25rem 1rem 1rem; */
         overflow-y: auto;
     }
     .fl-cal-month-cells {
         border-left: 1px solid var(--border);
-        /* border-top: 1px solid var(--border); */
         display: grid;
         grid-template-columns: repeat(7, 1fr);
         grid-auto-rows: auto;
-        /* margin-right: 0.75rem; */
     }
     .fl-cal-month-cells > .fl-cell {
         border-right: 1px solid var(--border);
         border-bottom: 1px solid var(--border);
         cursor: pointer;
-        /* border: 1.5px solid transparent; */
         min-height: 12rem;
         padding: 0.25rem;
         display: flex;
@@ -178,22 +166,20 @@
         justify-content: space-between;
         transition: all 100ms ease-in-out;
     }
+    :global(.fl-cell.today),
     .fl-cal-month-cells > .fl-cell:hover {
-        /* background-color: var(--border-pale); */
         box-shadow: inset 0 0 0 3px var(--accent-border);
     }
     .fl-cal-month-headers {
         border-top: 1px solid var(--accent-border);
         border-left: 1px solid var(--accent-border);
         border-bottom: 1px solid var(--accent-border);
-        /* border-right: 1px solid var(--border); */
         display: grid;
         grid-template-columns: repeat(7, 1fr);
     }
     .fl-month-header {
         background-color: var(--accent-pale);
         border-right: 1px solid var(--accent-border);
-        /* color: var(--white); */
         font-weight: 600;
         padding: 0.5rem;
         text-align: center;
@@ -202,13 +188,9 @@
         background-color: var(--white);
     }
     .fl-cell-header {
-        /* border: 1px solid red; */
-        /* display: block; */
         font-weight: 600;
         padding-left: 0.5rem;
         padding-bottom: 0.5rem;
-        /* padding: 0.25rem 0.5rem 0; */
-        /* text-align: right; */
     }
     .fl-cell-header > span.count {
         font-size: 0.75rem;
@@ -238,11 +220,9 @@
     }
     .fl-cell-footer {
         background-color: transparent;
-        /* border: 1px solid red; */
         border: none;
         cursor: pointer;
         display: inline;
-        /* color: var(--accent); */
         font-weight: 600;
         text-align: right;
         padding: 0.25rem 0.25rem 0.25rem 0;
