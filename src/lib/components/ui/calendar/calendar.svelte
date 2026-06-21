@@ -6,6 +6,8 @@
     import { formatDate, parseDate } from "./calendar-helper.svelte";
 
     let staffState = getContext('STAFF_STATE');
+    // let openDrawer = $state(false);
+
     // let { } = $props();
     let data = [
         { id: 1, date: '2026-06-15', slot: '1100', staff: 1, duration: 120, name: 'John' },
@@ -22,19 +24,8 @@
 
     class CalendarState {
         date = $state('');
-        mode = $state('month');
+        mode = $state('day');
         selectedStaff = $state([]);
-        // staff = $state([
-        //     { id: 1, name: 'John', initials: 'JF', image: '/images/avatars/jf.png' },
-        //     { id: 2, name: 'Apple', initials: 'AV', image: '/images/avatars/av.png' },
-        //     { id: 3, name: 'Marlong2', initials: 'MV', image: 'images/avatars/mv2.png' },
-        //     { id: 4, name: 'Marlong', initials: 'MV' },
-        // ]);
-        // dateDisplay = $derived.by(() => {
-        //     let now = date ? new Date(this.date) : new Date();
-        //     return `${now.toLocaleDateString('en-NZ', { weekday: 'long' })} -
-        //                 ${now.toLocaleDateString('en-NZ', { year: 'numeric', month: 'long', day: 'numeric' })}`
-        // });
         
         constructor (initialDate) {
             let dt = new Date();

@@ -53,14 +53,14 @@
 body {
     background-color: var(--ivory);
     /* border: 2px solid red; */
-    color: var(--espresso);
+    color: var(--primary);
     font-family: "Inter", sans-serif;
     font-optical-sizing: auto;
     font-style: normal;
 }
 
 input {
-    color: var(--espresso);
+    color: var(--primary);
 }
 
 input[type=text],

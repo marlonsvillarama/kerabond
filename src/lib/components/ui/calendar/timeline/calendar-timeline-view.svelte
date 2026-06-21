@@ -1,11 +1,17 @@
 <script>
     import { getContext } from "svelte";
     import { formatDate } from "../calendar-helper.svelte";
-    import { Check, Eye, EyeClosed } from "@lucide/svelte";
     import Avatar from "../../avatar.svelte";
+    import CalendarMonthData from "../calendar-month-data.svelte";
+    import Drawer from "$lib/components/ui/drawer.svelte";
+    import StaffSidebar from "../sidebar/staff-sidebar.svelte";
+    import TimelineDayCell from "./timeline-day-cell.svelte";
 
-    let { data = [] } = $props();
+    let props = $props();
     let calendarState = getContext('CALENDAR_STATE');
+    let openDrawer = $state(true);
+    let staffState = getContext('STAFF_STATE');
+    let timelineStaff = $derived(staffState.filter(d => calendarState.selectedStaff.indexOf(d.id) >= 0));
     
     const interval = 15;
     const startHour = 8;
@@ -64,79 +70,17 @@
         return output;
     });
 
-    const sortByKey = (list, key) => {
-        if (key) {
-            list.sort((a, b) => {
-                if (a[key] < b[key]) return -1;
-                if (b[key] < a[key]) return 1;
-                return 0;
-            });
-        }
-        else {
-            list.sort((a, b) => {
-                if (a < b) return -1;
-                if (b < a) return 1;
-                return 0;
-            });
-        }
-
-        list = list;
-        return list;
+    let activeBooking = $state('');
+    const clickBooking = () => {
+        openDrawer = true;
+        // props.onbookingclick();
     };
 
-    let allStaff = $state([
-        { id: 1, name: 'John', initials: 'JF', image: '/images/avatars/jf.png' },
-        { id: 2, name: 'Apple', initials: 'AV', image: '/images/avatars/av.png' },
-        { id: 3, name: 'Marlong2', initials: 'MV', image: 'images/avatars/mv2.png' },
-        { id: 4, name: 'Marlong', initials: 'MV' },
-    ]);
-    allStaff = sortByKey(
-        allStaff.map(d => {
-            return {
-                ...d, checked: true
-            };
-        }),
-        'name'
-    );
-
-    let timelineStaff = $derived(sortByKey(allStaff.filter(d => d.checked === true), 'name'));
-
-    const updateTimelineStaff = (id) => {
-        let staff = allStaff.find(d => d.id === id);
-        let index = timelineStaff.findIndex(d => d.id === id);
-
-        if (index >= 0) {
-            timelineStaff.splice(index, 1);
-            timelineStaff = sortByKey(timelineStaff, 'name');
-            return;
-        }
-
-        timelineStaff.push(staff);
-        timelineStaff = sortByKey(timelineStaff, 'name');
-    }
+    const showDrawer = () => openDrawer = true;
 </script>
 
 <div class="fl-cal-timeline">
-    <div class="fl-sidebar">
-        <div class="fl-staff-list">
-            {#each allStaff as staff}
-            <div class="fl-staff-toggle">
-                <input type="checkbox" name="staff-{staff.id}" id="staff-{staff.id}"
-                    bind:checked={staff.checked}
-                    onchange={() => updateTimelineStaff(staff.id)}>
-                <label for="staff-{staff.id}" class="flex-center between">
-                    <span>{staff.name}</span>
-                    {#if staff.checked}
-                    <Eye size={16} />
-                    {:else}
-                    <EyeClosed size={16} />
-                    {/if}
-                </label>
-            </div>
-            {/each}
-        </div>
-        {calendarState.date}
-    </div>
+    <StaffSidebar />
 
     <div class="fl-content fl-page">
         <div class="fl-timeline-header">
@@ -158,7 +102,7 @@
                     <div class="fl-timeline-row"
                         class:fl-slot-start={slot.hourStart === true}
                     >
-                        <div class="fl-selection-box"></div>
+                        <!-- <div class="fl-selection-box"></div> -->
 
                         {#if slot.hourStart}
                             <span class="fl-slot-start-label">{slot.slot}</span>
@@ -170,7 +114,15 @@
                             style="grid-template-columns: repeat({timelineStaff.length}, 1fr);"
                         >
                             {#each timelineStaff as staff}
-                                <div class="fl-staff-slot" data-staff={staff.id} data-date={slot.date} data-slot={slot.value}></div>
+                                <TimelineDayCell {slot} {staff} onclick={clickBooking} />
+                                <!-- svelte-ignore a11y_click_events_have_key_events -->
+                                <!-- svelte-ignore a11y_no_static_element_interactions -->
+                                <!-- <div class="fl-staff-slot day"
+                                    onclick={() => addBooking(slot.value, staff.id)}
+                                    data-staff={staff.id}
+                                    data-date={slot.date}
+                                    data-slot={slot.value}
+                                ></div> -->
                             {/each}
                         </div>
                     </div>
@@ -184,7 +136,11 @@
                         </div>
                         <div class="fl-timeline-slot week" style="grid-template-columns: repeat({timelineStaff.length}, 1fr);">
                             {#each timelineStaff as staff}
-                                <div class="fl-staff-slot week" data-staff={staff.id} data-date={slot.date}></div>
+                                <div class="fl-staff-slot week" data-staff={staff.id} data-date={slot.date}>
+                                    {#each props.data.filter(d => d.staff === staff.id && d.date === slot.date) as booking}
+                                    <CalendarMonthData {...booking} />
+                                    {/each}
+                                </div>
                             {/each}
                         </div>
                     </div>
@@ -193,6 +149,18 @@
         </div>
     </div>
 </div>
+
+<Drawer bind:open={openDrawer}>
+    <div class="fl-timeline-dlg between">
+        <div>
+            <div class="heading">New Booking</div>
+            <div class="content-wrapper fl-full-scrollable">content
+                <!-- <div class="content">content</div> -->
+            </div>
+        </div>
+        <div class="footer">footer</div>
+    </div>
+</Drawer>
 
 <style>
     .fl-cal-timeline {
@@ -205,17 +173,6 @@
         margin: 1rem;
         margin-top: 0;
         overflow-y: auto;
-    }
-    .fl-sidebar {
-        width: 13rem;
-        padding: 0.5rem;
-    }
-    :global(.fl-sidebar > *) {
-        flex: 1;
-        width: 100%;
-    }
-    :global(.fl-sidebar > *:not(:last-child)) {
-        margin-bottom: 0.5rem;
     }
     .fl-cal-timeline > .fl-page {
         border-left: 1px solid var(--border);
@@ -320,53 +277,28 @@
     .fl-timeline-slot.fl-slot-start {
         border-top: none;
     }
-    .fl-staff-slot {
-        /* background-color: red; */
-        border-top: 1px solid var(--border-light);
-        border-left: 1px solid var(--accent-border);
-        cursor: pointer;
-        transition: all 100ms ease-in-out;
-    }
-    .fl-staff-slot:hover {
-        background-color: var(--accent-pale);
-    }
     :global(.fl-timeline-row.today) {
         /* background-color: var(--border-pale); */
         box-shadow: inset 0 0 0 3px var(--accent-border);
     }
-    .fl-staff-list {
-        /* border: 1px solid red; */
-        display: grid;
-        gap: 0.5rem;
-    }
-    .fl-staff-toggle {
-        position: relative;
-        /* border: 1px solid red; */
-    }
-    .fl-staff-toggle input[type=checkbox] {
+    /* .fl-selection-box {
         position: absolute;
-        top: -9999px;
-        left: -9999px;
+    } */
+    
+    .fl-timeline-dlg {
+        display: flex;
+        flex-direction: column;
+        /* border: 1px solid red; */
     }
-    .fl-staff-toggle label {
-        padding: 0.5rem 0.75rem;
-        background-color: var(--border-light);
-        /* border: 1.5px solid var(--border-light); */
-        border-radius: 0.25rem;
-        cursor: pointer;
-        font-size: 0.875rem;
-        transition: all 100ms ease-in-out;
+    .fl-timeline-dlg:first-child {
+        flex: 1;
     }
-    .fl-staff-toggle label:hover {
-        /* background-color: var(--accent-border); */
-        /* border: 1.5px solid var(--accent-border); */
-        box-shadow: var(--shadow);
+    .fl-timeline-dlg > :first-child > .heading {
+        font-size: 1.125rem;
+        font-weight: 600;
     }
-    .fl-staff-toggle input[type=checkbox]:checked + label {
-        background-color: var(--accent-border);
-        /* border-color: var(--accent); */
-    }
-    .fl-selection-box {
-        position: absolute;
-    }
+    /* .fl-timeline-dlg .content {
+        height: 10000px;
+        border: 1px solid red;
+    } */
 </style>

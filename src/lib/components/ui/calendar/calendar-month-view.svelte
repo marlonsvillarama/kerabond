@@ -9,6 +9,7 @@
         data = [],
     } = $props();
     let calendarState = getContext('CALENDAR_STATE');
+    let staffState = getContext('STAFF_STATE');
 
     let daysOfWeek = [
         { day: 0, short: 'Sun', long: 'Sunday' },
@@ -77,7 +78,13 @@
             output.push({
                 date: dt.getDate(),
                 value: dateValue,
-                data: sortByKey(data.filter(d => d.date === dateValue && calendarState.selectedStaff.indexOf(d.staff) >= 0), 'slot')
+                data: sortByKey(
+                    data.filter(d => d.date === dateValue && calendarState.selectedStaff.indexOf(d.staff) >= 0)
+                        .map(d => {
+                            return { ...d, staffFull: staffState.find(s => s.id === d.staff)}
+                        }),
+                    'slot'
+                )
             });
         }
 
@@ -126,7 +133,7 @@
                     </div>
                     <div class="fl-cell-content">
                         {#each day.data.slice(0, 4) as d}
-                            <CalendarMonthData {...d} />
+                            <CalendarMonthData {...d} staff={d.staffFull.initials} />
                         {/each}
                     </div>
                 </div>
@@ -214,10 +221,10 @@
     .fl-cell.fl-out-of-month .fl-cell-header {
         opacity: 0.5;
     }
-    .fl-cell-content {
+    /* .fl-cell-content {
         display: grid;
         gap: 0.125rem;
-    }
+    } */
     .fl-cell-footer {
         background-color: transparent;
         border: none;

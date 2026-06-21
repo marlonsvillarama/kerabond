@@ -99,8 +99,9 @@
     .fl-placement-right .fl-drawer-content {
         top: 0;
         right: 0;
+        bottom: 0;
         width: 400px;
-        height: 100%;
+        /* height: 90%; */
         transform: translateX(0);
     }
     dialog.fl-drawer-root:not([open]).placement-right .fl-drawer-content {
