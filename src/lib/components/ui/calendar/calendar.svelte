@@ -1,27 +1,29 @@
 <script>
-    import { setContext } from "svelte";
+    import { getContext, setContext } from "svelte";
     import CalendarHeader from "./calendar-header.svelte";
     import CalendarMonthView from "./calendar-month-view.svelte";
     import CalendarTimelineView from "./timeline/calendar-timeline-view.svelte";
     import { formatDate, parseDate } from "./calendar-helper.svelte";
 
+    let staffState = getContext('STAFF_STATE');
     // let { } = $props();
     let data = [
         { id: 1, date: '2026-06-15', slot: '1100', staff: 1, duration: 120, name: 'John' },
         { id: 2, date: '2026-06-15', slot: '1430', staff: 2, duration: 60, name: 'Apple' },
-        { id: 3, date: '2026-06-15', slot: '1545', staff: 3, duration: 30, name: 'Mayey' },
+        { id: 3, date: '2026-06-16', slot: '1545', staff: 3, duration: 30, name: 'Mayey' },
         { id: 4, date: '2026-06-17', slot: '1015', staff: 4, duration: 90, name: 'Linda' },
         { id: 5, date: '2026-06-18', slot: '0930', staff: 1, duration: 60, name: 'Jheng' },
         { id: 6, date: '2026-06-18', slot: '1045', staff: 2, duration: 30, name: 'Ice' },
         { id: 7, date: '2026-06-18', slot: '1300', staff: 3, duration: 120, name: 'Marlong' },
         { id: 8, date: '2026-06-18', slot: '1300', staff: 4, duration: 120, name: 'fssgdfgdfg' },
         { id: 9, date: '2026-06-18', slot: '1300', staff: 1, duration: 120, name: 'aaaa' },
-        { id: 10, date: '2026-06-18', slot: '1300', staff: 2, duration: 120, name: 'iksjngljsdbfglkjbsdfgjb' },
+        { id: 10, date: '2026-06-21', slot: '1300', staff: 2, duration: 120, name: 'iksjng ljsdbfglkjbsdfgjbasdkjbasdf' },
     ];
 
     class CalendarState {
         date = $state('');
         mode = $state('month');
+        selectedStaff = $state([]);
         // staff = $state([
         //     { id: 1, name: 'John', initials: 'JF', image: '/images/avatars/jf.png' },
         //     { id: 2, name: 'Apple', initials: 'AV', image: '/images/avatars/av.png' },
@@ -41,6 +43,7 @@
             }
 
             this.date = formatDate(dt);
+            this.selectedStaff = staffState.map(d => d.id);
         }
 
         prevDate () {
@@ -78,10 +81,10 @@
     <CalendarHeader />
 
     <div class="fl-cal">
-        {#if calendarState.mode === 'week'}
+        {#if calendarState.mode === 'week' || calendarState.mode === 'day'}
             <CalendarTimelineView {data} />
-        {:else if calendarState.mode === 'day'}
-            <CalendarTimelineView {data} />
+        <!-- {:else if calendarState.mode === 'day'}
+            <CalendarTimelineView {data} /> -->
         {:else}
             <CalendarMonthView {data} />
         {/if}

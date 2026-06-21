@@ -26,6 +26,8 @@
         background-color: var(--border-light);
         border-radius: 0.125rem;
         cursor: pointer;
+        display: grid;
+        grid-template-columns: 65% 35%;
         font-size: 0.75rem;
         padding: 0.375rem 0.375rem;
         transition: all 100ms ease-in-out;
@@ -35,9 +37,15 @@
     } */
     .fl-cell-data > .name {
         opacity: 0.7;
+        /* max-width: 60%; */
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        /* border: 1px solid red; */
         /* font-weight: 600; */
     }
     .fl-cell-data > .time {
         font-weight: 600;
+        text-align: right;
     }
 </style>

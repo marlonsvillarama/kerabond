@@ -77,7 +77,7 @@
             output.push({
                 date: dt.getDate(),
                 value: dateValue,
-                data: sortByKey(data.filter(d => d.date === dateValue), 'slot')
+                data: sortByKey(data.filter(d => d.date === dateValue && calendarState.selectedStaff.indexOf(d.staff) >= 0), 'slot')
             });
         }
 
