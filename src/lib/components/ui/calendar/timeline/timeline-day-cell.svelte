@@ -30,12 +30,16 @@
 <style>
     .fl-staff-slot {
         /* background-color: red; */
-        border-top: 1px solid var(--border-light);
-        border-left: 1px solid var(--accent-border);
+        /* border-top: 1px solid var(--border-light); */
+        /* border-left: 1px solid var(--accent-border); */
         cursor: pointer;
+        height: 1.5rem;
         padding: 0.25rem;
         position: relative;
         /* transition: all 20ms ease-in-out; */
+    }
+    .fl-staff-slot:not(:first-of-type) {
+        border-top: 1px solid var(--border-light);
     }
     .fl-staff-slot:hover {
         /* background-color: var(--accent-pale); */

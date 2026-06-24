@@ -31,7 +31,7 @@
         cursor: pointer;
         font-size: 0.875rem;
         gap: 0.5rem;
-        padding: 0.6rem 0.6rem 0.6rem 0.6rem;
+        padding: 0.6rem 1rem 0.6rem 1rem;
         position: relative;
         transition: all 100ms ease-in-out;
     }

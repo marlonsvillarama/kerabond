@@ -110,38 +110,38 @@
             <!-- </div> -->
         </div>
 
-        <div class="fl-timeline-grid fl-full-scrollable" style="grid-template-columns: repeat({timelineStaff.length}, 1fr);">
+        <div class="fl-timeline-grid fl-full-scrollable">
             {#if calendarState.mode === 'day'}
                 {#each timelineStaff as staff}
-                    <div class="fl-timeline-col" data-staff={staff.id}>
-                        {#each timeSlots as slot}
-                            <div class="fl-timeline-row"
-                                class:fl-slot-start={slot.hourStart === true}
-                            >
-                                <!-- <div class="fl-selection-box"></div> -->
+                {staff.name}
+                {/each}
+                {#each timeSlots as slot}
+                    <div class="fl-timeline-row"
+                        class:fl-slot-start={slot.hourStart === true}
+                    >
+                        <!-- <div class="fl-selection-box"></div> -->
 
-                                {#if slot.hourStart}
-                                    <span class="fl-slot-start-label">{slot.slot}</span>
-                                {/if}
-                                <!-- <div class="fl-timeline-slot-header day"></div> -->
-                                <!-- <div 
-                                    class="fl-timeline-slot day"
-                                    class:fl-slot-start={slot.hourStart === true}
-                                > -->
-                                    <!-- {#each timelineStaff as staff} -->
-                                        <TimelineDayCell {slot} {staff} onclick={clickBooking} />
-                                        <!-- svelte-ignore a11y_click_events_have_key_events -->
-                                        <!-- svelte-ignore a11y_no_static_element_interactions -->
-                                        <!-- <div class="fl-staff-slot day"
-                                            onclick={() => addBooking(slot.value, staff.id)}
-                                            data-staff={staff.id}
-                                            data-date={slot.date}
-                                            data-slot={slot.value}
-                                        ></div> -->
-                                    <!-- {/each} -->
-                                <!-- </div> -->
-                            </div>
-                        {/each}
+                        {#if slot.hourStart}
+                            <span class="fl-slot-start-label">{slot.slot}</span>
+                        {/if}
+                        <div class="fl-timeline-slot-header day"></div>
+                        <div 
+                            class="fl-timeline-slot day"
+                            class:fl-slot-start={slot.hourStart === true}
+                            style="grid-template-columns: repeat({timelineStaff.length}, 1fr);"
+                        >
+                            {#each timelineStaff as staff}
+                                <TimelineDayCell {slot} {staff} onclick={clickBooking} />
+                                <!-- svelte-ignore a11y_click_events_have_key_events -->
+                                <!-- svelte-ignore a11y_no_static_element_interactions -->
+                                <!-- <div class="fl-staff-slot day"
+                                    onclick={() => addBooking(slot.value, staff.id)}
+                                    data-staff={staff.id}
+                                    data-date={slot.date}
+                                    data-slot={slot.value}
+                                ></div> -->
+                            {/each}
+                        </div>
                     </div>
                 {/each}
             {:else if calendarState.mode === 'week'}
@@ -191,8 +191,7 @@
         grid-template-rows: auto 1fr;
         overflow-y: auto;
     }
-    .fl-timeline-header,
-    .fl-timeline-grid {
+    .fl-timeline-header {
         display: grid;
         /* grid-template-columns: auto 1fr; */
         pointer-events: none;
@@ -220,11 +219,6 @@
         font-size: clamp(0.875rem, calc(0.875rem + 4vw), 1.125rem);
         font-weight: 500;
     }
-    .fl-timeline-col {
-        /* display: flex; */
-        position: relative;
-        user-select: none;
-    }
     .fl-timeline-row {
         display: flex;
         position: relative;
@@ -245,10 +239,10 @@
         justify-content: left;
         /* gap: 0.25rem; */
     }
-    /* .fl-timeline-corner {
+    .fl-timeline-corner {
         background-color: var(--semi-light);
         border-bottom: 3px solid var(--accent-border);
-    } */
+    }
     .fl-timeline-slot-header > span {
         /* display: block; */
         font-size: 0.875rem;
@@ -291,11 +285,11 @@
         position: relative;
     }
     .fl-timeline-row > span.fl-slot-start-label {
-        font-size: 0.875rem;
-        font-weight: 500;
+        font-size: 1rem;
+        font-weight: 600;
         position: absolute;
-        top: 0.25rem;
-        left: 0.375rem;
+        top: 0.5rem;
+        left: 0.5rem;
     }
     .fl-timeline-slot.fl-slot-start {
         border-top: none;
