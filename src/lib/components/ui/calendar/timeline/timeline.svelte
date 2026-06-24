@@ -10,7 +10,7 @@
     import Drawer from "$lib/components/ui/drawer.svelte";
     import Field from "../../field.svelte";
     import InputText from "../../input-text.svelte";
-    import StaffSidebar from "../sidebar/staff-sidebar.svelte";
+    import StaffSidebar from "./timeline-sidebar.svelte";
     import TimelineDayCell from "./timeline-day-cell.svelte";
 
     let props = $props();
@@ -36,8 +36,9 @@
 
             output.push({
                 day: dt.toLocaleDateString('en-NZ', { weekday: 'short' }),
+                longday: dt.toLocaleDateString('en-NZ', { weekday: 'long' }),
                 date: formatDate(dt),
-                long: dt.toLocaleDateString('en-NZ', { month: 'long', day: 'numeric', weekday: 'short' }),
+                long: dt.toLocaleDateString('en-NZ', { month: 'long', day: 'numeric' }),
                 short: dt.toLocaleDateString('en-NZ', { month: 'short', day: 'numeric' }),
             });
             i++;
@@ -98,58 +99,29 @@
 
     <div class="fl-content fl-page">
         <div class="fl-timeline-header" style="grid-template-columns: repeat({timelineStaff.length}, 1fr);">
-            <!-- <div class="fl-timeline-corner" class:day={calendarState.mode === 'day'} class:week={calendarState.mode === 'week'}></div> -->
-            <!-- <div class="fl-timeline-staff" style="grid-template-columns: repeat({timelineStaff.length}, 1fr);"> -->
-                {#each timelineStaff as staff}
-                    <div class="fl-timeline-staff-header">
-                        <!-- <div class="fl-staff-avatar">{staff.initials}</div> -->
-                        <Avatar label={staff.initials} image={staff.image} />
-                        <span class="name">{staff.name}</span>
-                    </div>
-                {/each}
-            <!-- </div> -->
+            {#each timelineStaff as staff}
+                <div class="fl-timeline-staff-header">
+                    <Avatar label={staff.initials} image={staff.image} />
+                    <span class="name">{staff.name}</span>
+                </div>
+            {/each}
         </div>
 
-        <div class="fl-timeline-grid fl-full-scrollable" style="grid-template-columns: repeat({timelineStaff.length}, 1fr);">
+        <div class="fl-timeline-grid fl-full-scrollable" style="display: grid; grid-template-{calendarState.mode === 'day' ? 'columns' : 'rows'}: repeat({timelineStaff.length}, 1fr);">
             {#if calendarState.mode === 'day'}
                 {#each timelineStaff as staff}
                     <div class="fl-timeline-col" data-staff={staff.id}>
                         {#each timeSlots as slot}
-                            <div class="fl-timeline-row"
-                                class:fl-slot-start={slot.hourStart === true}
-                            >
-                                <!-- <div class="fl-selection-box"></div> -->
-
-                                {#if slot.hourStart}
-                                    <span class="fl-slot-start-label">{slot.slot}</span>
-                                {/if}
-                                <!-- <div class="fl-timeline-slot-header day"></div> -->
-                                <!-- <div 
-                                    class="fl-timeline-slot day"
-                                    class:fl-slot-start={slot.hourStart === true}
-                                > -->
-                                    <!-- {#each timelineStaff as staff} -->
-                                        <TimelineDayCell {slot} {staff} onclick={clickBooking} />
-                                        <!-- svelte-ignore a11y_click_events_have_key_events -->
-                                        <!-- svelte-ignore a11y_no_static_element_interactions -->
-                                        <!-- <div class="fl-staff-slot day"
-                                            onclick={() => addBooking(slot.value, staff.id)}
-                                            data-staff={staff.id}
-                                            data-date={slot.date}
-                                            data-slot={slot.value}
-                                        ></div> -->
-                                    <!-- {/each} -->
-                                <!-- </div> -->
-                            </div>
+                            <TimelineDayCell {slot} {staff} onclick={clickBooking} />
                         {/each}
                     </div>
                 {/each}
             {:else if calendarState.mode === 'week'}
                 {#each daySlots as slot}
                     <div class="fl-timeline-row fl-slot-start" class:today={calendarState.date === slot.date}>
-                        <div class="fl-timeline-slot-header week">
-                            <span class="date">{slot.short}</span>
-                            <span class="day">{slot.day}</span>
+                        <div class="fl-timeline-slot-header week flex-center" class:today={calendarState.date === slot.date}>
+                            <span class="date">{slot.long}</span>
+                            <span class="day">{slot.longday}</span>
                         </div>
                         <div class="fl-timeline-slot week" style="grid-template-columns: repeat({timelineStaff.length}, 1fr);">
                             {#each timelineStaff as staff}
@@ -191,8 +163,8 @@
         grid-template-rows: auto 1fr;
         overflow-y: auto;
     }
-    .fl-timeline-header,
-    .fl-timeline-grid {
+    .fl-timeline-header {
+    /* .fl-timeline-grid { */
         display: grid;
         /* grid-template-columns: auto 1fr; */
         pointer-events: none;
@@ -204,20 +176,20 @@
         border-bottom: 3px solid var(--accent-border);
     } */
     .fl-timeline-staff-header {
-        background-color: var(--accent-pale);
+        background-color: var(--light);
         display: flex;
         flex-direction: row;
         align-items: center;
-        gap: 1rem;
+        gap: 0.5rem;
         justify-content: center;
         padding: 0.5rem 0;
         pointer-events: none;
     }
     .fl-timeline-staff-header:not(:first-child) {
-        border-left: 1px solid var(--accent-border);
+        border-left: 1px solid var(--border);
     }
     .fl-timeline-staff-header > span.name {
-        font-size: clamp(0.875rem, calc(0.875rem + 4vw), 1.125rem);
+        font-size: clamp(0.875rem, calc(0.875rem + 4vw), 1rem);
         font-weight: 500;
     }
     .fl-timeline-col {
@@ -225,24 +197,30 @@
         position: relative;
         user-select: none;
     }
+    .fl-timeline-col:not(:first-child) {
+        border-left: 1px solid var(--border-light);
+    }
     .fl-timeline-row {
-        display: flex;
+        display: grid;
         position: relative;
         user-select: none;
+        /* border: 2px solid red; */
     }
     :global(.fl-timeline-corner),
     :global(.fl-timeline-slot-header) {
-        width: 6rem;
+        /* width: 6rem; */
         /* border: 2px solid red; */
+        background-color: var(--lighter);
     }
     /* :global(.fl-timeline-corner.week),
     :global(.fl-timeline-slot-header.week) {
         width: 6rem;
     } */
     :global(.fl-timeline-slot-header.week) {
-        display: flex;
-        flex-direction: column;
-        justify-content: left;
+        padding: 0.25rem 0;
+        /* display: flex; */
+        /* flex-direction: column; */
+        /* justify-content: left; */
         /* gap: 0.25rem; */
     }
     /* .fl-timeline-corner {
@@ -265,10 +243,11 @@
     .fl-timeline-slot-header.week span.date {
         font-size: 1rem;
         font-weight: 600;
-        padding-top: 0.5rem;
+        /* padding-top: 0.5rem; */
     }
     .fl-timeline-slot-header.week span.day {
-        opacity: 0.5;
+        color: var(--dark);
+        opacity: 0.8;
         font-weight: 400;
     }
     :global(.fl-timeline-slot.selected) {
@@ -285,6 +264,10 @@
         /* border-top: 1px solid var(--border-light); */
         height: 12rem;
         display: grid;
+        /* border-right: 1px solid var(--border-light); */
+    }
+    .fl-staff-slot:not(:last-of-type) {
+        border-right: 1px solid var(--border-light);
     }
     .fl-timeline-row.fl-slot-start {
         border-top: 1px solid var(--accent-border);
@@ -303,6 +286,9 @@
     :global(.fl-timeline-row.today) {
         /* background-color: var(--border-pale); */
         box-shadow: inset 0 0 0 3px var(--accent-border);
+    }
+    .fl-timeline-slot-header.today {
+        background-color: var(--accent-border);
     }
     /* .fl-selection-box {
         position: absolute;

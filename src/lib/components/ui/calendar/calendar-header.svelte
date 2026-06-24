@@ -33,7 +33,7 @@
 
 <div class="fl-cal-header flex-center between">
     <div class="fl-cal-nav flex-center">
-        <Button class="btn-location btn-emphasize" Icon={MapPin}>
+        <Button class="btn-location btn-emphasize border" Icon={MapPin}>
             {locationText}
         </Button>
         <ButtonGroup>
@@ -49,7 +49,7 @@
     </div>
 
     <div class="fl-cal-nav flex-center">
-        <Button class="btn-today btn-emphasize" Icon={CalendarArrowDown}>
+        <Button class="btn-today btn-emphasize border" Icon={CalendarArrowDown}>
             {dateDisplay}
         </Button>
 
@@ -59,8 +59,8 @@
             <Button flat={true} Icon={ChevronRight} onclick={() => calendarState.nextDate()} />
         </ButtonGroup>
 
-        <Button Icon={Plus} />
-        <Button Icon={CalendarCog} />
+        <Button Icon={Plus} class="border" />
+        <!-- <Button Icon={CalendarCog} /> -->
     </div>
 </div>
 

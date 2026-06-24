@@ -4,7 +4,7 @@
     } = $props();
 </script>
 
-<div class="fl-btn-group flex-center">
+<div class="fl-btn-group flex-center border">
     {@render children?.()}
 </div>
 
@@ -13,11 +13,14 @@
         border-radius: var(--border-radius);
         display: flex;
     }
+    :global(.fl-btn-group > button:not(:last-child)) {
+        border-right: 1px solid var(--border-light);
+    }
     :global(.fl-btn-group > button:not(:first-child):not(:last-child)) {
         background-color: var(--white);
-        border-left: 1px solid var(--border);
+        /* border-left: 1px solid var(--border); */
         border-radius: 0;
-        border-right: 1px solid var(--border);
+        /* border-right: 1px solid var(--border); */
     }
     :global(.fl-btn-group > button:first-child) {
         background-color: var(--white);
@@ -33,7 +36,7 @@
     }
     :global(.fl-btn-group > button:not(:first-child):not(:last-child):hover) {
         background-color: var(--light);
-        border-color: var(--light);
-        color: var(--white);
+        border-color: var(--border-light);
+        /* color: var(--white); */
     }
 </style>

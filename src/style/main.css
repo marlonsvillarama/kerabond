@@ -12,6 +12,9 @@
     /* display: flex; */
     justify-content: space-between;
 }
+.border {
+    border: 1px solid var(--border-light) !important;
+}
 .center {
     justify-content: center;
 }
@@ -25,6 +28,12 @@
 .flat {
     background-color: var(--ivory);
     box-shadow: none;
+}
+.flex-1 {
+    flex: 1;
+}
+.w-full {
+    width: 100%;
 }
 .fl-content {
     /* border: 2px solid blue; */

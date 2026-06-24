@@ -33,6 +33,7 @@
         display: grid;
         grid-template-columns: auto 1fr 35%;
         font-size: 0.75rem;
+        margin: 0.25rem;
         transition: all 100ms ease-in-out;
         z-index: 2;
     }

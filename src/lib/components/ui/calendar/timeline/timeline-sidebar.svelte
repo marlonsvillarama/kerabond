@@ -1,6 +1,7 @@
 <script>
-    import { Check, Eye, EyeClosed } from "@lucide/svelte";
+    import { CalendarCog, Check, Eye, EyeClosed } from "@lucide/svelte";
     import { getContext } from "svelte";
+    import Button from "../../button.svelte";
 
     let calendarState = getContext('CALENDAR_STATE');
     let staffState = getContext('STAFF_STATE');
@@ -62,7 +63,7 @@
     }
 </script>
 
-<div class="fl-staff-sidebar">
+<div class="fl-timeline-sidebar">
     <div class="fl-staff-list">
         {#each staffState as staff}
         <div class="fl-staff-toggle">
@@ -80,20 +81,25 @@
         </div>
         {/each}
     </div>
-    <!-- {calendarState.date} -->
+    <div class="fl-timeline-actions">
+        <Button Icon={CalendarCog} class="w-full border">Timeline Settings</Button>
+    </div>
 </div>
 
 <style>
-    .fl-staff-sidebar {
+    .fl-timeline-sidebar {
         width: 16rem;
         padding: 1rem;
         background-color: var(--white);
         border: 1px solid var(--border-light);
         border-radius: 0.5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
         /* box-shadow: var(--shadow); */
     }
-    :global(.fl-staff-sidebar > *) {
-        flex: 1;
+    :global(.fl-timeline-sidebar > *) {
+        /* flex: 1; */
         width: 100%;
     }
     :global(.fl-staff-sidebar > *:not(:last-child)) {
@@ -132,4 +138,7 @@
         /* background-color: var(--accent-border); */
         border: 1px solid var(--accent-pale);
     }
+    /* .fl-timeline-actions {
+        border: 2px solid green;
+    } */
 </style>

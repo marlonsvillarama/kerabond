@@ -1,5 +1,6 @@
 <script>
     let {
+        accent = false,
         active = false,
         children,
         class: className,
@@ -14,7 +15,8 @@
     class="fl-button flex-center {className}"
     class:flat={flat === true}
     class:fl-button-text={!!children === true && !!Icon === false}
-    class:fl-button-active={active === true}
+    class:fl-button-active={active === true && accent === false}
+    class:fl-button-accent-active={active === true && accent === true}
 >
     {#if Icon}
         <Icon size={20} />
@@ -26,9 +28,12 @@
     .fl-button {
         background-color: var(--white);
         /* background-color: transparent; */
-        border: 0;
+        /* border: 1px solid var(--border-light); */
+        border: none;
         border-radius: var(--border-radius);
         cursor: pointer;
+        display: flex;
+        justify-content: center;
         font-size: 0.875rem;
         gap: 0.5rem;
         padding: 0.6rem 1rem 0.6rem 1rem;
@@ -44,12 +49,19 @@
         box-shadow: none;
     }
     .fl-button-active {
+        background-color: var(--dark) !important;
+        color: var(--white);
+    }
+    .fl-button-accent-active {
         background-color: var(--accent) !important;
         color: var(--white);
     }
     .fl-button:not(.fl-button-active):hover {
         background-color: var(--light) !important;
     }
+    /* .fl-button:not(.fl-button-accactive):hover {
+        background-color: var(--light) !important;
+    } */
     /* .fl-button::before {
         content: attr(data-tooltip);
         position: absolute;
