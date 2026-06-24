@@ -1,9 +1,11 @@
 <script>
 	import '../style/main.css';
+    import { navigating } from '$app/state';
     import { getContext, setContext } from 'svelte';
 	import favicon from '$lib/assets/favicon.svg';
 	import AppHeader from '$lib/components/global/app-header.svelte';
-	import CmdHeader from '$lib/components/global/cmd-header.svelte';
+	// import CmdHeader from '$lib/components/global/cmd-header.svelte';
+    import NavLoading from '$lib/components/ui/nav-loading.svelte';
 
 	let { children } = $props();
 
@@ -20,15 +22,19 @@
 	<link rel="icon" href={favicon} />
 </svelte:head>
 
+{#if navigating}
+    <NavLoading />
+{/if}
+
 <div class="fl-wrapper">
     <AppHeader />
 
 	<!-- <CmdHeader /> -->
 
-    <!-- <div class="fl-content"> -->
+    <div class="fl-content">
 	{@render children()}
         <!-- <Calendar /> -->
-    <!-- </div> -->
+    </div>
 </div>
 
 <style>
@@ -41,10 +47,12 @@
     :global(.fl-wrapper > *:not(:last-child)) {
         flex-shrink: 0;
     }
-    /* .fl-content {
-        * border: 2px solid blue; *
-        * height: 100%; *
-        overflow-y: auto;
-        flex: 1;
-    } */
+    .fl-content {
+        /* border: 2px solid red; */
+        position: relative;
+        /* * border: 2px solid blue; * */
+        /* * height: 100%; * */
+        /* overflow-y: auto; */
+        /* flex: 1; */
+    }
 </style>

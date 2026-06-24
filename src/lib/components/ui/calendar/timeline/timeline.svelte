@@ -11,6 +11,7 @@
     import Field from "../../field.svelte";
     import InputText from "../../input-text.svelte";
     import StaffSidebar from "./timeline-sidebar.svelte";
+    import TimelineData from "./timeline-data.svelte";
     import TimelineDayCell from "./timeline-day-cell.svelte";
 
     let props = $props();
@@ -18,10 +19,6 @@
     let openDrawer = $state(false);
     let staffState = getContext('STAFF_STATE');
     let timelineStaff = $derived(staffState.filter(d => calendarState.selectedStaff.indexOf(d.id) >= 0));
-    
-    const interval = 15;
-    const startHour = 8;
-    const endHour = 21;
     
     let daySlots = $derived.by(() => {
         let now = new Date(calendarState.date);
@@ -51,7 +48,7 @@
     let timeSlots = $derived.by(() => {
         let output = [];
         let now = new Date(calendarState.date);
-        let dt = new Date(now.getFullYear(), now.getMonth(), now.getDate(), startHour);
+        let dt = new Date(now.getFullYear(), now.getMonth(), now.getDate(), calendarState.startHour);
 
         let i = 0;
         do {
@@ -69,10 +66,10 @@
                 hourStart: dt.getMinutes() === 0
             });
 
-            dt.setMinutes(dt.getMinutes() + interval);
+            dt.setMinutes(dt.getMinutes() + calendarState.interval);
             dt = new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), dt.getHours(), dt.getMinutes());
             i++;
-        } while (dt.getHours() < endHour);
+        } while (dt.getHours() < calendarState.endHour);
 
         return output;
     });
@@ -113,6 +110,10 @@
                     <div class="fl-timeline-col" data-staff={staff.id}>
                         {#each timeSlots as slot}
                             <TimelineDayCell {slot} {staff} onclick={clickBooking} />
+                        {/each}
+                        {#each props.data.filter(d => d.staff === staff.id && d.date === calendarState.date) as booking}
+                            <TimelineData {...booking} />
+                        <!-- <CalendarMonthData {...booking} /> -->
                         {/each}
                     </div>
                 {/each}

@@ -36,12 +36,8 @@
         <Button class="btn-location btn-emphasize border" Icon={MapPin}>
             {locationText}
         </Button>
-        <ButtonGroup>
-            <!-- <Button active={calendarState.mode === 'month'} flat={true} onclick={() => calendarState.mode = 'month'}>Month</Button> -->
-            <Button active={calendarState.mode === 'week'} flat={true} onclick={() => calendarState.mode = 'week'}>Week</Button>
-            <Button active={calendarState.mode === 'day'} flat={true} onclick={() => calendarState.mode = 'day'}>Day</Button>
-        </ButtonGroup>
 
+        <Button Icon={Plus} class="border">New booking</Button>
         <!-- {#if calendarState.mode === 'month' && allStaff.length > 1}
         <Select items={allStaff} placeholder="Choose staff" />
         {/if} -->
@@ -59,7 +55,11 @@
             <Button flat={true} Icon={ChevronRight} onclick={() => calendarState.nextDate()} />
         </ButtonGroup>
 
-        <Button Icon={Plus} class="border" />
+        <ButtonGroup>
+            <!-- <Button active={calendarState.mode === 'month'} flat={true} onclick={() => calendarState.mode = 'month'}>Month</Button> -->
+            <Button active={calendarState.mode === 'week'} flat={true} onclick={() => calendarState.mode = 'week'}>Week</Button>
+            <Button active={calendarState.mode === 'day'} flat={true} onclick={() => calendarState.mode = 'day'}>Day</Button>
+        </ButtonGroup>
         <!-- <Button Icon={CalendarCog} /> -->
     </div>
 </div>

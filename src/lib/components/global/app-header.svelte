@@ -39,10 +39,10 @@
 
         <!-- <div class="fl-app-header-actions flex-center"> -->
             <!-- <Button flat={true} Icon={Plus} /> -->
-        <a href="/" accent={true} active={activeTab === '/'} flat={true} Icon={Calendar} onclick={() => goto('/')}>Calendar</a>
-        <a href="/sales" accent={true} active={activeTab.startsWith('/sales')} flat={true} Icon={DollarSign} onclick={() => goto('/sales')}>Sales</a>
-        <Button accent={true} active={activeTab.startsWith('/reports')} flat={true} Icon={ChartLine} onclick={() => goto('/reports')}>Reports</Button>
-        <Button accent={true} active={activeTab.startsWith('/setup')} flat={true} Icon={Settings} onclick={() => goto('/setup')}>Setup</Button>
+        <a href="/calendar" data-sveltekit-reload accent={true} active={activeTab === '/'} flat={true} Icon={Calendar}>Calendar</a>
+        <a href="/sales" data-sveltekit-reload accent={true} active={activeTab.startsWith('/sales')} flat={true} Icon={DollarSign}>Sales</a>
+        <a href="/reports" data-sveltekit-reload accent={true} active={activeTab.startsWith('/reports')} flat={true} Icon={ChartLine}>Reports</a>
+        <a href="/setup" data-sveltekit-reload accent={true} active={activeTab.startsWith('/setup')} flat={true} Icon={Settings}>Setup</a>
         <!-- <Select {items} id="top-list" style="width: 12rem;" /> -->
     </div>
     

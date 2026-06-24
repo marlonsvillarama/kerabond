@@ -43,6 +43,8 @@
     --darker: #2E2E30;
     --dark: #59595B;
 
+    --font-default: 'Inter', sans-serif;
+
 
 
     /* Teal Shades */
@@ -72,7 +74,7 @@ body {
     background-color: var(--lightest);
     /* border: 2px solid red; */
     color: var(--primary);
-    font-family: "DM Sans", sans-serif;
+    font-family: var(--font-default);
     font-optical-sizing: auto;
     font-style: normal;
 }

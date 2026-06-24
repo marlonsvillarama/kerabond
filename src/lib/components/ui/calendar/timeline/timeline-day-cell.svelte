@@ -48,18 +48,18 @@
         /* border-top: 1px solid var(--border-light); */
         /* border-left: 1px solid var(--accent-border); */
         cursor: pointer;
-        height: 1.5rem;
-        padding: 0.25rem;
+        height: 2rem;
+        /* padding: 0.5rem; */
+        overflow: visible;
         position: relative;
         /* transition: all 20ms ease-in-out; */
     }
     .fl-staff-slot:not(:first-of-type) {
-        border-top: 1px dashed var(--border-lighter);
+        border-top: 1px dashed var(--border-semi-light);
     }
-    .fl-staff-slot:hover {
-        /* background-color: var(--accent-pale); */
+    /* .fl-staff-slot:hover {
         box-shadow: inset 0 0 0 3px var(--accent-border);
-    }
+    } */
     .fl-staff-slot.hour-start {
         border-top: none;
     }

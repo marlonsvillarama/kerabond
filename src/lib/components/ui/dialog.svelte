@@ -25,7 +25,7 @@
         }
     });
 
-    const handleCancel = (e) => {
+    const handleClose = (e) => {
         if (confirm('Are you sure?') !== true) {
             e.preventDefault();
             return;
@@ -35,7 +35,7 @@
     };
 </script>
 
-<dialog bind:this={dialog} onclose={handleClose} oncancel={handleCancel}
+<dialog bind:this={dialog} onclose={handleClose} oncancel={handleClose}
     onclick={(e) => e.target === dialog && handleClose()}
     class="fl-dlg-root"
 >

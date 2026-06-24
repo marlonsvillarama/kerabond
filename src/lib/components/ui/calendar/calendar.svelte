@@ -26,6 +26,9 @@
         date = $state('');
         mode = $state('day');
         selectedStaff = $state([]);
+        interval = 15;
+        startHour = 8;
+        endHour = 21;
         
         constructor (initialDate) {
             let dt = new Date();

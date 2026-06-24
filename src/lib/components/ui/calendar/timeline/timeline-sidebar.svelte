@@ -5,7 +5,7 @@
 
     let calendarState = getContext('CALENDAR_STATE');
     let staffState = getContext('STAFF_STATE');
-    console.log('sidebar; staffState', staffState);
+    // console.log('sidebar; staffState', staffState);
     // let allStaff = $state([
     //     { id: 1, name: 'John', initials: 'JF', image: '/images/avatars/jf.png' },
     //     { id: 2, name: 'Apple', initials: 'AV', image: '/images/avatars/av.png' },

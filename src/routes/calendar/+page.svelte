@@ -20,9 +20,9 @@
 <!-- <div class="fl-wrapper"> -->
     <!-- <AppHeader /> -->
 
-    <div class="fl-content">
-        <!-- <Calendar data={appointments} /> -->
-    </div>
+    <!-- <div class="fl-content"> -->
+        <Calendar data={appointments} />
+    <!-- </div> -->
 <!-- </div> -->
 
 <style>
