@@ -1,9 +1,11 @@
 <script>
     import { getContext, setContext } from "svelte";
-    import CalendarHeader from "./calendar-header.svelte";
+    import CalendarHeader from "$lib/components/ui/calendar/calendar-header.svelte";
+    import CalendarMonthData from "$lib/components/ui/calendar/calendar-month-data.svelte";
+    import CalendarTimelineView from "$lib/components/ui/calendar/timeline/timeline.svelte";
     import CalendarMonthView from "./calendar-month-view.svelte";
-    import CalendarTimelineView from "./timeline/timeline.svelte";
-    import { formatDate, parseDate } from "./calendar-helper.svelte";
+    // import CalendarTimelineView from "./timeline/calendar-timeline-view.svelte";
+    import { formatDate, parseDate } from "$lib/components/ui/calendar/calendar-helper.svelte";
 
     let staffState = getContext('STAFF_STATE');
     // let openDrawer = $state(false);
@@ -22,9 +24,14 @@
         { id: 10, date: '2026-06-21', slot: '1300', staff: 2, duration: 120, name: 'iksjng ljsdbfglkjbsdfgjbasdkjbasdf' },
     ];
 
+    const calendarMap = {
+        'month': CalendarMonthView,
+        'week': CalendarTimelineView,
+    };
+
     class CalendarState {
         date = $state('');
-        mode = $state('day');
+        mode = $state('month');
         selectedStaff = $state([]);
         
         constructor (initialDate) {
@@ -73,11 +80,11 @@
 
     <div class="fl-cal">
         <!-- {#if calendarState.mode === 'week' || calendarState.mode === 'day'} -->
-            <CalendarTimelineView {data} />
+            <!-- <CalendarTimelineView style="display: {calendarState.mode === 'week' ? 'block' : 'hidden'}" {data} /> -->
         <!-- {:else if calendarState.mode === 'day'}
             <CalendarTimelineView {data} /> -->
         <!-- {:else} -->
-            <!-- <CalendarMonthView style="display: {calendarState.mode === 'month' ? 'block' : 'hidden'}" {data} /> -->
+            <CalendarMonthView {data} />
         <!-- {/if} -->
     </div>
 </div>

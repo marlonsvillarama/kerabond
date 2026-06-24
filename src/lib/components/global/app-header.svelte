@@ -32,7 +32,7 @@
 </script>
 
 <div class="fl-app-header flex-center between">
-    <div class="fl-company">Chantara Massage</div>
+    <div class="fl-company">Studio4 Hair Salon</div>
 
     <div class="fl-app-header-controls flex-center">
         <!-- <InputSearch id="global-search" /> -->
@@ -75,3 +75,4 @@
         border: 1px solid red;
     } */
 </style>
+<!-- h:_&:JgKC9,Dm_h -->

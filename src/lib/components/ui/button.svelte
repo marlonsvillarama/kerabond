@@ -11,7 +11,7 @@
 </script>
 
 <button {onclick} data-tooltip={tip}
-    class="fl-button flex-center shadow {className}"
+    class="fl-button flex-center {className}"
     class:flat={flat === true}
     class:fl-button-text={!!children === true && !!Icon === false}
     class:fl-button-active={active === true}
@@ -43,10 +43,12 @@
         background-color: transparent;
         box-shadow: none;
     }
-    .fl-button-active,
-    .fl-button:not(.fl-button-active):hover {
+    .fl-button-active {
         background-color: var(--accent) !important;
         color: var(--white);
+    }
+    .fl-button:not(.fl-button-active):hover {
+        background-color: var(--light) !important;
     }
     /* .fl-button::before {
         content: attr(data-tooltip);

@@ -37,10 +37,6 @@
 
         open = false;
     };
-
-    const handleClose = () => {
-        open = false;
-    };
 </script>
 
 <dialog bind:this={dialog} onclose={handleClose} oncancel={handleCancel}
@@ -94,13 +90,15 @@
         padding: 1.5rem;
         display: flex;
         flex-direction: column;
+        overflow-y: auto;
         transition: transform 300ms cubic-bezier(0.25, 1, 0.5, 1);
     }
     .fl-placement-right .fl-drawer-content {
-        top: 0;
-        right: 0;
-        bottom: 0;
+        top: 0.5rem;
+        right: 0.5rem;
+        bottom: 0.5rem;
         width: 400px;
+        border-radius: 0.5rem;
         /* height: 90%; */
         transform: translateX(0);
     }

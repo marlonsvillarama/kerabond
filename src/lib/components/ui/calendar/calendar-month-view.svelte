@@ -7,6 +7,7 @@
 
     let {
         data = [],
+        style = ''
     } = $props();
     let calendarState = getContext('CALENDAR_STATE');
     let staffState = getContext('STAFF_STATE');
@@ -108,7 +109,7 @@
     };
 </script>
 
-<div class="fl-cal-month">
+<div class="fl-cal-month" {style}>
     <div class="fl-cal-month-headers">
         {#each daysOfWeek as dow}
             <div class="fl-month-header" data-dow={dow.day}>

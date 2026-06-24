@@ -80,13 +80,17 @@
         </div>
         {/each}
     </div>
-    {calendarState.date}
+    <!-- {calendarState.date} -->
 </div>
 
 <style>
     .fl-staff-sidebar {
-        width: 13rem;
-        padding: 0.5rem;
+        width: 16rem;
+        padding: 1rem;
+        background-color: var(--white);
+        border: 1px solid var(--border-light);
+        border-radius: 0.5rem;
+        /* box-shadow: var(--shadow); */
     }
     :global(.fl-staff-sidebar > *) {
         flex: 1;
@@ -111,20 +115,21 @@
     }
     .fl-staff-toggle label {
         padding: 0.5rem 0.75rem;
-        background-color: var(--border-light);
-        /* border: 1.5px solid var(--border-light); */
+        /* background-color: var(--border-light); */
+        border: 1px solid var(--border-light);
         border-radius: 0.25rem;
         cursor: pointer;
         font-size: 0.875rem;
         transition: all 100ms ease-in-out;
     }
-    .fl-staff-toggle label:hover {
+    /* .fl-staff-toggle label:hover { */
         /* background-color: var(--accent-border); */
         /* border: 1.5px solid var(--accent-border); */
-        box-shadow: var(--shadow);
-    }
+        /* box-shadow: var(--shadow); */
+    /* } */
     .fl-staff-toggle input[type=checkbox]:checked + label {
-        background-color: var(--accent-border);
-        /* border-color: var(--accent); */
+        background-color: var(--accent-pale);
+        /* background-color: var(--accent-border); */
+        border: 1px solid var(--accent-pale);
     }
 </style>

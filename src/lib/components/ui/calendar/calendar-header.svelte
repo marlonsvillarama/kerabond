@@ -37,14 +37,15 @@
             {locationText}
         </Button>
         <ButtonGroup>
-            <Button active={calendarState.mode === 'month'} flat={true} onclick={() => calendarState.mode = 'month'}>Month</Button>
+            <!-- <Button active={calendarState.mode === 'month'} flat={true} onclick={() => calendarState.mode = 'month'}>Month</Button> -->
             <Button active={calendarState.mode === 'week'} flat={true} onclick={() => calendarState.mode = 'week'}>Week</Button>
             <Button active={calendarState.mode === 'day'} flat={true} onclick={() => calendarState.mode = 'day'}>Day</Button>
         </ButtonGroup>
 
-        {#if calendarState.mode === 'month' && allStaff.length > 1}
+        <!-- {#if calendarState.mode === 'month' && allStaff.length > 1}
         <Select items={allStaff} placeholder="Choose staff" />
-        {/if}
+        {/if} -->
+        <!-- {calendarState.mode} -->
     </div>
 
     <div class="fl-cal-nav flex-center">

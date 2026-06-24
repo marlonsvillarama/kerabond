@@ -4,7 +4,7 @@
     } = $props();
 </script>
 
-<div class="fl-btn-group flex-center shadow">
+<div class="fl-btn-group flex-center">
     {@render children?.()}
 </div>
 
@@ -32,8 +32,8 @@
         border-bottom-right-radius: var(--border-radius);
     }
     :global(.fl-btn-group > button:not(:first-child):not(:last-child):hover) {
-        background-color: var(--accent);
-        border-color: var(--accent);
+        background-color: var(--light);
+        border-color: var(--light);
         color: var(--white);
     }
 </style>

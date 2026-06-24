@@ -1,15 +1,21 @@
 <script>
+    import { X } from "@lucide/svelte";
     import { getContext } from "svelte";
+    import { goto } from "$app/navigation";
     import { formatDate } from "../calendar-helper.svelte";
     import Avatar from "../../avatar.svelte";
+    import Button from "../../button.svelte";
     import CalendarMonthData from "../calendar-month-data.svelte";
+    import Dialog from "../../dialog.svelte";
     import Drawer from "$lib/components/ui/drawer.svelte";
+    import Field from "../../field.svelte";
+    import InputText from "../../input-text.svelte";
     import StaffSidebar from "../sidebar/staff-sidebar.svelte";
     import TimelineDayCell from "./timeline-day-cell.svelte";
 
     let props = $props();
     let calendarState = getContext('CALENDAR_STATE');
-    let openDrawer = $state(true);
+    let openDrawer = $state(false);
     let staffState = getContext('STAFF_STATE');
     let timelineStaff = $derived(staffState.filter(d => calendarState.selectedStaff.indexOf(d.id) >= 0));
     
@@ -72,14 +78,22 @@
 
     let activeBooking = $state('');
     const clickBooking = () => {
-        openDrawer = true;
-        // props.onbookingclick();
+        // openDrawer = true;
+        goto('/book');
     };
 
     const showDrawer = () => openDrawer = true;
+    const hideDrawer = () => {
+        if (confirm('Are you sure you want to close?') !== true) {
+            e.preventDefault();
+            return;
+        }
+
+        openDrawer = false;
+    };
 </script>
 
-<div class="fl-cal-timeline">
+<div class="fl-cal-timeline" style={props.style}>
     <StaffSidebar />
 
     <div class="fl-content fl-page">
@@ -150,32 +164,25 @@
     </div>
 </div>
 
-<Drawer bind:open={openDrawer}>
-    <div class="fl-timeline-dlg between">
-        <div>
-            <div class="heading">New Booking</div>
-            <div class="content-wrapper fl-full-scrollable">content
-                <!-- <div class="content">content</div> -->
-            </div>
-        </div>
-        <div class="footer">footer</div>
-    </div>
-</Drawer>
+<Dialog bind:open={openDrawer}>
+</Dialog>
 
 <style>
     .fl-cal-timeline {
-        background-color: var(--white);
-        border-radius: 0.5rem;
-        box-shadow: var(--shadow);
+        /* background-color: var(--white); */
+        /* border-radius: 0.5rem; */
+        /* box-shadow: var(--shadow); */
         display: grid;
         grid-template-columns: auto 1fr;
-        gap: 0.5rem;
+        gap: 1rem;
         margin: 1rem;
         margin-top: 0;
         overflow-y: auto;
     }
     .fl-cal-timeline > .fl-page {
-        border-left: 1px solid var(--border);
+        background-color: var(--white);
+        border-radius: 0.5rem;
+        border: 1px solid var(--border-light);
         flex: 1;
         display: grid;
         grid-template-rows: auto 1fr;
@@ -288,17 +295,63 @@
     .fl-timeline-dlg {
         display: flex;
         flex-direction: column;
-        /* border: 1px solid red; */
+        /* border: 1px solid blue; */
+        min-height: 40rem;
+        min-width: 60rem;
+        height: 100%;
     }
-    .fl-timeline-dlg:first-child {
+    /* .fl-timeline-dlg > :first-child {
         flex: 1;
-    }
-    .fl-timeline-dlg > :first-child > .heading {
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+        / gap: 1rem; /
+        / border: 1px solid red; /
+    } */
+    .fl-timeline-dlg > .heading {
         font-size: 1.125rem;
         font-weight: 600;
+        padding: 0.25rem;
+        border-bottom: 1px solid var(--border);
+        background-color: var(--accent);
     }
-    /* .fl-timeline-dlg .content {
-        height: 10000px;
-        border: 1px solid red;
+    .fl-timeline-dlg > .heading > span {
+        color: var(--white);
+        font-family: 'EB Garamond', serif;
+        font-size: 1.5rem;
+        font-weight: 500;
+        letter-spacing: 0.25px;
+        margin-left: 0.75rem;
+    }
+    .fl-timeline-dlg .content-wrapper {
+        flex: 1;
+        /* border: 3px solid green; */
+        /* margin-top: 0.5rem;
+        margin-bottom: 0.5rem; */
+        display: grid;
+        grid-template-columns: auto 1fr;
+        overflow-y: auto;
+    }
+    .fl-timeline-dlg .content-wrapper > .content {
+        /* height: 10000px; */
+        /* height: 100%; */
+        /* border: 1px solid red; */
+    }
+    /* .fl-timeline-dlg .footer {
+        padding: 0.25rem;
     } */
+    .fl-sidebar {
+        /* background-color: var(--ivory); */
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+        gap: 1rem;
+        width: 20rem;
+        padding: 1rem;
+        margin: 0.75rem;
+        border: none;
+        outline: none;
+        border-radius: 0.375rem;
+        box-shadow: var(--shadow);
+    }
 </style>
