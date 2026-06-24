@@ -39,8 +39,8 @@
 
         <!-- <div class="fl-app-header-actions flex-center"> -->
             <!-- <Button flat={true} Icon={Plus} /> -->
-        <Button accent={true} active={activeTab === '/'} flat={true} Icon={Calendar} onclick={() => goto('/')}>Calendar</Button>
-        <Button accent={true} active={activeTab.startsWith('/sales')} flat={true} Icon={DollarSign} onclick={() => goto('/sales')}>Sales</Button>
+        <a href="/" accent={true} active={activeTab === '/'} flat={true} Icon={Calendar} onclick={() => goto('/')}>Calendar</a>
+        <a href="/sales" accent={true} active={activeTab.startsWith('/sales')} flat={true} Icon={DollarSign} onclick={() => goto('/sales')}>Sales</a>
         <Button accent={true} active={activeTab.startsWith('/reports')} flat={true} Icon={ChartLine} onclick={() => goto('/reports')}>Reports</Button>
         <Button accent={true} active={activeTab.startsWith('/setup')} flat={true} Icon={Settings} onclick={() => goto('/setup')}>Setup</Button>
         <!-- <Select {items} id="top-list" style="width: 12rem;" /> -->
