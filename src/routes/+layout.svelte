@@ -5,6 +5,9 @@
 	import favicon from '$lib/assets/favicon.svg';
 	import AppHeader from '$lib/components/global/app-header.svelte';
 	// import CmdHeader from '$lib/components/global/cmd-header.svelte';
+    import BookingForm from "$lib/components/ui/calendar/forms/booking-form.svelte";
+    // import Drawer from '$lib/components/ui/drawer.svelte';
+    // import Dialog from "$lib/components/ui/dialog.svelte";
     import NavLoading from '$lib/components/ui/nav-loading.svelte';
 
 	let { children } = $props();
@@ -16,6 +19,7 @@
         { id: 4, name: 'Marlong', initials: 'MV' },
     ]);
     setContext('STAFF_STATE', staffState);
+    // let openDrawer = $state(true);
 </script>
 
 <svelte:head>

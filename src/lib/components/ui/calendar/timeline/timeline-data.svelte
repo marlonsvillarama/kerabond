@@ -1,6 +1,7 @@
 <script>
     import { getContext } from "svelte";
     let {
+        duration = 0,
         name = '',
         slot = '',
         staff = '',
@@ -22,17 +23,18 @@
     };
 
     const calculateHeight = () => {
-        // console.log(`interval = ${calendarState.interval}`);
         // return calendarState.interval;
-        return `2rem`;
+        let slotCount = duration / calendarState.interval;
+        console.log(`slotCount = ${slotCount}`)
+        return `calc(${calendarState.slotHeight}px * ${slotCount})`
     };
 </script>
 
-<div class="fl-cell-data flex-center between">
+<div class="fl-cell-data" style="height: {calculateHeight()};">
     <!-- <span class="staff">{staff}</span> -->
     <div class="summary">
-        <span class="name">{name}</span>
         <span class="time">{slotDisplay}</span>
+        <span class="name">{name}</span>
     </div>
     <div class="details">
         details
@@ -42,26 +44,30 @@
 <style>
     .fl-cell-data {
         /* border: 1px solid red; */
-        background-color: var(--lighter);
+        background-color: var(--accent-pale);
         /* border: inset 1px solid var(--accent-pale); */
-        box-shadow: inset 0 0 0 2px var(--accent-pale);
+        box-shadow: inset 0 0 0 1.5px var(--accent-border-pale);
+        box-sizing: border-box;
         border-radius: 0.375rem;
         cursor: pointer;
         position: absolute;
         font-size: 0.875rem;
         /* margin: 0.125rem; */
         overflow-y: hidden;
-        padding: 0;
+        padding: 0.2rem 0.375rem 0.25rem;
         transition: all 100ms ease-in-out;
         top: 0;
-        height: 3.5rem;
-        width: 100%;
-        /* width: calc(100% - 0.25rem); */
-        z-index: 2;
+        /* min-height: 100%; */
+        /* width: 100%; */
+        width: calc(100% - 0.25rem);
+        z-index: 10;
+    }
+    .fl-cell-data:hover {
+        box-shadow: inset 0 0 0 3px var(--accent-border);
     }
     .fl-cell-data > .summary {
         display: grid;
-        grid-template-columns: 1fr 35%;
+        grid-template-columns: 28% 1fr;
     }
     /* .fl-cell-data:hover {
         box-shadow: var(--shadow);
@@ -91,9 +97,12 @@
         /* font-weight: 600; */
         padding-right: 0.375rem;
     }
-    .fl-cell-data > .time {
+    .fl-cell-data > .summary > .time {
         font-weight: 600;
-        text-align: right;
+        /* text-align: right; */
         padding-right: 0.375rem;
+    }
+    .details {
+        color: var(--semi-dark);
     }
 </style>

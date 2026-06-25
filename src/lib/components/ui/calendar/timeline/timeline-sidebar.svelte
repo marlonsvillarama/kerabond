@@ -82,7 +82,7 @@
         {/each}
     </div>
     <div class="fl-timeline-actions">
-        <Button Icon={CalendarCog} class="w-full border">Timeline Settings</Button>
+        <Button Icon={CalendarCog} class="w-full border">Calendar Settings</Button>
     </div>
 </div>
 

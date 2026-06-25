@@ -9,7 +9,7 @@
 
     const getTransitionParams = () => {
         if (placement === 'left') return { x: -300 };
-        if (placement === 'right') return { x: 300 };
+        if (placement === 'right') return { x: 450 };
         if (placement === 'top') return { y: -300 };
         if (placement === 'bottom') return { y: 300 };
     };
@@ -37,9 +37,18 @@
 
         open = false;
     };
+
+    const handleClose = (e) => {
+        if (confirm('Are you sure?') !== true) {
+            e.preventDefault();
+            return;
+        }
+
+        open = false;
+    };
 </script>
 
-<dialog bind:this={dialog} onclose={handleClose} oncancel={handleCancel}
+<dialog bind:this={dialog} oncancel={handleCancel}
     onclick={(e) => e.target === dialog && handleClose()}
     class="fl-drawer-root fl-placement-{placement}"
 >
@@ -65,6 +74,7 @@
         position: fixed;
         z-index: 100;
         display: none;
+        /* overflow-x: visible; */
     }
     dialog.fl-drawer-root[open] {
         display: flex;
@@ -97,7 +107,7 @@
         top: 0.5rem;
         right: 0.5rem;
         bottom: 0.5rem;
-        width: 400px;
+        width: 450px;
         border-radius: 0.5rem;
         /* height: 90%; */
         transform: translateX(0);

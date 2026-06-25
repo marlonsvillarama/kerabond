@@ -35,36 +35,46 @@
     };
 </script>
 
-<dialog bind:this={dialog} onclose={handleClose} oncancel={handleClose}
+<dialog bind:this={dialog} oncancel={handleClose}
     onclick={(e) => e.target === dialog && handleClose()}
     class="fl-dlg-root"
 >
     <!-- {#if open} -->
         <div class="fl-backdrop" transition:fade={{ duration: 300 }}></div>
 
-        <div class="fl-dlg-content">
+        <div class="fl-dlg-content" transition:fly={{}}>
             {@render children?.()}
-            <!-- {@render header?.()} -->
-            <!-- {@render content?.()} -->
         </div>
     <!-- {/if} -->
 </dialog>
 
 <style>
     .fl-dlg-root {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translateX(-50%) translateY(-50%);
+        /* position: absolute; */
         border: 0;
         outline: 0;
+        box-sizing: border-box;
         border-radius: 0.375rem;
         /* box-shadow: var(--shadow); */
+        padding: 0;
+        margin: 0.5rem;
+        height: 100%;
+        max-height: calc(100vh - 1rem);
+        /* max-width: 100vw; */
+        width: 25rem;
+        position: fixed;
+        /* bottom: 0.5rem; */
+        right: 0.5rem;
+        /* left: 200px; */
+        /* height: 100%; */
+        /* bottom: 0.5rem; */
+        transform: translateX(100vw);
+        z-index: 100;
+        /* display: none; */
     }
     dialog.fl-dlg-root::backdrop {
-        background-color: rgb(0, 0, 0, 0.4);
-        backdrop-filter: blur(4px);
-        /* display: flex; */
+        background-color: rgb(0, 0, 0, 0.2);
+        backdrop-filter: blur(2px);
     }
     .fl-dlg-content {
         display: flex;

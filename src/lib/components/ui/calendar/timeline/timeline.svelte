@@ -4,6 +4,7 @@
     import { goto } from "$app/navigation";
     import { formatDate } from "../calendar-helper.svelte";
     import Avatar from "../../avatar.svelte";
+    import BookingForm from "../forms/booking-form.svelte";
     import Button from "../../button.svelte";
     import CalendarMonthData from "../calendar-month-data.svelte";
     import Dialog from "../../dialog.svelte";
@@ -16,7 +17,7 @@
 
     let props = $props();
     let calendarState = getContext('CALENDAR_STATE');
-    let openDrawer = $state(false);
+    let openDrawer = $state(true);
     let staffState = getContext('STAFF_STATE');
     let timelineStaff = $derived(staffState.filter(d => calendarState.selectedStaff.indexOf(d.id) >= 0));
     
@@ -76,19 +77,20 @@
 
     let activeBooking = $state('');
     const clickBooking = () => {
+        props.oncellclick();
         // openDrawer = true;
-        goto('/book');
+        // goto('/book');
     };
 
-    const showDrawer = () => openDrawer = true;
-    const hideDrawer = () => {
-        if (confirm('Are you sure you want to close?') !== true) {
-            e.preventDefault();
-            return;
-        }
+    // const showDrawer = () => openDrawer = true;
+    // const hideDrawer = () => {
+    //     if (confirm('Are you sure you want to close?') !== true) {
+    //         e.preventDefault();
+    //         return;
+    //     }
 
-        openDrawer = false;
-    };
+    //     openDrawer = false;
+    // };
 </script>
 
 <div class="fl-cal-timeline" style={props.style}>
@@ -109,12 +111,14 @@
                 {#each timelineStaff as staff}
                     <div class="fl-timeline-col" data-staff={staff.id}>
                         {#each timeSlots as slot}
-                            <TimelineDayCell {slot} {staff} onclick={clickBooking} />
+                            <TimelineDayCell {slot} {staff} onclick={clickBooking}
+                                booking={props.data.find(d => d.staff === staff.id && d.date === calendarState.date && d.slot === slot.value)}
+                            />
                         {/each}
-                        {#each props.data.filter(d => d.staff === staff.id && d.date === calendarState.date) as booking}
-                            <TimelineData {...booking} />
+                        <!-- {#each props.data.filter(d => d.staff === staff.id && d.date === calendarState.date) as booking} -->
+                            <!-- <TimelineData {...booking} /> -->
                         <!-- <CalendarMonthData {...booking} /> -->
-                        {/each}
+                        <!-- {/each} -->
                     </div>
                 {/each}
             {:else if calendarState.mode === 'week'}
@@ -139,9 +143,6 @@
         </div>
     </div>
 </div>
-
-<Dialog bind:open={openDrawer}>
-</Dialog>
 
 <style>
     .fl-cal-timeline {
@@ -356,5 +357,9 @@
         outline: none;
         border-radius: 0.375rem;
         box-shadow: var(--shadow);
+    }
+    .fl-booking-dlg {
+        min-width: 60rem;
+        min-height: 37.5rem;
     }
 </style>

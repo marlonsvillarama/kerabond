@@ -1,10 +1,17 @@
 <script>
+    import { getContext } from "svelte";
+    import TimelineData from "./timeline-data.svelte";
+
     let {
+        booking,
         slot = '',
         staff,
         onclick
     } = $props();
 
+    let calendarState = getContext('CALENDAR_STATE');
+    // console.log('cell slot', slot);
+    // console.log('cell booking', booking);
     let isHourStart = $derived(slot.value.slice(2) === '00');
     let isHourEnd = $derived(slot.value.slice(2) === '45');
     // let dialog = $state();
@@ -34,10 +41,17 @@
     data-staff={staff.id}
     data-date={slot.date}
     data-slot={slot.value}
+    style="height: {calendarState.slotHeight}px;"
 >
     {#if isHourStart === true}
     <span class="hour-label">{renderTime}</span>
     {/if}
+
+    {#if booking}
+        test
+        <TimelineData {...booking} />
+    {/if}
+
 </div>
 
 <!-- <dialog bind:this={dialog} class="dlg-booking"></dialog> -->
@@ -48,8 +62,8 @@
         /* border-top: 1px solid var(--border-light); */
         /* border-left: 1px solid var(--accent-border); */
         cursor: pointer;
-        height: 2rem;
-        /* padding: 0.5rem; */
+        /* height: 30px; */
+        /* padding: 0.125rem; */
         overflow: visible;
         position: relative;
         /* transition: all 20ms ease-in-out; */

@@ -1,10 +1,13 @@
 :root {
     /* --accent: #AF45C5; */
     /* --accent: #014D4E; */
-    --accent: #036C5F; /* Dark Teal */
+    /* --accent: #036C5F; Dark Teal */
+    --accent: #435b30; /* Dark Teal */
     --accent-light: #036C5F66; /* Dark Teal */
     --accent-border: #036C5F44;
-    --accent-pale: #036C5F33;
+    /* --accent-pale: #c3ffef; */
+    --accent-border-pale: #e5edda;
+    --accent-pale: #f3f7ee;
     /* --accent: #C5A35A; */
     /* --border: #E6E6E6; */
     --border: #DCDCDC;
@@ -42,6 +45,7 @@
     --darkest: #1B1B1B;
     --darker: #2E2E30;
     --dark: #59595B;
+    --semi-dark: #727272;
 
     --font-default: 'Inter', sans-serif;
 
