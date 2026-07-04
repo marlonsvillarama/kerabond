@@ -15,6 +15,8 @@
     import Button from "$lib/components/ui/button.svelte";
     import ButtonGroup from "$lib/components/ui/button-group.svelte";
     import Select from "$lib/components/ui/select.svelte";
+    import CalendarDateSelect from "./calendar-date-select.svelte";
+    import CalendarLocationSelect from "./calendar-location-select.svelte";
     import CalendarModeSelect from "./calendar-mode-select.svelte";
     import { formatDate, parseDate } from "./calendar-helper.svelte";
 
@@ -38,24 +40,8 @@
 </script>
 
 <div class="fl-cal-header">
-    <!-- <div class="fl-cal-nav flex-center"> -->
-        <!-- <Button class="btn-location btn-emphasize border" Icon={MapPin}>
-            {locationText}
-        </Button> -->
-
-        <!-- <Button Icon={Plus} class="border">New booking</Button> -->
-        <!-- {#if calendarState.mode === 'month' && allStaff.length > 1}
-        <Select items={allStaff} placeholder="Choose staff" />
-        {/if} -->
-        <!-- {calendarState.mode} -->
-    <!-- </div> -->
-
     <div class="fl-cal-nav flex-center">
-        <Button Icon={MapPin}
-            class="btn-location btn-emphasize border"
-        >
-            {locationText}
-        </Button>
+        <CalendarLocationSelect />
     </div>
 
     <div class="date-display">
@@ -70,6 +56,8 @@
         <button type="button" class="btn-nav" onclick={() => calendarState.nextDate()}>
             <ChevronRight size={20} />
         </button>
+
+        <CalendarDateSelect />
 
         <CalendarModeSelect />
         
@@ -124,8 +112,8 @@
         justify-content: end;
     }
     .btn-nav {
-        height: 2rem;
-        width: 2rem;
+        height: 2.125rem;
+        width: 2.125rem;
         cursor: pointer;
         background-color: transparent;
         border: 0;
