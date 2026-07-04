@@ -29,10 +29,18 @@
 
     class CalendarState {
         date = $state('');
+        defaults = $state({
+            location: 1
+        });
         endHour = 21;
         interval = 15;
+        locations = $state([
+            { id: 1, text: '137 The Square' },
+            { id: 2, text: '351 Broadway Avenue' },
+        ]);
         mode = $state('day');
         selectedStaff = $state([]);
+        selectedLocation = $state('');
         slot = $state('');
         slotHeight = 24;
         startHour = 8;

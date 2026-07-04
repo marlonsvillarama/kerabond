@@ -2,6 +2,19 @@
     /* --accent: #AF45C5; */
     /* --accent: #014D4E; */
     /* --accent: #036C5F; Dark Teal */
+
+    --azure-50: #f0f8fe;
+    --azure-100: #deeefb;
+    --azure-200: #c4e2f9;
+    --azure-300: #9cd1f4;
+    --azure-400: #6db6ed;
+    --azure-500: #4b99e6;
+    --azure-600: #2d78d8;
+    --azure-700: #2d69c8;
+    --azure-800: #2b56a2;
+    --azure-900: #274a81;
+    --azure-950: #1c2e4f;
+
     --accent: #435b30; /* Dark Teal */
     --accent-light: #036C5F66; /* Dark Teal */
     --accent-border: #036C5F44;
@@ -34,7 +47,7 @@
     --ivory: #FAF6F0;
     --purple: #AF45C5;
     --sand: #E8D9BC;
-    /* --white: #FDFCFA; */
+    --off-white: #FDFCFA;
     --white: #fff;
 
     --lightest: #FCFCFC;
@@ -47,7 +60,7 @@
     --dark: #59595B;
     --semi-dark: #727272;
 
-    --font-default: 'Inter', sans-serif;
+    --font-default: system-ui, sans-serif;
 
 
 
@@ -61,6 +74,17 @@
     /* #4FB9AF */
     /* #81CDC6 */
     /* #B3E0DC */
+}
+
+[data-theme="azure"] {
+    --primary-lightest: #f0f8fe;
+    --primary-lighter: #deeefb;
+    --primary-light: #c4e2f9;
+    --primary-semi-light: #9cd1f4;
+    --primary: #2d78d8;
+    --primary-dark: #2b56a2;
+    --primary-darker: #274a81;
+    --primary-darkest: #1c2e4f;
 }
 
 * {

@@ -39,40 +39,93 @@
 
         <!-- <div class="fl-app-header-actions flex-center"> -->
             <!-- <Button flat={true} Icon={Plus} /> -->
-        <Button onclick={() => goto('/calendar')} href="/calendar" data-sveltekit-reload accent={true} active={activeTab === '/calendar'} flat={true} Icon={Calendar}>Calendar</Button>
-        <Button onclick={() => goto('/sales')} href="/sales" data-sveltekit-reload accent={true} active={activeTab.startsWith('/sales')} flat={true} Icon={DollarSign}>Sales</Button>
-        <Button onclick={() => goto('/reports')} href="/reports" data-sveltekit-reload accent={true} active={activeTab.startsWith('/reports')} flat={true} Icon={ChartLine}>Reports</Button>
-        <Button onclick={() => goto('/setup')} href="/setup" data-sveltekit-reload accent={true} active={activeTab.startsWith('/setup')} flat={true} Icon={Settings}>Setup</Button>
-        <!-- <Select {items} id="top-list" style="width: 12rem;" /> -->
+        <a href="/calendar" data-sveltekit-reload
+            class:fl-app-header-tab={!activeTab.startsWith('/calendar')}
+            class:fl-app-header-tab-active={activeTab.startsWith('/calendar')}
+        >Calendar</a>
+        <a href="/sales" data-sveltekit-reload
+            class:fl-app-header-tab={!activeTab.startsWith('/sales')}
+            class:fl-app-header-tab-active={activeTab.startsWith('/sales')}
+        >Sales</a>
+        <a href="/reports" data-sveltekit-reload
+            class:fl-app-header-tab={!activeTab.startsWith('/reports')}
+            class:fl-app-header-tab-active={activeTab.startsWith('/reports')}
+        >Reports</a>
+        <a href="/setup" data-sveltekit-reload
+            class:fl-app-header-tab={!activeTab.startsWith('/setup')}
+            class:fl-app-header-tab-active={activeTab.startsWith('/setup')}
+        >Setup</a>
     </div>
     
     <!-- <div class="fl-user"></div> -->
     <div class="fl-app-header-controls flex-center">
-        <Button flat={true} Icon={LogOut}>Log Out</Button>
+        <button type="button" class="btn-logout">
+            <LogOut size={16} />Log Out
+        </button>
         <!-- </div> -->
     </div>
 </div>
 
 <style>
     .fl-app-header {
-        background-color: var(--white);
-        border-bottom: 1px solid var(--border);
-        padding: 0.625rem 1.25rem;
-        /* padding-left: 1.25rem; */
+        background-color: var(--darker);
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        align-items: center;
+        padding: 0 1.25rem;
     }
     .fl-company {
+        color: var(--white);
         font-size: 1.375rem;
         font-weight: 500;
-        letter-spacing: -0.25px;
+        /* letter-spacing: -0.25px; */
     }
     .fl-app-header-controls {
+        font-size: 0.875rem;
         gap: 1.25rem;
     }
-    /* .fl-app-header-actions {
+    .fl-app-header-controls:nth-child(2) {
+        justify-content: center;
+    }
+    .fl-app-header-controls:last-child {
+        justify-content: end;
+    }
+    .fl-app-header-tab,
+    :global(.fl-app-header-tab-active) {
+        font-size: 1rem;
+        font-weight: 400;
+        padding: 1rem 1.5rem;
+        text-decoration: none;
+        transition: all 100ms ease-in-out;
+    }
+    .fl-app-header-tab {
+        color: var(--lighter);
+        border-top: 4px solid var(--darker);
+    }
+    :global(.fl-app-header-tab:not(.fl-app-header-tab-active):hover) {
+        border-top: 4px solid var(--primary-lighter);
+    }
+    :global(.fl-app-header-tab-active) {
+        color: var(--darkest);
+        background-color: var(--lighter);
+        border-top: 4px solid var(--primary);
+    }
+    button.btn-logout {
+        background-color: transparent;
+        border: none;
+        border-radius: var(--border-radius);
+        color: var(--white);
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        font-size: 0.875rem;
         gap: 0.5rem;
-    } */
-    /* .fl-app-header-actions {
-        border: 1px solid red;
-    } */
+        padding: 0.6rem;
+        position: relative;
+        transition: all 100ms ease-in-out;
+    }
+    button.btn-logout:hover {
+        background-color: var(--primary);
+    }
 </style>
 <!-- h:_&:JgKC9,Dm_h -->
