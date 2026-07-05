@@ -1,12 +1,21 @@
 <script>
     let {
-        header,
         details,
-        Icon
+        dialog,
+        header,
+        Icon,
+        locked = false,
+        target
     } = $props();
+
+    let targetPopover = $state();
 </script>
 
-<div class="fl-form-item">
+<button type="button" class="fl-form-item"
+    class:fl-form-item-locked={locked === true}
+    style="anchor-name: --{target}"
+    popovertarget={target}
+>
     <div class="flex-center">
         <Icon color="#435b30" size={24} />
         <div class="fl-form-item-content">
@@ -22,10 +31,15 @@
         </div>
     {/if}
     <span class="fl-form-item-edit">Edit</span>
-</div>
+</button>
+
+<!-- <div class="fl-form-item-popover" id={target} popover bind:this={targetPopover} style="position-anchor: --{target}"> -->
+    {@render dialog?.()}
+<!-- </div> -->
 
 <style>
     .fl-form-item {
+        background-color: transparent;
         border: 1.5px solid transparent;
         border-radius: 0.25rem;
         cursor: pointer;
@@ -35,6 +49,11 @@
         display: grid;
         gap: 0.5rem;
         position: relative;
+        text-align: left;
+    }
+    .fl-form-item-locked {
+        cursor: not-allowed;
+        pointer-events: none;
     }
     .fl-form-item > div {
         display: grid;
@@ -43,7 +62,7 @@
         /* background-color: var(--lighter); */
         /* margin: 0 1.75rem; */
     }
-    .fl-form-item:hover {
+    .fl-form-item:not(.fl-form-item-locked):hover {
         border: 1.5px solid var(--primary-light);
         background-color: var(--primary-lightest);
     }
@@ -84,5 +103,16 @@
         /* font-weight: 300; */
         /* color: var(--dark); */
         color: var(--primary);
+    }
+    :global(.fl-form-item-popover) {
+        /* position: absolute; */
+        position-area: bottom center;
+        /* position-area: block-start inline-start; */
+        position-try-fallbacks: flip-inline;
+        margin-top: 2px;
+        background-color: var(--white);
+        border: 1px solid var(--border);
+        border-radius: var(--border-radius);
+        font-size: 0.875rem;
     }
 </style>
