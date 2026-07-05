@@ -1,6 +1,10 @@
-<script></script>
+<script>
+    let {
+        oncreate
+    } = $props();
+</script>
 
-<button type="button" class="fl-btn-new">Create Booking</button>
+<button type="button" class="fl-btn-new" onclick={oncreate}>Create Booking</button>
 
 <style>
     .fl-btn-new {

@@ -21,6 +21,10 @@
     import CalendarModeSelect from "./calendar-mode-select.svelte";
     import { formatDate, parseDate } from "./calendar-helper.svelte";
 
+    let {
+        oncreate
+    } = $props();
+
     const calendarState = getContext('CALENDAR_STATE');
     const staffState = getContext('STAFF_STATE');
     const allStaff = staffState.map(d => {
@@ -62,7 +66,7 @@
 
         <CalendarModeSelect />
         
-        <CalendarCreateBooking />
+        <CalendarCreateBooking {oncreate} />
     </div>
 </div>
 

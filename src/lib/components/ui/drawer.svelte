@@ -97,7 +97,7 @@
         background: var(--white);
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         z-index: 999;
-        padding: 1.5rem;
+        /* padding: 1.5rem; */
         display: flex;
         flex-direction: column;
         overflow-y: auto;

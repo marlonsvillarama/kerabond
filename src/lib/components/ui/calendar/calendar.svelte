@@ -97,7 +97,7 @@
 </script>
 
 <div class="fl-sub-wrapper">
-    <CalendarHeader />
+    <CalendarHeader oncreate={showDrawer} />
 
     <div class="fl-cal">
         {#if calendarState.mode === 'month'}
@@ -113,7 +113,7 @@
 </div>
 
 <Drawer bind:open={openDrawer}>
-    <BookingForm>
+    <BookingForm onclose={hideDrawer}>
         {#snippet footer()}
         <Button onclick={hideDrawer}>Close</Button>
         {/snippet}

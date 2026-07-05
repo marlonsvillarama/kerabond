@@ -14,13 +14,14 @@
         </div>
     </div>
     {#if details}
-    <div class="flex-center">
-        <div style="width:36px"></div>
-        <div class="fl-form-item-content">
-            {@render details?.()}
+        <div class="flex-center">
+            <div style="width:36px"></div>
+            <div class="fl-form-item-content">
+                {@render details?.()}
+            </div>
         </div>
-    </div>
     {/if}
+    <span class="fl-form-item-edit">Edit</span>
 </div>
 
 <style>
@@ -28,11 +29,12 @@
         border: 1.5px solid transparent;
         border-radius: 0.25rem;
         cursor: pointer;
-        padding: 0.5rem 0.25rem;
+        padding: 0.25rem 0.25rem;
         width: 100%;
-        transition: all 100ms ease-in-out;
+        /* transition: all 100ms ease-in-out; */
         display: grid;
-        gap: 0.75rem;
+        gap: 0.5rem;
+        position: relative;
     }
     .fl-form-item > div {
         display: grid;
@@ -42,8 +44,11 @@
         /* margin: 0 1.75rem; */
     }
     .fl-form-item:hover {
-        border: 1.5px solid var(--accent-border);
-        background-color: var(--lighter);
+        border: 1.5px solid var(--primary-light);
+        background-color: var(--primary-lightest);
+    }
+    .fl-form-item:hover > .fl-form-item-edit {
+        display: inline;
     }
     .fl-form-item-content {
         display: flex;
@@ -54,18 +59,30 @@
         /* border: 1px solid red; */
     }
     :global(.fl-form-item-content > .text) {
-        font-size: 0.875rem;
-        font-weight: 500;
+        color: var(--dark);
+        font-size: 1rem;
+        font-weight: 600;
     }
     :global(.fl-form-item-content > .subtext) {
         color: var(--dark);
         font-size: 0.75rem;
-        font-weight: 300;
-        opacity: 0.6;
+        /* font-weight: 500; */
+        opacity: 0.5;
     }
     :global(.fl-form-item-content > p) {
         font-size: 0.75rem;
-        font-weight: 300;
-        opacity: 0.6;
+        /* font-weight: 300; */
+        opacity: 0.7;
+    }
+    .fl-form-item-edit {
+        position: absolute;
+        display: none;
+        top: 0.25rem;
+        right: 0.5rem;
+        /* transform: translateY(-50%); */
+        font-size: 0.75rem;
+        /* font-weight: 300; */
+        /* color: var(--dark); */
+        color: var(--primary);
     }
 </style>

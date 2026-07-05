@@ -3,10 +3,11 @@
     import { getContext } from "svelte";
     import BookingFormItem from "./booking-form-item.svelte";
     import Button from "../../button.svelte";
-  import Separator from "../../separator.svelte";
+    import Separator from "../../separator.svelte";
 
     let {
         footer,
+        header,
         onclose
     } = $props();
 
@@ -23,14 +24,14 @@
 
 <div class="fl-booking">
     <!-- <div> -->
-        <!-- <div class="header between"> -->
+        <div class="fl-booking-header flex-center between">
             <div class="form-title">
                 <span class="title">Appointment Details</span>
                 <span class="sub-title">Fill out the booking form below</span>
             </div>
-            <!-- <Button flat={true} Icon={X}></Button> -->
-        <!-- </div> -->
-        <div class="content">
+            <button type="button" onclick={onclose}><X size={20} /></button>
+        </div>
+        <div class="fl-booking-content">
             <!-- <div class="content-header"> -->
                 <BookingFormItem Icon={MapPin}>
                     {#snippet header()}
@@ -57,16 +58,6 @@
             <!-- <div class="fl-sep-horizontal"></div> -->
 
             <!-- <div class="content-data"> -->
-                <BookingFormItem Icon={User}>
-                    {#snippet header()}
-                        <span class="subtext">Guest</span>
-                        <span class="text">Apple Villarama</span>
-                    {/snippet}
-                    {#snippet details()}
-                        <p>Email</p>
-                        <p>Phone</p>
-                    {/snippet}
-                </BookingFormItem>
                 <BookingFormItem Icon={Scissors}>
                     {#snippet header()}
                         <span class="subtext">Booked service</span>
@@ -76,6 +67,16 @@
                         <p>Takes around 90 minutes</p>
                     {/snippet}
                     <!-- <span class="text">11:30 am</span> -->
+                </BookingFormItem>
+                <BookingFormItem Icon={User}>
+                    {#snippet header()}
+                        <span class="subtext">Guest</span>
+                        <span class="text">Apple Villarama</span>
+                    {/snippet}
+                    {#snippet details()}
+                        <p>Email</p>
+                        <p>Phone</p>
+                    {/snippet}
                 </BookingFormItem>
             <!-- </div> -->
             <!-- <div class="content"></div> -->
@@ -131,6 +132,10 @@
         padding: 0.25rem;
         * background-color: var(--light); *
     } */
+    .fl-booking-header {
+        background-color: var(--primary);
+        padding: 0.75rem 1.5rem;
+    }
     .form-title {
         display: flex;
         flex-direction: column;
@@ -139,39 +144,59 @@
         /* margin-top: 0.75rem; */
     }
     .form-title > .title {
+        color: var(--white);
         font-size: 1.25rem;
         font-weight: 500;
     }
     .form-title > .sub-title {
-        color: var(--semi-dark);
+        color: var(--lighter);
+        /* color: var(--semi-dark); */
         font-size: 0.875rem;
         font-weight: 400;
         margin-top: 0.125rem;
         opacity: 0.8;
     }
-    .fl-booking > .content {
+    .fl-booking-header > button {
+        background-color: transparent;
+        border: 0;
+        border-radius: 50%;
+        color: var(--white);
+        cursor: pointer;
+        outline: 0;
+        height: 2.125rem;
+        width: 2.125rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .fl-booking-header > button:hover {
+        background-color: var(--primary-light);
+        color: var(--darker);
+    }
+    .fl-booking > .fl-booking-content {
         flex: 1;
         /* border: 1px solid red; */
-        margin: 1.5rem 0rem;
+        margin: 0.5rem 0rem 1rem;
         display: flex;
         flex-direction: column;
-        gap: 0.5rem;
+        gap: 0.75rem;
+        padding: 0.75rem 1rem;
     }
-    .content > .content-header {
-        display: grid;
+    /* .content > .content-header { */
+        /* display: grid; */
         /* grid-template-columns: 1fr auto 1fr auto 1fr; */
         /* grid-template-columns: 1fr 1fr 1fr; */
-        gap: 0.5rem;
-    }
+        /* gap: 0.5rem; */
+    /* } */
     /* .fl-location {
         font-weight: 400;
         opacity: 0.8;
     } */
-    .content-data {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
+    /* .content-data { */
+        /* display: flex; */
+        /* flex-direction: column; */
+        /* align-items: flex-start; */
         /* grid-template-columns: 1fr 1r; */
-        gap: 1rem;
-    }
+        /* gap: 1rem; */
+    /* } */
 </style>
