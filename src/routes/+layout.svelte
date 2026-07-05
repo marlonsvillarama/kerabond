@@ -16,7 +16,8 @@
         { id: 1, name: 'John', initials: 'JF', image: '/images/avatars/jf.png' },
         { id: 2, name: 'Apple', initials: 'AV', image: '/images/avatars/av.png' },
         { id: 3, name: 'Marlong2', initials: 'MV', image: 'images/avatars/mv2.png' },
-        { id: 4, name: 'Marlong', initials: 'MV' },
+        { id: 4, name: 'Marlong3', initials: 'MV' },
+        { id: 5, name: 'Marlong4', initials: 'MV' },
     ]);
     setContext('STAFF_STATE', staffState);
     // let openDrawer = $state(true);

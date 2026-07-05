@@ -11,39 +11,39 @@
     let staffState = getContext('STAFF_STATE');
     let openDrawer = $state(false);
 
-    // let { } = $props();
-    let data = [
-        { id: 1, date: '2026-06-15', slot: '1100', staff: 1, duration: 120, name: 'John', service: { id: 1, name: 'Haircut + blow-dry' } },
-        { id: 2, date: '2026-06-15', slot: '1430', staff: 2, duration: 60, name: 'Apple' },
-        { id: 3, date: '2026-06-16', slot: '1545', staff: 3, duration: 30, name: 'Mayey' },
-        { id: 4, date: '2026-06-17', slot: '1015', staff: 4, duration: 90, name: 'Linda' },
-        { id: 5, date: '2026-06-25', slot: '0930', staff: 1, duration: 60, name: 'Jheng' },
-        { id: 6, date: '2026-06-25', slot: '1045', staff: 2, duration: 30, name: 'Ice' },
-        { id: 6, date: '2026-06-25', slot: '1115', staff: 2, duration: 15, name: 'Ice' },
-        { id: 7, date: '2026-06-25', slot: '1300', staff: 3, duration: 105, name: 'Marlong' },
-        { id: 8, date: '2026-06-25', slot: '1300', staff: 4, duration: 30, name: 'fssgdfgdfg' },
-        { id: 8, date: '2026-06-25', slot: '1330', staff: 4, duration: 120, name: 'fssgdfgdfg' },
-        { id: 9, date: '2026-06-18', slot: '1300', staff: 1, duration: 90, name: 'aaaa' },
-        { id: 10, date: '2026-06-21', slot: '1300', staff: 2, duration: 120, name: 'iksjng ljsdbfglkjbsdfgjbasdkjbasdf' },
-    ];
+    let { data } = $props();
+    // let data = [
+    //     { id: 1, date: '2026-06-15', slot: '1100', staff: 1, duration: 120, name: 'John', service: { id: 1, name: 'Haircut + blow-dry' } },
+    //     { id: 2, date: '2026-06-15', slot: '1430', staff: 2, duration: 60, name: 'Apple' },
+    //     { id: 3, date: '2026-06-16', slot: '1545', staff: 3, duration: 30, name: 'Mayey' },
+    //     { id: 4, date: '2026-06-17', slot: '1015', staff: 4, duration: 90, name: 'Linda' },
+    //     { id: 5, date: '2026-06-25', slot: '0930', staff: 1, duration: 60, name: 'Jheng' },
+    //     { id: 6, date: '2026-06-25', slot: '1045', staff: 2, duration: 30, name: 'Ice' },
+    //     { id: 6, date: '2026-06-25', slot: '1115', staff: 2, duration: 15, name: 'Ice' },
+    //     { id: 7, date: '2026-06-25', slot: '1300', staff: 3, duration: 105, name: 'Marlong' },
+    //     { id: 8, date: '2026-06-25', slot: '1300', staff: 4, duration: 30, name: 'fssgdfgdfg' },
+    //     { id: 8, date: '2026-06-25', slot: '1330', staff: 4, duration: 120, name: 'fssgdfgdfg' },
+    //     { id: 9, date: '2026-06-18', slot: '1300', staff: 1, duration: 90, name: 'aaaa' },
+    //     { id: 10, date: '2026-06-21', slot: '1300', staff: 2, duration: 120, name: 'iksjng ljsdbfglkjbsdfgjbasdkjbasdf' },
+    // ];
 
     class CalendarState {
         date = $state('');
         defaults = $state({
             location: 1
         });
-        endHour = 21;
-        interval = 15;
+        endHour = $state(21);
+        interval = $state(15);
         locations = $state([
             { id: 1, text: '137 The Square' },
             { id: 2, text: '351 Broadway Avenue' },
         ]);
-        mode = $state('day');
+        mode = $state('month');
         selectedStaff = $state([]);
         selectedLocation = $state('');
         slot = $state('');
         slotHeight = 24;
-        startHour = 8;
+        startHour = $state(8);
         
         constructor (initialDate) {
             let dt = new Date();
@@ -55,24 +55,24 @@
             this.selectedStaff = staffState.map(d => d.id);
         }
 
-        prevDate () {
+        prevDate (type) {
             let dt = new Date(this.date);
             const prevDay = new Date(dt.getTime());
-            switch (this.mode) {
+            switch (type) {
                 case 'month': { prevDay.setMonth(prevDay.getMonth() - 1); break }
                 case 'week': { prevDay.setDate(prevDay.getDate() - 7); break }
-                case 'day': { prevDay.setDate(prevDay.getDate() - 1); break }
+                default: { prevDay.setDate(prevDay.getDate() - 1); break }
             }
             this.date = formatDate(prevDay);
         };
 
-        nextDate () {
+        nextDate (type) {
             let dt = new Date(this.date);
             const prevDay = new Date(dt.getTime());
-            switch (this.mode) {
+            switch (type) {
                 case 'month': { prevDay.setMonth(prevDay.getMonth() + 1); break }
                 case 'week': { prevDay.setDate(prevDay.getDate() + 7); break }
-                case 'day': { prevDay.setDate(prevDay.getDate() + 1); break }
+                default: { prevDay.setDate(prevDay.getDate() + 1); break }
             }
             this.date = formatDate(prevDay);
         };
@@ -100,12 +100,14 @@
     <CalendarHeader />
 
     <div class="fl-cal">
-        <!-- {#if calendarState.mode === 'week' || calendarState.mode === 'day'} -->
+        {#if calendarState.mode === 'month'}
+            <CalendarMonthView {data} />
+        {:else}
             <CalendarTimelineView {data} oncellclick={showDrawer} />
+        {/if}
         <!-- {:else if calendarState.mode === 'day'}
             <CalendarTimelineView {data} /> -->
         <!-- {:else} -->
-            <!-- <CalendarMonthView style="display: {calendarState.mode === 'month' ? 'block' : 'hidden'}" {data} /> -->
         <!-- {/if} -->
     </div>
 </div>

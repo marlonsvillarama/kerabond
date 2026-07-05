@@ -46,20 +46,21 @@
     // let timelineStaff = $derived(sortByKey(allStaff.filter(d => d.checked === true), 'name'));
 
     const updateTimelineStaff = (id) => {
-        console.log(`updateTimelineStaff; id = ${id}`);
-        // let staff = allStaff.find(d => d.id === id);
         let index = calendarState.selectedStaff.indexOf(id);
 
         if (index >= 0) {
-            calendarState.selectedStaff = calendarState.selectedStaff.filter(d => d !== id);
-            console.log('calendarState.selectedStaff', calendarState.selectedStaff);
+            let filtered = calendarState.selectedStaff.filter(d => d !== id);
+            if (filtered.length <= 0) {
+                alert('You need to view at least one staff schedule.');
+                return;
+            }
+
+            calendarState.selectedStaff = filtered;
             return;
         }
 
         calendarState.selectedStaff.push(id);
         calendarState.selectedStaff = sortByKey(calendarState.selectedStaff);
-        // timelineStaff.push(staff);
-        // timelineStaff = sortByKey(timelineStaff, 'name');
     }
 </script>
 

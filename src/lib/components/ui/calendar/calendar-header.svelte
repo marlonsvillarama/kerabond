@@ -15,6 +15,7 @@
     import Button from "$lib/components/ui/button.svelte";
     import ButtonGroup from "$lib/components/ui/button-group.svelte";
     import Select from "$lib/components/ui/select.svelte";
+    import CalendarCreateBooking from "./calendar-create-booking.svelte";
     import CalendarDateSelect from "./calendar-date-select.svelte";
     import CalendarLocationSelect from "./calendar-location-select.svelte";
     import CalendarModeSelect from "./calendar-mode-select.svelte";
@@ -49,11 +50,11 @@
     </div>
     
     <div class="date-nav">
-        <button type="button" class="btn-nav" onclick={() => calendarState.prevDate()}>
+        <button type="button" class="btn-nav" onclick={() => calendarState.prevDate(calendarState.mode)}>
             <ChevronLeft size={20} />
         </button>
         
-        <button type="button" class="btn-nav" onclick={() => calendarState.nextDate()}>
+        <button type="button" class="btn-nav" onclick={() => calendarState.nextDate(calendarState.mode)}>
             <ChevronRight size={20} />
         </button>
 
@@ -61,7 +62,7 @@
 
         <CalendarModeSelect />
         
-        <button type="button" class="fl-btn-new">Create Booking</button>
+        <CalendarCreateBooking />
     </div>
 </div>
 
@@ -137,23 +138,4 @@
         justify-content: space-between;
         padding: 0.25rem 0.5rem;
     } */
-    .fl-btn-new {
-        background-color: var(--primary);
-        border: none;
-        outline: none;
-        border-radius: var(--border-radius);
-        color: var(--white);
-        cursor: pointer;
-        display: flex;
-        justify-content: center;
-        font-size: 0.875rem;
-        gap: 0.25rem;
-        padding: 0.625rem 1rem;
-        position: relative;
-        transition: all 100ms ease-in-out;
-    }
-    .fl-btn-new:hover {
-        background-color: var(--primary-dark);
-        box-shadow: var(--shadow);
-    }
 </style>

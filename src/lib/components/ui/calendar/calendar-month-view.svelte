@@ -174,20 +174,22 @@
         justify-content: space-between;
         transition: all 100ms ease-in-out;
     }
-    :global(.fl-cell.today),
-    .fl-cal-month-cells > .fl-cell:hover {
-        box-shadow: inset 0 0 0 3px var(--accent-border);
+    :global(.fl-cell.today) {
+        box-shadow: inset 0 0 0 4px var(--primary);
+    }
+    .fl-cal-month-cells > .fl-cell:not(.today):not(.fl-out-of-month):hover {
+        box-shadow: inset 0 0 0 4px var(--primary-lighter);
     }
     .fl-cal-month-headers {
-        border-top: 1px solid var(--accent-border);
-        border-left: 1px solid var(--accent-border);
-        border-bottom: 1px solid var(--accent-border);
+        border-top: 1px solid var(--border);
+        border-left: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
         display: grid;
         grid-template-columns: repeat(7, 1fr);
     }
     .fl-month-header {
-        background-color: var(--accent-pale);
-        border-right: 1px solid var(--accent-border);
+        background-color: var(--primary-lightest);
+        border-right: 1px solid var(--border);
         font-weight: 600;
         padding: 0.5rem;
         text-align: center;
@@ -217,9 +219,13 @@
         width: 32px;
     }
     .fl-cell.fl-out-of-month {
-        background-color: var(--border);
+        background-color: var(--lighter);
+        cursor: not-allowed;
+        pointer-events: none;
     }
     .fl-cell.fl-out-of-month .fl-cell-header {
+        color: var(--dark);
+        font-weight: 400;
         opacity: 0.5;
     }
     /* .fl-cell-content {

@@ -94,7 +94,7 @@
 </script>
 
 <div class="fl-cal-timeline" style={props.style}>
-    <StaffSidebar />
+    <!-- <StaffSidebar /> -->
 
     <div class="fl-content fl-page">
         <div class="fl-timeline-header" style="grid-template-columns: repeat({timelineStaff.length}, 1fr);">
@@ -149,9 +149,9 @@
         /* background-color: var(--white); */
         /* border-radius: 0.5rem; */
         /* box-shadow: var(--shadow); */
-        display: grid;
+        /* display: grid;
         grid-template-columns: auto 1fr;
-        gap: 1rem;
+        gap: 1rem; */
         margin: 1rem;
         margin-top: 0;
         overflow-y: auto;
@@ -247,13 +247,13 @@
         font-weight: 600;
         /* padding-top: 0.5rem; */
     }
-    .fl-timeline-slot-header.week span.day {
-        color: var(--dark);
+    .fl-timeline-slot-header.week > .day {
+        color: var(--darker);
         opacity: 0.8;
         font-weight: 400;
     }
     :global(.fl-timeline-slot.selected) {
-        background-color: var(--accent-pale);
+        background-color: var(--primary-lightest);
     }
     .fl-timeline-slot.day {
         flex: 1;
@@ -272,38 +272,41 @@
         border-right: 1px solid var(--border-light);
     }
     .fl-timeline-row.fl-slot-start {
-        border-top: 1px solid var(--accent-border);
+        border-top: 1px solid var(--border);
         position: relative;
     }
-    .fl-timeline-row > span.fl-slot-start-label {
+    /* .fl-timeline-row > span.fl-slot-start-label {
         font-size: 0.875rem;
         font-weight: 500;
         position: absolute;
         top: 0.25rem;
         left: 0.375rem;
-    }
-    .fl-timeline-slot.fl-slot-start {
+    } */
+    /* .fl-timeline-slot.fl-slot-start {
         border-top: none;
-    }
+    } */
     :global(.fl-timeline-row.today) {
-        /* background-color: var(--border-pale); */
-        box-shadow: inset 0 0 0 3px var(--accent-border);
+        box-shadow: inset 0 0 0 3px var(--primary);
     }
     .fl-timeline-slot-header.today {
-        background-color: var(--accent-border);
+        background-color: var(--primary);
+        color: var(--white);
+    }
+    .fl-timeline-slot-header.week.today > span {
+        color: var(--white);
     }
     /* .fl-selection-box {
         position: absolute;
     } */
     
-    .fl-timeline-dlg {
+    /* .fl-timeline-dlg {
         display: flex;
         flex-direction: column;
-        /* border: 1px solid blue; */
+        * border: 1px solid blue; *
         min-height: 40rem;
         min-width: 60rem;
         height: 100%;
-    }
+    } */
     /* .fl-timeline-dlg > :first-child {
         flex: 1;
         display: flex;
@@ -345,7 +348,6 @@
         padding: 0.25rem;
     } */
     .fl-sidebar {
-        /* background-color: var(--ivory); */
         display: flex;
         flex-direction: column;
         box-sizing: border-box;
