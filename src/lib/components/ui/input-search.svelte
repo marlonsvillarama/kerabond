@@ -4,12 +4,18 @@
 
     let {
         flat = false,
-        id
+        id,
+        onchange,
+        value = $bindable('')
     } = $props();
+
+    // let textValue = $state('');
+
+    // const changeValue = () => onchange(textValue);
 </script>
 
-<div class="fl-search shadow" class:flat={flat === true}>
-    <input type="text" {id} class="fl-search-input" flat={true} />
+<div class="fl-search border" class:flat={flat === true}>
+    <input type="text" {id} class="fl-search-input" flat={true} {onchange} bind:value />
     <Search size={20} class="fl-search-icon" />
 </div>
 
@@ -18,7 +24,7 @@
         background-color: var(--white);
         border-radius: var(--border-radius);
         display: block;
-        padding: 0.625rem 1.5rem 0.625rem 1rem;
+        padding: 0.5rem 1.5rem 0.5rem 0.75rem;
         position: relative;
     }
     :global(.fl-search-input) {
@@ -28,7 +34,7 @@
 
         background-color: var(--white);
         /* border: 1px solid var(--border); */
-        border-radius: var(--border-radius);
+        /* border-radius: var(--border-radius); */
         /* display: block; */
         /* padding: 0.625rem 1.5rem 0.625rem 1rem; */
     }

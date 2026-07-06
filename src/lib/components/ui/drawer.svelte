@@ -30,19 +30,19 @@
     });
 
     const handleCancel = (e) => {
-        if (confirm('Are you sure?') !== true) {
-            e.preventDefault();
-            return;
-        }
+        // if (confirm('Are you sure?') !== true) {
+        //     e.preventDefault();
+        //     return;
+        // }
 
         open = false;
     };
 
     const handleClose = (e) => {
-        if (confirm('Are you sure?') !== true) {
-            e.preventDefault();
-            return;
-        }
+        // if (confirm('Are you sure?') !== true) {
+        //     e.preventDefault();
+        //     return;
+        // }
 
         open = false;
     };

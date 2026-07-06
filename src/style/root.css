@@ -101,21 +101,29 @@
 body {
     background-color: var(--lightest);
     /* border: 2px solid red; */
-    color: var(--primary);
+    color: var(--darker);
     font-family: var(--font-default);
     font-optical-sizing: auto;
     font-style: normal;
 }
 
 input {
-    color: var(--primary);
+    color: var(--darker);
 }
 
 input[type=text],
 select {
     background-color: transparent;
-    font-size: 1rem;
+    font-size: 0.875rem;
     font-weight: 400;
     letter-spacing: 0.25px;
+    border: none;
     outline: none;
+}
+
+.wrapper {
+    width: 100%;
+    max-width: 80rem;
+    margin: 0 auto;
+    /* border: 1px solid red; */
 }

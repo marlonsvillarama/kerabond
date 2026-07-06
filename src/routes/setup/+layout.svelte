@@ -1,21 +1,21 @@
 <script>
     import {
         IdCard,
-        ClipboardClock,
-        ShoppingBasket
+        CalendarRange,
+        Package
     } from "@lucide/svelte";
 
     import { Plus } from "@lucide/svelte";
 
     import Button from "$lib/components/ui/button.svelte";
     import InputSearch from "$lib/components/ui/input-search.svelte";
-    import Sidebar from "$lib/components/global/sidebar/sidebar.svelte";
+    import Sidebar from "$lib/components/global/sidebar/page-sidebar.svelte";
 
     let { children } = $props();
     let sidebarItems = [
         { id: 'staff', label: 'Staff', Icon: IdCard },
-        { id: 'schedule', label: 'Schedule', Icon: ClipboardClock },
-        { id: 'inventory', label: 'Inventory', Icon: ShoppingBasket }
+        { id: 'schedule', label: 'Schedule', Icon: CalendarRange },
+        { id: 'inventory', label: 'Inventory', Icon: Package }
     ];
 
     let pageTitle = $state('Setup Overview');
@@ -48,13 +48,18 @@
         flex: 1;
         display: grid;
         grid-template-columns: auto 1fr;
-        gap: 0.5rem;
+        gap: 1rem;
+        margin: 1rem;
         overflow-y: auto;
     }
     .fl-setup > .fl-content {
         /* border: 2px solid red; */
+        border-left: 1px solid var(--light);
         display: flex;
         flex-direction: column;
+        padding: 0 0 1rem 1rem;
+        gap: 1rem;
+        /* margin-left: 1rem; */
     }
     /* .fl-sub-content {
         border: 1px solid green;

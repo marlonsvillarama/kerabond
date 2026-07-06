@@ -60,18 +60,18 @@
     /* box-shadow: var(--shadow); */
     /* margin: 0.5rem; */
 /* } */
-.fl-page-header {
-    padding: 0.5rem;
-}
+/* .fl-page-header {
+    padding: 0 0 1rem 1rem;
+} */
 .fl-page-controls {
     gap: 0.5rem;
 }
 .fl-page-content {
     /* border: 2px solid red; */
-    padding: 0.5rem;
+    /* margin-top: 1rem; */
 }
 .fl-page-content > div {
-    height: 1000px;
+    /* height: 1000px; */
 }
 
 .fl-sub-content {

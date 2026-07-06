@@ -1,4 +1,5 @@
 <script>
+    import { Lock } from "@lucide/svelte";
     let {
         details,
         dialog,
@@ -30,7 +31,11 @@
             </div>
         </div>
     {/if}
-    <span class="fl-form-item-edit">Edit</span>
+    {#if locked}
+        <span class="fl-form-item-lock-icon"><Lock size={16} /></span>
+    {:else}
+        <span class="fl-form-item-edit">Edit</span>
+    {/if}
 </button>
 
 <!-- <div class="fl-form-item-popover" id={target} popover bind:this={targetPopover} style="position-anchor: --{target}"> -->
@@ -93,9 +98,9 @@
         /* font-weight: 300; */
         opacity: 0.7;
     }
+    .fl-form-item-lock-icon,
     .fl-form-item-edit {
         position: absolute;
-        display: none;
         top: 0.25rem;
         right: 0.5rem;
         /* transform: translateY(-50%); */
@@ -103,6 +108,9 @@
         /* font-weight: 300; */
         /* color: var(--dark); */
         color: var(--primary);
+    }
+    .fl-form-item-edit {
+        display: none;
     }
     :global(.fl-form-item-popover) {
         /* position: absolute; */
