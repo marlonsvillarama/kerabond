@@ -11,45 +11,22 @@
     import FormStaffLocation from "$lib/components/ui/calendar/forms/form-staff-location.svelte";
     import InputSearch from "$lib/components/ui/input-search.svelte";
     import TableStaff from "$lib/components/ui/table/table-staff.svelte";
+    import { sortByKey } from "$lib/modules/sort";
 
     let { data } = $props();
     let staffPopover = $state();
 
-    console.log('data.staff', data.staff);
     const BLANK_DETAILS = {
         first_name: '',
         last_name: '',
         phone: '',
         email: ''
     };
-    const newStaff = () => {
-        staffPopover.showModal();
-    };
-    const resetDetails = () => {
-        staffDetails = Object.assign({}, BLANK_DETAILS);
-    };
-    const sortByKey = (list, key) => {
-        if (key) {
-            list.sort((a, b) => {
-                if (a[key] < b[key]) return -1;
-                if (b[key] < a[key]) return 1;
-                return 0;
-            });
-        }
-        else {
-            list.sort((a, b) => {
-                if (a < b) return -1;
-                if (b < a) return 1;
-                return 0;
-            });
-        }
-
-        list = list;
-        return list;
-    };
+    const newStaff = () => staffPopover.showModal();
+    const resetDetails = () => staffDetails = Object.assign({}, BLANK_DETAILS);
 
     let staffList = $state(data.staff);
-    let allStaff = $derived(
+    let allStaff = $state(
         staffList.map(d => {
             return {
                 ...d,

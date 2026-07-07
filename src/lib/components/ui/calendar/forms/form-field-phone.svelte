@@ -1,5 +1,5 @@
 <script>
-    import { NZPhoneFormatter } from "$lib/components/global/formatters/phone";
+    import { NZPhoneFormatter } from "$lib/modules/phone";
     let {
         id = 'fld',
         label = 'Field',

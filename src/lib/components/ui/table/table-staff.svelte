@@ -1,7 +1,7 @@
 <script>
     import { Check, Square, SquareCheckBig, SquareMinus } from "@lucide/svelte";
     import TableRow from "./table-row-staff.svelte";
-    import { NZPhoneFormatter } from "$lib/components/global/formatters/phone";
+    import { NZPhoneFormatter } from "$lib/modules/phone";
 
     let {
         headers,
@@ -10,24 +10,36 @@
 
     // let sortedRows = sortByKey(rows, 'name');
 
-    const editRow = (rowId) => {
-        // alert(`edit rowId = ${rowId}`);
+    let tableRows = $state(rows);
+    const toggleAll = (add) => {
+        console.log('toggleAll', add === true);
+        for (let i = 0, count = tableRows.length; i < count; i++) {
+            tableRows[i].selected = (add === true);
+        }
+        tableRows = tableRows;
+        console.log(`toggleAll (${add === true}) tableRows`, tableRows);
     };
 
-    const toggleRow = (rowId) => {
-        // alert(`toggle rowId = ${rowId}`);
-    };
+    let selectedCount = $derived(tableRows.filter(d => d.selected === true).length);
 
-    let checkedRows = $state([]);
+    const deleteRows = () => {
+        alert('deleteRows')
+    };
 </script>
 
 <div class="fl-table-controls">
     <div>
-        <button type="button">Select All</button>
-        <button type="button">Uncheck All</button>
+        <button type="button" onclick={() => toggleAll(true)}>Select all</button>
+        <button type="button" onclick={() => toggleAll(false)}>Uncheck all</button>
+
+        {#if selectedCount > 0}
+            <button type="button" onclick={deleteRows}
+                class="fl-btn-alert"
+            >Delete {selectedCount} row{selectedCount === 1 ? '' : 's'}</button>
+        {/if}
     </div>
     <div>
-        <span class="found">Found {rows.length} records</span>
+        <span class="found">Found {tableRows.length} records</span>
     </div>
 </div>
 
@@ -45,8 +57,8 @@
         </tr>
     </thead>
     <tbody class="fl-table-body">
-        {#each rows as row}
-            <TableRow {row} {headers} onedit={editRow} ontoggle={toggleRow} />
+        {#each tableRows as _, index (tableRows[index].id)}
+            <TableRow bind:row={tableRows[index]} {headers} />
         {/each}
     </tbody>
 </table>
@@ -67,6 +79,7 @@
         font-size: 0.875rem;
         outline: none;
         padding: 0.5rem 1rem;
+        margin-right: 0.25rem;
     }
     .fl-table {
         border: 1px solid var(--light);
@@ -95,4 +108,8 @@
     /* .fl-table-body > tr:hover > .fl-table-cell {
         background-color: var(--primary-lightest);
     } */
+    .fl-btn-alert {
+        background-color: var(--alert) !important;
+        color: var(--white);
+    }
 </style>

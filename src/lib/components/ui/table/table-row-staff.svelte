@@ -1,17 +1,18 @@
 <script>
     import { Square, SquareCheckBig, Check, CalendarRange } from "@lucide/svelte";
-    import { NZPhoneFormatter } from "$lib/components/global/formatters/phone";
+    import { NZPhoneFormatter } from "$lib/modules/phone";
     import Toggle from "../toggle.svelte";
 
     let {
         headers,
-        row,
+        row = $bindable(),
         onedit,
         ontoggle,
+        // selected = $bindable(false)
     } = $props();
 
     const narrowColumns = [ 'id', 'is_active' ];
-    let isChecked = $state(false);
+    // let isChecked = $state(false);
     let isActive = $derived(row.is_active);
 
     const editRow = () => {
@@ -20,18 +21,19 @@
     };
 
     const toggleRow = () => {
-        isChecked = !isChecked;
+        // isChecked = !isChecked;
+        row.selected = !row.selected;
         ontoggle(row.id);
     }
 </script>
 
 <tr>
     <td class="fl-table-cell fl-cell-select fl-cell-narrow"
-        class:fl-table-cell-selected={isChecked === true}
+        class:fl-table-cell-selected={row.selected === true}
         onclick={toggleRow}
     >
-        <input type="checkbox" data-row-id={row.id} bind:checked={isChecked}>
-        {#if isChecked === true}
+        <input type="checkbox" data-row-id={row.id} bind:checked={row.selected}>
+        {#if row.selected === true}
             <SquareCheckBig size={20} />
         {:else}
             <Square size={20} />
@@ -39,7 +41,7 @@
     </td>
     {#each headers as header}
         <td class="fl-table-cell"
-            class:fl-table-cell-selected={isChecked === true}
+            class:fl-table-cell-selected={row.selected === true}
             class:fl-table-cell-name={header.id === 'name'}
             class:fl-cell-narrow={narrowColumns.indexOf(header.id) >= 0}
         >
@@ -60,7 +62,7 @@
         </td>
     {/each}
     <td class="fl-table-cell fl-cell-narrow"
-        class:fl-table-cell-selected={isChecked === true}
+        class:fl-table-cell-selected={row.selected === true}
     >
         <button type="button" data-row-id={row.id}
             title="Schedule"
@@ -71,7 +73,7 @@
         </button>
     </td>
     <td class="fl-table-cell fl-cell-narrow"
-        class:fl-table-cell-selected={isChecked === true}
+        class:fl-table-cell-selected={row.selected === true}
     >
         <button type="button" data-row-id={row.id}
             class="fl-row-edit"

@@ -1,7 +1,7 @@
 <script>
     import { Check, Square, SquareCheckBig, SquareMinus } from "@lucide/svelte";
     import TableRow from "./table-row-staff.svelte";
-    import { NZPhoneFormatter } from "$lib/components/global/formatters/phone";
+    import { NZPhoneFormatter } from "$lib/modules/phone";
 
     let {
         headers,

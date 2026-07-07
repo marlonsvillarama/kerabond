@@ -15,6 +15,18 @@
     --azure-900: #274a81;
     --azure-950: #1c2e4f;
 
+    --red-50: #fef2f2;
+    --red-100: #fee2e2;
+    --red-200: #fecaca;
+    --red-300: #fca5a5;
+    --red-400: #f87171;
+    --red-500: #ef4444;
+    --red-600: #dc2626;
+    --red-700: #b91c1c;
+    --red-800: #991b1b;
+    --red-900: #7f1d1d;
+    --red-950: #450a0a;
+
     --accent: #435b30; /* Dark Teal */
     --accent-light: #036C5F66; /* Dark Teal */
     --accent-border: #036C5F44;
@@ -85,6 +97,17 @@
     --primary-dark: #2b56a2;
     --primary-darker: #274a81;
     --primary-darkest: #1c2e4f;
+
+    --alert-lightest: #fef2f2;
+    --alert-lighter: #fee2e2;
+    --alert-light: #fca5a5;
+    --alert-semi-light: #f87171;
+    --red-500: #ef4444;
+    --alert: #dc2626;
+    --alert-semi-dark: #b91c1c;
+    --alert-dark: #991b1b;
+    --alert-darker: #7f1d1d;
+    --alert-darkest: #450a0a;
 }
 
 * {
