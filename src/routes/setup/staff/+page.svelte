@@ -3,8 +3,6 @@
     import { getContext, setContext } from "svelte";
     import { IdCard, Plus, Save, X } from "@lucide/svelte";
     import Drawer from "$lib/components/ui/drawer.svelte";
-    // import FormField from "$lib/components/ui/calendar/forms/form-field.svelte";
-    // import FormCheckbox from "$lib/components/ui/calendar/forms/form-checkbox.svelte";
     import FormCheckboxPill from "$lib/components/ui/calendar/forms/form-checkbox-pill.svelte";
     import FormFieldEmail from "$lib/components/ui/calendar/forms/form-field-email.svelte";
     import FormFieldPhone from "$lib/components/ui/calendar/forms/form-field-phone.svelte";
@@ -15,18 +13,21 @@
     import TableStaff from "$lib/components/ui/table/table-staff.svelte";
 
     let { data } = $props();
-    console.log('data', data);
-    let openDrawer = $state(false);
-    let openDialog = $state(false);
     let staffPopover = $state();
 
+    console.log('data.staff', data.staff);
+    const BLANK_DETAILS = {
+        first_name: '',
+        last_name: '',
+        phone: '',
+        email: ''
+    };
     const newStaff = () => {
-        console.log('newStaff');
-        openDrawer = true;
-        openDialog = true;
         staffPopover.showModal();
     };
-
+    const resetDetails = () => {
+        staffDetails = Object.assign({}, BLANK_DETAILS);
+    };
     const sortByKey = (list, key) => {
         if (key) {
             list.sort((a, b) => {
@@ -47,15 +48,16 @@
         return list;
     };
 
+    let staffList = $state(data.staff);
     let allStaff = $derived(
-        data.staff.map(d => {
+        staffList.map(d => {
             return {
                 ...d,
                 name: `${d.first_name}${d.last_name ? ' ' + d.last_name : ''}`
             }
         })
     );
-    let sortedStaff = sortByKey(data.staff, 'first_name');
+    let sortedStaff = sortByKey(staffList, 'first_name');
     let searchValue = $state('');
     let filteredStaff = $derived(searchValue ?
         allStaff.filter(d => d.name.toLowerCase().indexOf(searchValue.toLowerCase()) >= 0) : allStaff
@@ -66,28 +68,26 @@
         { id: 'name', label: 'Name' },
         { id: 'phone', label: 'Phone' },
         { id: 'email', label: 'Email' },
-        { id: 'email', label: 'Email' },
-        { id: 'email', label: 'Email' },
     ]
 
-    // const closeModal = () => {
-        // openDrawer = false;
-        // openDialog = false;
-        // if (confirm("Are you sure you want to c"))
-        // staffPopover.hideModal();
-    // };
+    let staffDetails = $state(Object.assign({}, BLANK_DETAILS));
+    const cancelForm = (e) => {
+        if (confirm('Are you sure you want to close?') === false) {
+            e.preventDefault();
+            return;
+        }
+        resetDetails();
+    };
+    const submitForm = async (e) => {
+        const actionTaken = e.submitter?.value;
+        if (actionTaken !== 'submit') { return; }
 
-    let staffDetails = $state({
-        first_name: '',
-        last_name: '',
-        phone: '',
-        email: ''
-    });
-    const submitForm = async () => {
-        console.log('staffDetails', staffDetails);
-        // const { error } = await supabase.from('kb_staff').insert(staffDetails);
-        // console.log('rsvp error', error);
-        staffPopover.hideModal();
+        staffDetails.phone = staffDetails.phone.replace(/\s/g, "");
+
+        const { data, error } = await supabase.from('kb_staff').insert(staffDetails).select();
+        staffList.push(data[0]);
+        staffList = staffList;
+        resetDetails();
     };
 </script>
 
@@ -95,7 +95,6 @@
     <h2 class="flex-center"><IdCard size={32} />Manage Staff</h2>
     <div class="fl-page-controls flex-center">
         <InputSearch bind:value={searchValue} />
-        <!-- <button type="button" onclick={newStaff} class="fl-btn-new-staff"> -->
         <button type="button" command="show-modal" commandfor="fl-staff-new" class="fl-btn-new-staff">
             <Plus size={16} />Add staff
         </button>
@@ -106,16 +105,18 @@
     <TableStaff rows={filteredStaff} {headers} />
 </div>
 
-<!-- <Drawer bind:open={openDrawer} /> -->
-
-<dialog class="fl-staff-dlg" id="fl-staff-new" bind:this={staffPopover}>
-    <div class="form-header">
-        <div class="form-title">
-            <span class="title">Add New Staff</span>
-            <!-- <span class="sub-title">Fill out the booking form below</span> -->
+<dialog class="fl-staff-dlg" id="fl-staff-new"
+    bind:this={staffPopover}
+    oncancel={cancelForm}
+    onsubmit={submitForm}
+>
+    <form method="dialog">
+        <div class="form-header">
+            <div class="form-title">
+                <span class="title">Add New Staff</span>
+            </div>
+            <button type="button" command="request-close" commandfor="fl-staff-new"><X size={20} /></button>
         </div>
-        <button type="button" command="close" commandfor="fl-staff-new"><X size={20} /></button>
-    </div>
     <div class="form-content">
         <div class="staff-details">
             <div class="fl-section-header">
@@ -129,26 +130,6 @@
                 </div>
                 <FormFieldPhone id="fl-staff-ph" label="Phone No." width="12rem" bind:value={staffDetails.phone} />
                 <FormFieldEmail id="fl-staff-em" label="Email" bind:value={staffDetails.email} />
-                <!-- <div class="fl-staff-locations">
-                    <FormFieldPills id="fl-staff-locs" label="Staff Locations" required={true}
-                        options={data.locations.map(d => {
-                            return {
-                                id: d.id,
-                                name: d.name || d.street_1
-                            };
-                        })}
-                    /> -->
-                    <!-- <span>Select branches</span> -->
-                    <!-- {#each data.locations as loc} -->
-                        <!-- <FormCheckboxPill id="fl-staff-loc-{loc.id}" label={loc.name || loc.street_1} /> -->
-                        <!-- <FormCheckbox id="fl-staff-loc-{loc.id}" label={loc.name || loc.street_1} /> -->
-                        <!-- <div class="fl-staff-loc-cb">
-                            <input type="checkbox" id="staff-loc-{loc.id}" data-location={loc.id}>
-                            <label for="staff-loc-{loc.id}">{loc.name || loc.street_1}</label>
-                        </div> -->
-                        <!-- <button type="button">{loc.name || loc.street_1}</button> -->
-                    <!-- {/each} -->
-                <!-- </div> -->
             </div>
         </div>
         <div class="fl-staff-locations">
@@ -158,19 +139,18 @@
             </div>
             <div class="section-list">
                 {#each data.locations as loc}
-                <FormStaffLocation id={loc.id} label={loc.name || loc.street_1} />
+                    <FormStaffLocation id={loc.id} label={loc.name || loc.street_1} />
                 {/each}
             </div>
         </div>
         <div class="form-buttons">
-            <button type="button" class="fl-btn-submit"
-                onclick={submitForm}
-            >
+            <button type="submit" class="fl-btn-submit" value="submit">
                 <Save size={16} />Create Staff
             </button>
-            <button type="button" class="fl-btn-default">Cancel</button>
+            <button type="button" class="fl-btn-default" command="request-close" commandfor="fl-staff-new">Cancel</button>
         </div>
     </div>
+    </form>
 </dialog>
 
 <style>
@@ -197,37 +177,21 @@
     .fl-btn-submit {
         background-color: var(--primary);
         color: var(--white);
-        /* width: 8rem; */
     }
-    /* .fl-btn-new-staff {
-        anchor-name: --anchor-add-staff;
-    } */
     .fl-btn-new-staff:hover,
     .fl-btn-submit:hover {
         background-color: var(--primary-dark);
     }
-    /* .fl-btn-open-dialog {
-        background-color: var(--white);
-        border-bottom-right-radius: 0;
-        z-index: 999;
-    } */
     .fl-staff-dlg {
-        /* top: 50%; */
-        /* left: 50%; */
         border: none;
         border-radius: 0.5rem;
         outline: none;
-        /* transform: translateX(-50%) translateY(-50%); */
         margin-top: 0.25rem;
-        /* padding: 1rem 1.5rem; */
         position: absolute;
         position-anchor: --anchor-add-staff;
         position-area: bottom span-left;
     }
     .fl-staff-dlg {
-        /* height: 100%; */
-        /* width: 100%; */
-        /* display: flex; */
         flex-direction: column;
     }
     .fl-staff-dlg::backdrop {
@@ -251,13 +215,13 @@
         font-weight: 500;
         letter-spacing: -0.25px;
     }
-    .form-title > .sub-title {
+    /* .form-title > .subtitle {
         color: var(--lighter);
         font-size: 0.75rem;
         font-weight: 400;
         margin-top: 0.125rem;
         opacity: 0.8;
-    }
+    } */
     .form-header > button {
         background-color: transparent;
         border: 0;
@@ -275,10 +239,8 @@
         background-color: var(--primary-light);
         color: var(--darker);
     }
-    /* .form-content, */
     .staff-details {
         display: grid;
-        /* gap: 1.25rem; */
     }
     .staff-details,
     .fl-staff-locations,
@@ -310,7 +272,6 @@
     .fl-section-header > .subtitle {
         color: var(--semi-dark);
         font-size: 0.75rem;
-        /* font-weight: 500; */
         opacity: 0.7;
     }
     .fl-section-content {
