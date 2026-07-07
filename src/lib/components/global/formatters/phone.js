@@ -1,6 +1,8 @@
 export const NZPhoneFormatter = (value) => {
     // format: (value) => {
-        let output = value;
+        let output = value.replace(/\s/g, "");
+        value = output;
+        console.log('NZPhoneFormatter input', output);
 
         if (value.indexOf('0') === 0) {
             if (value.length > 10) {

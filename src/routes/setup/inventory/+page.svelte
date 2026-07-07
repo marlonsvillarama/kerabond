@@ -5,7 +5,7 @@
     import Button from "$lib/components/ui/button.svelte";
     import Drawer from "$lib/components/ui/drawer.svelte";
     import InputSearch from "$lib/components/ui/input-search.svelte";
-    import Table from "$lib/components/ui/table/table.svelte";
+    import TableInventory from "$lib/components/ui/table/table-inventory.svelte";
     let openDrawer = $state(false);
 
     const newStaff = () => {
@@ -62,7 +62,7 @@
 </div>
 
 <div class="fl-full-scrollable fl-page-content">
-    <Table rows={filteredStaff} {headers} />
+    <TableInventory rows={filteredStaff} {headers} />
 </div>
 
 <Drawer bind:open={openDrawer} />

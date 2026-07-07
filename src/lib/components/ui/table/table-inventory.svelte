@@ -1,6 +1,6 @@
 <script>
     import { Check, Square, SquareCheckBig, SquareMinus } from "@lucide/svelte";
-    import TableRow from "./table-row.svelte";
+    import TableRow from "./table-row-staff.svelte";
     import { NZPhoneFormatter } from "$lib/components/global/formatters/phone";
 
     let {
@@ -11,7 +11,11 @@
     // let sortedRows = sortByKey(rows, 'name');
 
     const editRow = (rowId) => {
-        alert(`edit rowId = ${rowId}`);
+        // alert(`edit rowId = ${rowId}`);
+    };
+
+    const toggleRow = (rowId) => {
+        // alert(`toggle rowId = ${rowId}`);
     };
 
     let checkedRows = $state([]);
@@ -29,19 +33,20 @@
 
 <table class="fl-table" cellpadding="0" cellspacing="0">
     <thead class="fl-table-headers">
-        <tr cla>
-            <th class="fl-table-header">
-                <SquareCheckBig size={20} />
+        <tr>
+            <th class="fl-table-header fl-table-id">
+                <!-- <SquareCheckBig size={20} /> -->
             </th>
             {#each headers as header}
                 <th class="fl-table-header">{header.label}</th>
             {/each}
             <th class="fl-table-header"></th>
+            <th class="fl-table-header"></th>
         </tr>
     </thead>
     <tbody class="fl-table-body">
         {#each rows as row}
-            <TableRow {row} {headers} onedit={editRow} />
+            <TableRow {row} {headers} onedit={editRow} ontoggle={toggleRow} />
         {/each}
     </tbody>
 </table>
@@ -76,7 +81,7 @@
         align-items: center; */
     }
     .fl-table-header {
-        padding: 0.75rem 0.625rem;
+        padding: 1rem;
         text-align: left;
     }
     .fl-table-header {
