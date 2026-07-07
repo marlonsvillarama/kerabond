@@ -21,6 +21,9 @@
     };
 
     let selectedCount = $derived(tableRows.filter(d => d.selected === true).length);
+    const toggleRows = () => {
+        toggleAll(selectedCount < tableRows.length);
+    };
 
     const deleteRows = () => {
         alert('deleteRows')
@@ -46,8 +49,16 @@
 <table class="fl-table" cellpadding="0" cellspacing="0">
     <thead class="fl-table-headers">
         <tr>
-            <th class="fl-table-header fl-table-id">
-                <!-- <SquareCheckBig size={20} /> -->
+            <th class="fl-table-header fl-table-id"
+                onclick={() => toggleAll(selectedCount < tableRows.length)}
+            >
+                {#if selectedCount === tableRows.length}
+                    <SquareCheckBig size={20} />
+                {:else if selectedCount === 0}
+                    <Square size={20} />
+                {:else}
+                    <SquareMinus size={20} />
+                {/if}
             </th>
             {#each headers as header}
                 <th class="fl-table-header">{header.label}</th>
@@ -101,6 +112,9 @@
         background-color: var(--primary);
         color: var(--white);
         font-weight: 500;
+    }
+    .fl-table-id {
+        cursor: pointer;
     }
     :global(.fl-table-body > :nth-child(even)) {
         background-color: var(--lighter)
