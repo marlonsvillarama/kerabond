@@ -2,6 +2,7 @@
     import { Check, Square, SquareCheckBig, SquareMinus } from "@lucide/svelte";
     import TableRow from "./table-row-staff.svelte";
     import { NZPhoneFormatter } from "$lib/modules/phone";
+  import { supabase } from "$lib/supabaseClient";
 
     let {
         headers,
@@ -25,8 +26,12 @@
         toggleAll(selectedCount < tableRows.length);
     };
 
-    const deleteRows = () => {
-        alert('deleteRows')
+    const deleteRows = async () => {
+        if (confirm('Are you sure you want to delete the selected rows?') === false) { return; }
+
+        let rowsToDelete = tableRows.filter(d => d.selected === true).map(d => d.id);
+        const { data, error } = await supabase.from('kb_staff').delete().in('id', rowsToDelete);
+        tableRows = tableRows.filter(d => rowsToDelete.indexOf(d.id) < 0);
     };
 </script>
 
@@ -69,7 +74,7 @@
     </thead>
     <tbody class="fl-table-body">
         {#each tableRows as _, index (tableRows[index].id)}
-            <TableRow bind:row={tableRows[index]} {headers} />
+            <TableRow bind:row={tableRows[index]} {headers} onedit={() => {}} />
         {/each}
     </tbody>
 </table>
@@ -111,6 +116,7 @@
     .fl-table-header {
         background-color: var(--primary);
         color: var(--white);
+        font-size: 1rem;
         font-weight: 500;
     }
     .fl-table-id {

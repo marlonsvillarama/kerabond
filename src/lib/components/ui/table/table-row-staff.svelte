@@ -1,4 +1,5 @@
 <script>
+    import { supabase } from "$lib/supabaseClient";
     import { Square, SquareCheckBig, Check, CalendarRange } from "@lucide/svelte";
     import { NZPhoneFormatter } from "$lib/modules/phone";
     import Toggle from "../toggle.svelte";
@@ -20,17 +21,19 @@
         onedit(row.id);
     };
 
-    const toggleRow = () => {
-        // isChecked = !isChecked;
-        row.selected = !row.selected;
-        ontoggle(row.id);
+    const toggleActive = async () => {
+        console.log(`toggle row ${row.id}`, row.is_active);
+        const { data, error } = await supabase.from('kb_staff').update({ is_active: row.is_active }).eq('id', row.id).select();
+        if (error) {
+            console.error(error);
+        }
     }
 </script>
 
 <tr>
     <td class="fl-table-cell fl-cell-select fl-cell-narrow"
         class:fl-table-cell-selected={row.selected === true}
-        onclick={toggleRow}
+        onclick={() => row.selected = !row.selected}
     >
         <input type="checkbox" data-row-id={row.id} bind:checked={row.selected}>
         {#if row.selected === true}
@@ -46,7 +49,7 @@
             class:fl-cell-narrow={narrowColumns.indexOf(header.id) >= 0}
         >
             {#if header.id === 'is_active'}
-                <Toggle />
+                <Toggle id="toggle-{row.id}" bind:checked={row.is_active} ontoggle={toggleActive} />
             {:else if header.id === 'phone'}
                 {NZPhoneFormatter(row[header.id])}
                 <!-- {#if row[header.id] === true}
@@ -55,7 +58,7 @@
                     &nbsp;
                 {/if} -->
             {:else if header.id === 'name'}
-                <span class="fl-name">{row.name}</span>
+                {row.name}
             {:else}
                 {row[header.id]}
             {/if}
@@ -111,9 +114,9 @@
     .fl-table-cell-selected {
         background-color: var(--primary-lightest);
     }
-    .fl-table-cell-name {
+    /* .fl-table-cell-name {
         display: grid;
-    }
+    } */
     .fl-name {
         /* font-size: 1rem; */
         font-weight: 500;

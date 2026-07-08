@@ -10,7 +10,8 @@
     import FormFieldText from "$lib/components/ui/calendar/forms/form-field-text.svelte";
     import FormStaffLocation from "$lib/components/ui/calendar/forms/form-staff-location.svelte";
     import InputSearch from "$lib/components/ui/input-search.svelte";
-    import TableStaff from "$lib/components/ui/table/table-staff.svelte";
+    // import TableStaff from "$lib/components/ui/table/table-staff.svelte";
+    import StaffCard from "$lib/components/ui/staff/staff-card.svelte";
     import { sortByKey } from "$lib/modules/sort";
 
     let { data } = $props();
@@ -39,13 +40,12 @@
     let filteredStaff = $derived(searchValue ?
         allStaff.filter(d => d.name.toLowerCase().indexOf(searchValue.toLowerCase()) >= 0) : allStaff
     );
-    let headers = [
-        { id: 'id', label: 'ID' },
-        { id: 'is_active', label: 'Active' },
-        { id: 'name', label: 'Name' },
-        { id: 'phone', label: 'Phone' },
-        { id: 'email', label: 'Email' },
-    ]
+    // let headers = [
+    //     { id: 'id', label: 'ID' },
+    //     { id: 'is_active', label: 'Active' },
+    //     { id: 'name', label: 'Name' },
+    //     { id: 'contact', label: 'Contact Info' },
+    // ]
 
     let staffDetails = $state(Object.assign({}, BLANK_DETAILS));
     const cancelForm = (e) => {
@@ -66,6 +66,28 @@
         staffList = staffList;
         resetDetails();
     };
+
+    // const toggleAll = (add) => {
+    //     console.log('toggleAll', add === true);
+    //     for (let i = 0, count = tableRows.length; i < count; i++) {
+    //         tableRows[i].selected = (add === true);
+    //     }
+    //     tableRows = tableRows;
+    //     console.log(`toggleAll (${add === true}) tableRows`, tableRows);
+    // };
+
+    let selectedCount = $derived(filteredStaff.filter(d => d.selected === true).length);
+    // const toggleRows = () => {
+    //     toggleAll(selectedCount < tableRows.length);
+    // };
+
+    // const deleteRows = async () => {
+    //     if (confirm('Are you sure you want to delete the selected rows?') === false) { return; }
+
+    //     let rowsToDelete = tableRows.filter(d => d.selected === true).map(d => d.id);
+    //     const { data, error } = await supabase.from('kb_staff').delete().in('id', rowsToDelete);
+    //     tableRows = tableRows.filter(d => rowsToDelete.indexOf(d.id) < 0);
+    // };
 </script>
 
 <div class="fl-page-header flex-center between">
@@ -78,8 +100,27 @@
     </div>
 </div>
 
+<div class="fl-table-controls">
+    <div>
+        <button type="button" onclick={() => {}}>Select all</button>
+        <button type="button" onclick={() => {}}>Uncheck all</button>
+
+        {#if selectedCount > 0}
+            <button type="button" onclick={() => {}}
+                class="fl-btn-alert"
+            >Delete {selectedCount} row{selectedCount === 1 ? '' : 's'}</button>
+        {/if}
+    </div>
+    <div>
+        <span class="found">Found {filteredStaff.length} records</span>
+    </div>
+</div>
+
 <div class="fl-full-scrollable fl-page-content">
-    <TableStaff rows={filteredStaff} {headers} />
+    {#each filteredStaff as staff}
+        <StaffCard data={staff} />
+    {/each}
+    <!-- <TableStaff rows={filteredStaff} {headers} /> -->
 </div>
 
 <dialog class="fl-staff-dlg" id="fl-staff-new"
@@ -262,5 +303,67 @@
     }
     .form-buttons {
         border-top: 1px solid var(--light);
+    }
+
+    .fl-table-controls {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        font-size: 0.875rem;
+    }
+    .fl-table-controls button {
+        background-color: var(--light);
+        border: 0;
+        border-radius: 0.375rem;
+        cursor: pointer;
+        font-size: 0.875rem;
+        outline: none;
+        padding: 0.5rem 1rem;
+        margin-right: 0.25rem;
+    }
+    .fl-table {
+        border: 1px solid var(--light);
+        border-radius: 0.25rem;
+        font-size: 0.875rem;
+        width: 100%;
+    }
+    .fl-table-headers {
+        padding: 0;
+        /* background-color: var(--light); */
+        /* display: grid;
+        align-items: center; */
+    }
+    .fl-table-header {
+        padding: 1rem;
+        text-align: left;
+    }
+    .fl-table-header {
+        background-color: var(--primary);
+        color: var(--white);
+        font-size: 1rem;
+        font-weight: 500;
+    }
+    .fl-table-id {
+        cursor: pointer;
+    }
+    :global(.fl-table-body > :nth-child(even)) {
+        background-color: var(--lighter)
+    }
+    /* .fl-table-body > tr:hover > .fl-table-cell {
+        background-color: var(--primary-lightest);
+    } */
+    .fl-btn-alert {
+        background-color: var(--alert) !important;
+        color: var(--white);
+    }
+
+    .fl-page-content {
+        display: grid;
+        /* grid-auto-columns: max-content; */
+        grid-template-columns: repeat(3, 1fr);
+        /* flex-wrap: wrap; */
+        column-gap: 2rem;
+        row-gap: 2rem;
     }
 </style>

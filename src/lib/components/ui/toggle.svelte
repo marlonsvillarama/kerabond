@@ -1,15 +1,18 @@
 <script>
     let {
+        checked = $bindable(false),
+        id = 'toggle',
         ontoggle
     } = $props();
 </script>
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_static_element_interactions -->
-<div class="toggle" onclick={ontoggle}>
-    <input type="checkbox" />
+<div class="toggle">
+    <input type="checkbox" bind:checked {id} name={id} onchange={ontoggle} />
     <!-- svelte-ignore a11y_label_has_associated_control -->
-    <label></label>
+    <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+    <label for={id}></label>
 </div>
 
 <style>
@@ -36,8 +39,8 @@
     }
     .toggle label:before {
         content: '';
-        width: 40px;
-        height: 24px;
+        width: 36px;
+        height: 20px;
         background: #ccc;
         position: relative;
         display: inline-block;
@@ -48,8 +51,8 @@
     .toggle label:after {
         content: '';
         position: absolute;
-        width: 20px;
-        height: 20px;
+        width: 16px;
+        height: 16px;
         border-radius: 50%;
         left: 2px;
         top: 2px;
