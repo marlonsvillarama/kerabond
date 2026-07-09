@@ -103,7 +103,7 @@
     </div>
 </div>
 
-<div class="fl-table-controls">
+<!-- <div class="fl-table-controls">
     <div>
         <button type="button" onclick={() => {}}>Select all</button>
         <button type="button" onclick={() => {}}>Uncheck all</button>
@@ -117,7 +117,7 @@
     <div>
         <span class="found">Found {filteredStaff.length} records</span>
     </div>
-</div>
+</div> -->
 
 <div class="fl-full-scrollable fl-page-content">
     {#each filteredStaff as staff}
@@ -362,10 +362,11 @@
     }
 
     .fl-page-content {
-        display: grid;
-        /* grid-auto-columns: max-content; */
-        grid-template-columns: repeat(3, 1fr);
-        /* flex-wrap: wrap; */
+        /* display: grid; */
+        /* grid-auto-columns: 25rem; */
+        /* grid-template-columns: repeat(3, 1fr); */
+        display: flex;
+        flex-wrap: wrap;
         column-gap: 2rem;
         row-gap: 2rem;
     }

@@ -33,21 +33,23 @@
         <span class="name">{data.first_name}</span>
     </div>
     <div class="fl-staff-details">
-        <div class="contact-info">
-            <span><Phone size={16} /><span>{NZPhoneFormatter(data.phone)}</span></span>
-            <span><Mail size={16} /><span>{data.email}</span></span>
-        </div>
-        <div class="rating-info">
-            {#if data.review_count}
-                <div class="stars">
-                    {#each {length : 5} as _, i}
-                        <Star size={16} fill="#ff0" />
-                    {/each}
-                </div>
-                <span>{data.rating_ave} from {data.review_count} reviews</span>
-            {:else}
-                No reviews yet.
-            {/if}
+        <div>
+            <div class="contact-info">
+                <span><Phone size={16} /><span>{NZPhoneFormatter(data.phone)}</span></span>
+                <span><Mail size={16} /><span>{data.email}</span></span>
+            </div>
+            <div class="rating-info">
+                {#if data.review_count}
+                    <div class="stars">
+                        {#each {length : 5} as _, i}
+                            <Star size={16} fill="#ff0" />
+                        {/each}
+                    </div>
+                    <span>{data.rating_ave} from {data.review_count} reviews</span>
+                {:else}
+                    <span>No reviews yet.</span>
+                {/if}
+            </div>
         </div>
         <!-- <div class="active-info">
             <Toggle id="toggle-{data.id}" bind:checked={data.is_active} ontoggle={toggleActive} />
@@ -92,7 +94,8 @@
         outline: none;
         display: flex;
         gap: 1.5rem;
-        min-width: 20rem;
+        width: min(26rem, 100%);
+        min-width: 22rem;
         position: relative;
     }
     .fl-staff-profile {
@@ -118,33 +121,42 @@
         flex: 1;
         display: flex;
         flex-direction: column;
+        justify-content: space-between;
         gap: 1.5rem;
         /* text-align: center; */
     }
-    .fl-staff-details > .contact-info {
+    .fl-staff-details > :first-child {
+        /* border: 1px solid red; */
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    .fl-staff-details .contact-info,
+    .fl-staff-details .rating-info {
         display: flex;
         flex-direction: column;
         gap: 0.25rem;
         color: var(--dark);
     }
-    .fl-staff-details > .contact-info > span {
+    .fl-staff-details .contact-info > span,
+    .fl-staff-details .rating-info > span {
         display: flex;
         align-items: center;
         gap: 0.5rem;
         font-size: 0.75rem;
         /* font-weight: 300; */
     }
-    .fl-staff-details > .rating-info,
+    /* .fl-staff-details > .rating-info,
     .fl-staff-details > .active-info {
         display: flex;
         align-items: center;
         gap: 0.5rem;
         font-size: 0.75rem;
         color: var(--dark);
-    }
-    .fl-staff-details > .active-info > label {
+    } */
+    /* .fl-staff-details > .active-info > label {
         cursor: pointer;
-    }
+    } */
     .fl-staff-actions {
         position: absolute;
         top: 0;
