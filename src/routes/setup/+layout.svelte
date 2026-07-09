@@ -48,8 +48,8 @@
         flex: 1;
         display: grid;
         grid-template-columns: auto 1fr;
-        gap: 1rem;
-        margin: 1rem;
+        gap: 2rem;
+        margin: 1.5rem;
         overflow-y: auto;
     }
     .fl-setup > .fl-content {
@@ -57,7 +57,7 @@
         border-left: 1px solid var(--light);
         display: flex;
         flex-direction: column;
-        padding: 0 0 1rem 1rem;
+        padding: 0 0 1rem 2rem;
         gap: 1rem;
         /* margin-left: 1rem; */
     }

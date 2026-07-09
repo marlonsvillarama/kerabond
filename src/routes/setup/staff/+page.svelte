@@ -26,6 +26,9 @@
     const newStaff = () => staffPopover.showModal();
     const resetDetails = () => staffDetails = Object.assign({}, BLANK_DETAILS);
 
+    setContext('LOCATIONS', data.locations ?? []);
+    setContext('STAFF_LOCATIONS', data.staffLocations ?? []);
+    
     let staffList = $state(data.staff);
     let allStaff = $state(
         staffList.map(d => {
@@ -118,7 +121,7 @@
 
 <div class="fl-full-scrollable fl-page-content">
     {#each filteredStaff as staff}
-        <StaffCard data={staff} />
+        <StaffCard data={staff} onedit={() => {}} />
     {/each}
     <!-- <TableStaff rows={filteredStaff} {headers} /> -->
 </div>
