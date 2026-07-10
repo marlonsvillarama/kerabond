@@ -58,14 +58,14 @@
         display: flex;
         flex-direction: column;
         /* align-items: flex-start; */
-        gap: 0.25rem;
+        gap: 0.5rem;
     }
     .fl-sidebar-link {
         /* flex: 1; */
         /* border: 1px solid red; */
         color: var(--dark);
         cursor: pointer;
-        font-size: 0.875rem;
+        /* font-size: 0.875rem; */
         padding: 0.5rem 0.75rem;
         text-decoration: none;
         display: flex;

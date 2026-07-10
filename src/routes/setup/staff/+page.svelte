@@ -3,15 +3,12 @@
     import { getContext, setContext } from "svelte";
     import { IdCard, Plus, Save, X } from "@lucide/svelte";
     import Drawer from "$lib/components/ui/drawer.svelte";
-    import FormCheckboxPill from "$lib/components/ui/calendar/forms/form-checkbox-pill.svelte";
     import FormFieldEmail from "$lib/components/ui/calendar/forms/form-field-email.svelte";
     import FormFieldPhone from "$lib/components/ui/calendar/forms/form-field-phone.svelte";
-    import FormFieldPills from "$lib/components/ui/calendar/forms/form-field-pills.svelte";
     import FormFieldText from "$lib/components/ui/calendar/forms/form-field-text.svelte";
     import FormStaffLocation from "$lib/components/ui/calendar/forms/form-staff-location.svelte";
     import InputSearch from "$lib/components/ui/input-search.svelte";
-    // import TableStaff from "$lib/components/ui/table/table-staff.svelte";
-    import StaffCard from "$lib/components/ui/staff/staff-card.svelte";
+    import StaffCard from "./staff-card.svelte";
     import { sortByKey } from "$lib/modules/sort";
 
     let { data } = $props();
@@ -25,6 +22,7 @@
     };
     const newStaff = () => staffPopover.showModal();
     const resetDetails = () => staffDetails = Object.assign({}, BLANK_DETAILS);
+    let selectAll = $state(false);
 
     setContext('LOCATIONS', data.locations ?? []);
     setContext('STAFF_LOCATIONS', data.staffLocations ?? []);
@@ -38,17 +36,12 @@
             }
         })
     );
-    let sortedStaff = sortByKey(staffList, 'first_name');
+    sortByKey(allStaff, 'first_name');
+    console.log('allStaff sorted', allStaff);
     let searchValue = $state('');
     let filteredStaff = $derived(searchValue ?
-        allStaff.filter(d => d.name.toLowerCase().indexOf(searchValue.toLowerCase()) >= 0) : allStaff
+        allStaff.filter(d => d.first_name.toLowerCase().indexOf(searchValue.toLowerCase()) === 0) : allStaff
     );
-    // let headers = [
-    //     { id: 'id', label: 'ID' },
-    //     { id: 'is_active', label: 'Active' },
-    //     { id: 'name', label: 'Name' },
-    //     { id: 'contact', label: 'Contact Info' },
-    // ]
 
     let staffDetails = $state(Object.assign({}, BLANK_DETAILS));
     const cancelForm = (e) => {
@@ -65,32 +58,47 @@
         staffDetails.phone = staffDetails.phone.replace(/\s/g, "");
 
         const { data, error } = await supabase.from('kb_staff').insert(staffDetails).select();
-        staffList.push(data[0]);
-        staffList = staffList;
+        allStaff.push(data[0]);
+        sortByKey(allStaff, 'first_name');
+        // allStaff = allStaff;
         resetDetails();
     };
 
-    // const toggleAll = (add) => {
-    //     console.log('toggleAll', add === true);
-    //     for (let i = 0, count = tableRows.length; i < count; i++) {
-    //         tableRows[i].selected = (add === true);
-    //     }
-    //     tableRows = tableRows;
-    //     console.log(`toggleAll (${add === true}) tableRows`, tableRows);
-    // };
+    const toggleAll = () => {
+        selectAll = !selectAll;
+        console.log('toggleAll', selectAll);
+        allStaff.forEach(d => d.selected = selectAll);
+        allStaff = allStaff;
+        // for (let i = 0, count = tableRows.length; i < count; i++) {
+        //     tableRows[i].selected = (add === true);
+        // }
+        // tableRows = tableRows;
+        // console.log(`toggleAll (${add === true}) tableRows`, tableRows);
+    };
 
     let selectedCount = $derived(filteredStaff.filter(d => d.selected === true).length);
-    // const toggleRows = () => {
-    //     toggleAll(selectedCount < tableRows.length);
-    // };
+    const toggleOne = (id) => {
+        let el = allStaff.find(d => d.id === id);
+        if (!el) { return; }
+        el.selected = !el.selected; 
+    };
 
-    // const deleteRows = async () => {
-    //     if (confirm('Are you sure you want to delete the selected rows?') === false) { return; }
+    const deleteStaff = async (id) => {
+        if (confirm('Are you sure you want to delete this staff?') === false) { return; }
 
-    //     let rowsToDelete = tableRows.filter(d => d.selected === true).map(d => d.id);
-    //     const { data, error } = await supabase.from('kb_staff').delete().in('id', rowsToDelete);
-    //     tableRows = tableRows.filter(d => rowsToDelete.indexOf(d.id) < 0);
-    // };
+        const { data, error } = await supabase.from('kb_staff').delete().eq('id', id);
+        allStaff = allStaff.filter(d => d.id !== id);
+    };
+
+    const deleteMultiple = async () => {
+        if (confirm('Are you sure you want to delete the selected staff?') === false) { return; }
+
+        let rowsToDelete = allStaff.filter(d => d.selected === true).map(d => d.id);
+        if (rowsToDelete.length <= 0) { return; }
+
+        const { data, error } = await supabase.from('kb_staff').delete().in('id', rowsToDelete);
+        allStaff = allStaff.filter(d => rowsToDelete.indexOf(d.id) < 0);
+    };
 </script>
 
 <div class="fl-page-header flex-center between">
@@ -103,25 +111,30 @@
     </div>
 </div>
 
-<!-- <div class="fl-table-controls">
+<div class="fl-table-controls">
     <div>
-        <button type="button" onclick={() => {}}>Select all</button>
-        <button type="button" onclick={() => {}}>Uncheck all</button>
+        <button type="button" onclick={toggleAll}>
+            {#if selectAll}Uncheck{:else}Select{/if} all
+        </button>
 
         {#if selectedCount > 0}
-            <button type="button" onclick={() => {}}
+            <button type="button" onclick={deleteMultiple}
                 class="fl-btn-alert"
-            >Delete {selectedCount} row{selectedCount === 1 ? '' : 's'}</button>
+            >Delete {selectedCount} staff</button>
         {/if}
     </div>
     <div>
         <span class="found">Found {filteredStaff.length} records</span>
     </div>
-</div> -->
+</div>
 
 <div class="fl-full-scrollable fl-page-content">
     {#each filteredStaff as staff}
-        <StaffCard data={staff} onedit={() => {}} />
+        <StaffCard data={staff}
+            ondelete={deleteStaff}
+            onedit={() => {}}
+            onselect={toggleOne}
+        />
     {/each}
     <!-- <TableStaff rows={filteredStaff} {headers} /> -->
 </div>

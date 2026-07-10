@@ -1,5 +1,5 @@
 <script>
-    import Toggle from "../toggle.svelte";
+    import Toggle from "$lib/components/ui/toggle.svelte";
 </script>
 
 <div>

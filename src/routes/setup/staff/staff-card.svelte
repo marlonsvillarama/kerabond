@@ -1,22 +1,19 @@
 <script>
     import { getContext } from "svelte";
     import { NZPhoneFormatter } from "$lib/modules/phone";
-    import { Calendar, Mail, Pencil, Phone, Rows, Star, StarHalf, Trash } from "@lucide/svelte";
-    import Toggle from "../toggle.svelte";
+    import { Calendar, Check, Mail, Pencil, Phone, Rows, Star, StarHalf, Trash } from "@lucide/svelte";
+    import Toggle from "$lib/components/ui/toggle.svelte";
 
     let {
         data = $bindable(),
         onedit,
-        ontoggle,
+        ondelete,
+        onselect,
     } = $props();
 
     let allLocations = getContext('LOCATIONS');
     let staffLocationMap = getContext('STAFF_LOCATIONS').find(d => d.staff === data.id);
     let staffLocations = $state();
-
-    const editRow = () => {
-        onedit(data.id);
-    };
 
     const toggleActive = async () => {
         console.log(`toggle row ${data.id}`, data.is_active);
@@ -27,10 +24,16 @@
     }
 </script>
 
-<div class="fl-staff-card">
+<div class="fl-staff-card"
+    class:fl-staff-card-selected={data.selected === true}
+>
     <div class="fl-staff-profile">
         <div class="avatar">{data.first_name[0]}</div>
         <span class="name">{data.first_name}</span>
+        <div class="fl-staff-actions">
+            <button type="button" title="Edit" onclick={() => onedit(data.id)}><Pencil size={16} /></button>
+            <button type="button" title="Delete" onclick={() => ondelete(data.id)}><Trash size={16} /></button>
+        </div>
     </div>
     <div class="fl-staff-details">
         <div>
@@ -79,10 +82,16 @@
             </button>
         </div>
     </div>
-    <div class="fl-staff-actions">
-        <button type="button" title="Edit" onclick={editRow}><Pencil size={16} /></button>
-        <button type="button" title="Delete" onclick={deleteRow}><Trash size={16} /></button>
-    </div>
+    <button type="button" class="fl-select"
+        class:fl-select-selected={data.selected === true}
+        onclick={() => onselect(data.id)}
+    >
+        {#if data.selected}
+            <Check size={20} />
+        {:else}
+            Select
+        {/if}
+    </button>
 </div>
 
 <style>
@@ -94,15 +103,22 @@
         outline: none;
         display: flex;
         gap: 1.5rem;
-        width: min(26rem, 100%);
-        min-width: 22rem;
+        margin: 0.25rem;
+        width: min(23rem, 100%);
+        min-width: 23rem;
         position: relative;
+    }
+    .fl-staff-card-selected {
+        border-color: var(--primary-light);
+        outline: 3px solid var(--primary);
+        outline-offset: 1px;
     }
     .fl-staff-profile {
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
         text-align: center;
+        position: relative;
     }
     .fl-staff-profile > .avatar {
         height: 6rem;
@@ -158,11 +174,32 @@
         cursor: pointer;
     } */
     .fl-staff-actions {
-        position: absolute;
+        /* position: absolute;
         top: 0;
-        right: 0;
+        right: 0; */
+        /* border: 1px solid red; */
+        flex: 1;
+        align-items: center;
+        justify-content: center;
+        gap: 0.25rem;
+        margin-top: 0.5rem;
         display: flex;
         align-items: center;
+    }
+    .fl-staff-actions > button {
+        background-color: transparent;
+        border: 0;
+        color: var(--primary);
+        cursor: pointer;
+        font-weight: 500;
+        outline: none;
+        /* padding: 0.25rem 0.375rem; */
+        height: 32px;
+        width: 32px;
+        border-radius: 50%;
+    }
+    .fl-staff-actions > button:hover {
+        background-color: var(--semi-light);
     }
 
     .fl-staff-details > .locations-info {
@@ -196,8 +233,10 @@
         background-color: var(--white);
     }
     .staff-details-actions {
+        /* border: 1px solid red; */
         display: flex;
         gap: 0.5rem;
+        padding: 0.375rem 0;
     }
     .staff-details-actions > button {
         /* border: 1px solid var(--light); */
@@ -219,19 +258,30 @@
         border-bottom: 1px solid var(--primary);
     } */
 
-    .fl-staff-actions > button {
-        background-color: var(--primary);
-        border: 0;
-        color: var(--white);
-        cursor: pointer;
-        outline: none;
-        padding: 0.5rem 0.625rem;
-    }
-    .fl-staff-actions > button:not(:last-child) {
+    /* .fl-staff-actions > button:not(:last-child) {
         border-right: 1px solid var(--primary-dark);
-        /* border-top-right-radius: 0.5rem; */
-    }
-    .fl-staff-actions > button:last-child {
         border-top-right-radius: 0.5rem;
+    } */
+    /* .fl-staff-actions > button:last-child {
+        border-top-right-radius: 0.5rem;
+    } */
+    .fl-select {
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 0.25rem 0.25rem;
+        border: 0;
+        border-top-right-radius: 0.5rem;
+        cursor: pointer;
+        outline: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--primary-lighter);
+        /* color: var(--white); */
+    }
+    .fl-select-selected {
+        background-color: var(--primary);
+        color: var(--white);
     }
 </style>
