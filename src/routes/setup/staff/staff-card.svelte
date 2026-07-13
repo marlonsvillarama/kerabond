@@ -96,7 +96,7 @@
 
 <style>
     .fl-staff-card {
-        background-color: var(--lighter);
+        background-color: var(--white);
         border: 1px solid var(--light);
         border-radius: 0.5rem;
         padding: 1.5rem 1.5rem;

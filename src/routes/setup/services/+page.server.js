@@ -8,7 +8,8 @@ export async function load() {
 
     return {
         services: services ?? [],
+        staff: staff ?? [],
+        staffServices: staffServices ?? [],
         variants: variants ?? [],
-        staffServices: staffServices ?? []
     };
 };

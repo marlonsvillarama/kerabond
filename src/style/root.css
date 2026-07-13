@@ -122,7 +122,7 @@
 } */
 
 body {
-    background-color: var(--lightest);
+    background-color: var(--lighter);
     /* border: 2px solid red; */
     color: var(--darker);
     font-family: var(--font-default);
