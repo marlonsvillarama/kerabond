@@ -1,6 +1,6 @@
 <script>
     import { getContext } from "svelte";
-    import { Plus } from "@lucide/svelte";
+    import { Plus, PlusCircle, CircleX, CircleMinus } from "@lucide/svelte";
     import ServiceLocation from "./service-location.svelte";
     // import ServiceVariant from "./service-variant.svelte";
 
@@ -10,9 +10,9 @@
 
     const allLocations = getContext('LOCATIONS');
     console.log('allLocations', allLocations);
-    let uniqueLocations = [ ...(new Set(data.map(d => d.detail.id))) ];
+    let uniqueLocations = [ ...(new Set(data.map(d => d.location))) ];
     console.log('uniqueLocations', uniqueLocations);
-    let serviceLocations = $state(allLocations.filter(d => uniqueLocations.includes(d.id)));
+    let serviceLocations = $derived(allLocations.filter(d => uniqueLocations.includes(d.id)));
     console.log('serviceLocations', serviceLocations);
 </script>
 

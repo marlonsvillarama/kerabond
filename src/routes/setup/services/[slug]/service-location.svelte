@@ -1,5 +1,6 @@
 <script>
-    import { ChevronRight, Clock, DollarSign, Dot, X } from "@lucide/svelte";
+    import { getContext } from "svelte";
+    import { ChevronRight, CircleMinus, Dot, X } from "@lucide/svelte";
     import Toggle from "$lib/components/ui/toggle.svelte";
 
     let {
@@ -7,9 +8,17 @@
         index
     } = $props();
     // let { detail, staff } = data;
+
+    let service = getContext('SERVICE');
+    let allStaff = getContext('STAFF');
+    // let serviceLocations = $state(data.locations)
+    let locationStaff = $derived(
+        allStaff.filter(d => service.locations.map(l => l.staff)).includes(d.id)
+    );
+    console.log('locationStaff', locationStaff);
 </script>
 
-<!-- {JSON.stringify(data)} -->
+{JSON.stringify(data)}
 
 <div class="fl-service-location">
     <div class="header">

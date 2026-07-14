@@ -22,12 +22,8 @@ export async function load({ params }) {
             locations:kb_service_locations (
                 id,
                 created_at,
-                detail:kb_locations (
-                    id
-                ),
-                staff:kb_staff (
-                    id
-                )
+                location,
+                staff
             )
         `)
         .eq('id', id).single()

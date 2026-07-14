@@ -10,6 +10,7 @@
         data
     } = $props();
     let service = $state(data.service);
+    setContext('SERVICE', data);
     setContext('LOCATIONS', data.locations);
     setContext('STAFF', data.staff);
 
