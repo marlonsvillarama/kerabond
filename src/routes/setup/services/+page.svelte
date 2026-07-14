@@ -15,10 +15,12 @@
 
     let { data } = $props();
     let {
+        locations,
         services,
         staff,
         staffServices,
-        variants } = data;
+        variants
+    } = data;
     let staffPopover = $state();
 
     const BLANK_DETAILS = {
@@ -27,6 +29,7 @@
     const newStaff = () => staffPopover.showModal();
     const resetDetails = () => staffDetails = Object.assign({}, BLANK_DETAILS);
 
+    setContext('LOCATIONS', locations ?? []);
     setContext('SERVICES', services ?? []);
     setContext('STAFF', staff ?? []);
     setContext('STAFF_SERVICES', staffServices ?? []);
@@ -89,10 +92,15 @@
     //     const { data, error } = await supabase.from('kb_staff').delete().in('id', rowsToDelete);
     //     tableRows = tableRows.filter(d => rowsToDelete.indexOf(d.id) < 0);
     // };
+
+    const editService = (id) => {};
 </script>
 
+<div class="wrapper">
+
 <div class="fl-page-header flex-center between">
-    <h2 class="flex-center"><Scissors size={32} />Manage Services</h2>
+    <!-- <h2 class="flex-center"><Scissors size={24} />Services</h2> -->
+    <h2 class="flex-center">Services</h2>
     <div class="fl-page-controls flex-center">
         <InputSearch bind:value={searchValue} />
         <button type="button" command="show-modal" commandfor="fl-service-new" class="fl-btn-new-service">
@@ -121,6 +129,8 @@
     {#each filteredServices as service}
         <ServiceCard data={service} onedit={() => {}} />
     {/each}
+</div>
+
 </div>
 
 <!-- <dialog class="fl-staff-dlg" id="fl-staff-new"
@@ -172,8 +182,16 @@
 </dialog> -->
 
 <style>
+    .fl-page-header {
+        /* border: 1px solid red; */
+        margin-bottom: 1rem;
+        padding: 0 0.62rem;
+    }
     .fl-page-header > h2 {
-        gap: 0.75rem;
+        color: var(--dark);
+        font-size: 1.25rem;
+        gap: 0.5rem;
+        font-weight: 600;
     }
     .fl-btn-new-service,
     .fl-btn-default,
@@ -309,8 +327,9 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 1rem;
         font-size: 0.875rem;
+        margin-bottom: 1.5rem;
+        padding: 0 0.625rem;
     }
     .fl-table-controls button {
         background-color: var(--light);
@@ -322,7 +341,7 @@
         padding: 0.5rem 1rem;
         margin-right: 0.25rem;
     }
-    .fl-table {
+    /* .fl-table {
         border: 1px solid var(--light);
         border-radius: 0.25rem;
         font-size: 0.875rem;
@@ -330,9 +349,6 @@
     }
     .fl-table-headers {
         padding: 0;
-        /* background-color: var(--light); */
-        /* display: grid;
-        align-items: center; */
     }
     .fl-table-header {
         padding: 1rem;
@@ -349,7 +365,7 @@
     }
     :global(.fl-table-body > :nth-child(even)) {
         background-color: var(--lighter)
-    }
+    } */
     /* .fl-table-body > tr:hover > .fl-table-cell {
         background-color: var(--primary-lightest);
     } */

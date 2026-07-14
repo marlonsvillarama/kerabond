@@ -1,13 +1,12 @@
 <script>
     import { getContext } from "svelte";
-    import { Dot, IdCard, Pencil, Plus, Scissors, X } from "@lucide/svelte";
-    import ServiceBadge from "./service-badge.svelte";
+    import { IdCard, Pencil, Plus, Scissors, Trash } from "@lucide/svelte";
     import ServiceStaff from "./service-staff.svelte";
     import ServiceVariant from "./service-variant.svelte";
 
     let {
         data = $bindable(),
-        // onedit,
+        onedit,
         ondelete,
         onselect,
     } = $props();
@@ -38,144 +37,89 @@
 </script>
 
 <div class="fl-service-card">
-    <div class="icon"><Scissors size={20} /></div>
-    <div class="info">
-        <div class="details"
-            class:details-disabled={data.is_active === false}
-        >
-            <div class="header">{data.name}</div>
-            <div class="desc">{data.description}</div>
-            <div class="subdetails">
-                {serviceVariants.length} variant{serviceVariants.length === 1 ? '' : 's'}
-                <Dot size={16} />
-                {staffServices.length} assigned staff
+    
+    <!-- -- <div class="service-img"></div> --
+    -- <div class="service-details"> --
+    -- <span class="card-title">{data.name}</span> --
+        <input type="text" class="card-title" value={data.name} />
+        <textarea class="desc">{data.description}</textarea>
+        <div class="card-details">
+            <div class="primary">
+                -- <div class="controls"> --
+                    -- <div class="title">&nbsp;</div> --
+                    -- controls --
+                    -- <button type="button"><Pencil size={20} />Edit</button> --
+                    -- <button type="button"><Trash size={20} />Delete</button> --
+                -- </div> --
+                <div class="service-details">
+                    <div class="variants">
+                        <div class="section-title">
+                            <span>Variants</span>
+                            -- <span class="section-header small">Variants</span> --
+                            <div class="section-actions">
+                                <button type="button">Add variant</button>
+                            </div>
+                        </div>
+                        {#if serviceVariants.length > 0}
+                            <div>
+                                {#each serviceVariants as _, i}
+                                    <ServiceVariant bind:data={serviceVariants[i]} />
+                                {/each}
+                            </div>
+                        {:else}
+                            <div class="empty">
+                                <Scissors size={20} />
+                                <span>No variants yet for this service.</span>
+                            </div>
+                        {/if}
+                    </div>
+                -- </div> --
+                    -- <div class="staff">
+                        <div class="section-title">
+                            <span>Staff</span>
+                            <div class="section-actions">
+                                <button type="button">Assign staff</button>
+                            </div>
+                        </div>
+                        {#if staffServices.length > 0}
+                        {#each staffServices as _, i}
+                            <ServiceStaff bind:data={staffServices[i]} />
+                        {/each}
+                        {:else}
+                            <div class="empty">
+                                <IdCard size={20} />
+                                <span>No staff assigned yet.</span>
+                            </div>
+                        {/if}
+                    </div> --
+                </div>
             </div>
-            <!-- <span class="desc">{data.description}</span> -->
-        </div>
-        <div class="controls">
-            <!-- <div class="subdetails">
-                <ServiceBadge>{serviceVariants.length > 0 ? serviceVariants.length : 'No'} variant{serviceVariants.length === 1 ? '' : 's'}</ServiceBadge>
-                <Dot size={16} />
-                <ServiceBadge>{staffServices.length} assigned staff</ServiceBadge>
-            </div> -->
-            <div class="badges">
-                {#if data.is_active}
-                    <ServiceBadge type="primary">Active</ServiceBadge>
-                    {:else}
-                    <ServiceBadge type="disabled">Inactive</ServiceBadge>
-                {/if}
+            <div class="secondary">
+                <div class="thumb">
+                    <span>Upload image</span>
+                </div>
+                <div class="thumb">
+                    <span>Upload image</span>
+                </div>
             </div>
-            <div class="actions">
-                <!-- <a href="./{data.id}" type="button" onclick={() => onedit(data.id)}><Pencil size={16} /></a> -->
-                <a href="./services/{data.id}"><Pencil size={16} /></a>
-                <button type="button" onclick={() => ondelete(data.id)}><X size={16} /></button>
-            </div>
-        </div>
-    </div>
+        </div> -->
 </div>
 
 <style>
     .fl-service-card {
+        /* background-color: var(--white); */
         /* border: 1px solid var(--light); */
         /* border-left: 4px solid var(--primary); */
-        align-items: center;
-        background-color: transparent;
-        border: 0;
         border-radius: 0.5rem;
-        display: flex;
-        gap: 0.75rem;
+        display: grid;
         /* gap: 1.5rem; */
         /* margin: 0.25rem; */
         /* min-width: max(23rem, calc(100% - 0.5rem)); */
         outline: none;
         /* padding: 1rem 1.25rem; */
-        padding: 0.5rem 0.625rem;
+        padding: 0.5rem;
         position: relative;
         /* width: min(50rem, 100%); */
-        text-align: start;
-    }
-    .fl-service-card:hover {
-        background-color: var(--lighter);
-    }
-    .fl-service-card > .icon {
-        color: var(--semi-dark);
-        height: 2.5rem;
-        width: 2.5rem;
-        background-color: var(--light);
-        border-radius: 0.5rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    .fl-service-card > .info {
-        align-items: center;
-        display: flex;
-        flex: 1;
-        justify-content: space-between;
-    }
-    .info > .details {
-        /* border: 1px solid red; */
-        display: flex;
-        flex: 1;
-        flex-direction: column;
-        gap: 0.25rem;
-    }
-    .info > .details-disabled {
-        opacity: 0.4;
-    }
-    .info > .details > .header {
-        /* color: var(--darkest); */
-        font-size: 0.95rem;
-        font-weight: 600;
-        /* padding: 2px; */
-    }
-    /* .info > .details > .header-disabled { */
-        /* background-color: var(--light); */
-        /* color: var(--semi-dark); */
-        /* opacity: 0.5; */
-    /* } */
-    .subdetails {
-        display: flex;
-        align-items: center;
-        /* gap: 0.25rem; */
-    }
-    .info > .details > .desc {
-        font-size: 0.75rem;
-        /* font-weight: 500; */
-        opacity: 0.5;
-    }
-    .subdetails {
-        font-size: 0.75rem;
-        /* font-weight: 500; */
-        opacity: 0.8;
-    }
-    .info > .controls {
-        /* margin-left: 0.5rem; */
-        display: flex;
-        align-items: center;
-        gap: 2rem;
-    }
-    .info > .controls > .actions {
-        display: flex;
-        align-items: center;
-        gap: 0.25rem;
-    }
-    .info > .controls > .actions > * {
-        align-items: center;
-        background-color: transparent;
-        border: 0;
-        border-radius: 0.25rem;
-        color: var(--primary);
-        cursor: pointer;
-        display: flex;
-        justify-content: center;
-        outline: none;
-        height: 2rem;
-        width: 2rem;
-    }
-    .info > .controls > .actions > *:hover {
-        background-color: var(--primary);
-        color: var(--white);
     }
     /* @media (min-width: 60rem) {
         .fl-service-card {
@@ -196,17 +140,18 @@
         }
     } */
     /* .fl-service-card > .service-details { */
-    /* .service-details {
+    .service-details {
+        /* padding: 1rem 1.25rem; */
         position: relative;
         display: grid;
         gap: 1.5rem;
-    } */
-    /* @media (min-width: 60rem) {
+    }
+    @media (min-width: 60rem) {
         .service-details {
             grid-template-columns: 3fr 2fr;
             gap: 3rem;
         }
-    } */
+    }
     /* .service-details > .card-title { */
     .card-title {
         /* background-color: var(--lighter); */
@@ -286,7 +231,7 @@
         /* border-bottom: 1px solid var(--primary); */
     }
     /* .primary > .desc { */
-    /* .desc {
+    .desc {
         background-color: var(--lighter);
         border: 1px solid var(--light);
         border-radius: 0.25rem;
@@ -296,23 +241,24 @@
         line-height: 1.375rem;
         font-family: var(--font-default);
         font-weight: 400;
+        /* margin-bottom: 2rem; */
         opacity: 0.8;
         padding: 0.25rem 0.375rem;
         resize: none;
-    } */
+    }
     /* .primary > .desc:hover { */
-    /* .desc:hover {
+    .desc:hover {
         outline: 1px solid var(--primary-light);
-    } */
+    }
     /* .primary > .desc:focus { */
-    /* .desc:focus {
+    .desc:focus {
         background-color: var(--white);
         outline: 2px solid var(--primary);
-    } */
+    }
     /* .fl-service-card > .service-details > * {
         border: 1px solid red;
     } */
-    /* .card-details .section-title {
+    .card-details .section-title {
         display: flex;
         align-items: center;
         gap: 0.5rem;
@@ -322,8 +268,8 @@
         padding-bottom: 0.25rem;
         border-bottom: 1px solid var(--primary);
         margin-bottom: 0.25rem;
-    } */
-    /* .section-actions > button {
+    }
+    .section-actions > button {
         background-color: var(--primary);
         border: 0;
         border-radius: 0.25rem;
@@ -332,8 +278,8 @@
         font-size: 0.75rem;
         outline: none;
         padding: 0.5rem 0.625rem;
-    } */
-    /* .empty {
+    }
+    .empty {
         padding: 1.5rem;
         background-color: var(--lighter);
         border: 3px dashed var(--border);
@@ -344,11 +290,11 @@
         align-items: center;
         gap: 0.5rem;
         color: var(--semi-dark);
-    } */
-    /* .empty > span {
+    }
+    .empty > span {
         font-size: 0.875rem;
         font-style: italic;
-    } */
+    }
     /* .section-header.small {
         font-size: 1rem;
     } */

@@ -101,6 +101,8 @@
     };
 </script>
 
+<div class="wrapper">
+
 <div class="fl-page-header flex-center between">
     <h2 class="flex-center"><IdCard size={32} />Manage Staff</h2>
     <div class="fl-page-controls flex-center">
@@ -137,6 +139,8 @@
         />
     {/each}
     <!-- <TableStaff rows={filteredStaff} {headers} /> -->
+</div>
+
 </div>
 
 <dialog class="fl-staff-dlg" id="fl-staff-new"
