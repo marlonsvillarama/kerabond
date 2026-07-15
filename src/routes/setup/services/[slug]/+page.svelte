@@ -10,7 +10,7 @@
         data
     } = $props();
     let service = $state(data.service);
-    setContext('SERVICE', data);
+    setContext('SERVICE', data.service);
     setContext('LOCATIONS', data.locations);
     setContext('STAFF', data.staff);
 
@@ -27,7 +27,7 @@
     }
 </script>
 
-{JSON.stringify(service)}
+<!-- {JSON.stringify(service)} -->
 
 <div class="fl-service wrapper">
     <div class="breadcrumbs">crumbs</div>

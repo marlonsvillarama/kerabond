@@ -1,6 +1,7 @@
 <script>
     import { getContext } from "svelte";
     import { ChevronRight, CircleMinus, Dot, X } from "@lucide/svelte";
+    import StaffChip from "./staff-chip.svelte";
     import Toggle from "$lib/components/ui/toggle.svelte";
 
     let {
@@ -11,14 +12,19 @@
 
     let service = getContext('SERVICE');
     let allStaff = getContext('STAFF');
+    // console.log('allStaff', allStaff);
     // let serviceLocations = $state(data.locations)
-    let locationStaff = $derived(
-        allStaff.filter(d => service.locations.map(l => l.staff)).includes(d.id)
-    );
-    console.log('locationStaff', locationStaff);
+    let locationStaff = $derived.by(() => {
+        let staff = [ ...new Set(service.locations.filter(d => d.location === data.id).map(d => d.staff)) ];
+        console.log('staff set', staff);
+        return allStaff.filter(d => staff.indexOf(d.id) >= 0);
+        // allStaff.filter(d => service.locations.map(l => l.location).includes(d.id))
+    });
+    console.log(`staff for location = ${data.id}`, locationStaff);
 </script>
 
-{JSON.stringify(data)}
+<!-- {JSON.stringify(service)} -->
+<!-- {JSON.stringify(locationStaff)} -->
 
 <div class="fl-service-location">
     <div class="header">
@@ -36,6 +42,10 @@
     <div class="contents">
         <span class="title">Assigned:</span>
         <div class="staff">
+            <button type="button" class="btn-all">Select all</button>
+            {#each locationStaff as item}
+                <StaffChip label={item.first_name} />
+            {/each}
         </div>
     </div>
 </div>
@@ -91,9 +101,28 @@
     }
     .fl-service-location > .contents {
         margin-left: 1rem;
+        display: flex;
+        align-items: first baseline;
+        gap: 1rem;
     }
     .fl-service-location > .contents > .title {
         font-size: 0.875rem;
+        font-weight: 300;
         margin-bottom: 0.5rem;
+        opacity: 0.8;
+    }
+    .fl-service-location > .contents > .staff {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+    .fl-service-location > .contents > .staff > .btn-all {
+        background-color: transparent;
+        border: 0;
+        outline: 0;
+        cursor: pointer;
+        color: var(--primary);
+        text-decoration: underline;
     }
 </style>

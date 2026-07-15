@@ -9,18 +9,18 @@
     } = $props();
 
     const allLocations = getContext('LOCATIONS');
-    console.log('allLocations', allLocations);
+    // console.log('allLocations', allLocations);
     let uniqueLocations = [ ...(new Set(data.map(d => d.location))) ];
-    console.log('uniqueLocations', uniqueLocations);
+    // console.log('uniqueLocations', uniqueLocations);
     let serviceLocations = $derived(allLocations.filter(d => uniqueLocations.includes(d.id)));
-    console.log('serviceLocations', serviceLocations);
+    // console.log('serviceLocations', serviceLocations);
 </script>
 
 <div class="fl-service-locations">
     <!-- {JSON.stringify(data)} -->
     <div class="header">
         <span class="title">Locations</span>
-        <span class="badge">{data.length}</span>
+        <span class="badge">{serviceLocations.length}</span>
         <button type="button" class="btn-add"><Plus size={10} />Assign to location</button>
     </div>
 
@@ -85,7 +85,7 @@
         margin: 0 1.5rem;
         display: flex;
         flex-direction: column;
-        gap: 0.5rem;
+        gap: 0.75rem;
         /* border: 1px solid red; */
     }
     /* :global(.fl-service-locations > .content > *:hover) {
