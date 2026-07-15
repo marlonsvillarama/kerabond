@@ -1,5 +1,6 @@
 <script>
     // import Sidebar from "$lib/components/controls/sidebar/sidebar.svelte";
+    import ListPageContent from "./list-page-content.svelte";
 
     let {
         children

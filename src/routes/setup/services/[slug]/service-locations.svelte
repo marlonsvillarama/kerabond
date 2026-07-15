@@ -32,9 +32,9 @@
 </div>
 
 <style>
-    .fl-service-locations {
+    /* .fl-service-locations {
         margin-top: 1rem;
-    }
+    } */
     .fl-service-locations > .header {
         /* border: 1px solid */
         cursor: pointer;
@@ -82,10 +82,10 @@
         padding: 0 0.5rem;
     }
     .fl-service-locations > .content {
-        margin: 0 1.5rem;
+        margin: 0 1.25rem;
         display: flex;
         flex-direction: column;
-        gap: 0.75rem;
+        gap: 0.25rem;
         /* border: 1px solid red; */
     }
     /* :global(.fl-service-locations > .content > *:hover) {

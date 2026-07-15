@@ -1,6 +1,6 @@
 <script>
     import { getContext } from "svelte";
-    import { ChevronRight, CircleMinus, Dot, X } from "@lucide/svelte";
+    import { ChevronRight, CircleMinus, Dot, MapPin, Pencil, Plus, X } from "@lucide/svelte";
     import StaffChip from "./staff-chip.svelte";
     import Toggle from "$lib/components/ui/toggle.svelte";
 
@@ -27,34 +27,40 @@
 <!-- {JSON.stringify(locationStaff)} -->
 
 <div class="fl-service-location">
-    <div class="header">
+    <!-- <div class="header"> -->
         <div class="title">
-            <ChevronRight class="icon" size={16} />
-            Location #{index}
-            <Dot size={16} /><span class="name">{data.name || data.street_1}</span>
+            <div class="icon"><MapPin size={16} /></div>
+            <!-- <ChevronRight class="icon" size={16} /> -->
+            <!-- Location #{index} -->
+            <!-- <Dot size={16} /> -->
+            <span class="name">{data.name || data.street_1}</span>
         </div>
-        <div class="details">
-            <div class="actions">
-                <button type="button"><X size={16} /></button>
-            </div>
-        </div>
-    </div>
+    <!-- </div> -->
     <div class="contents">
-        <span class="title">Assigned:</span>
+        <!-- <span class="title">Staff:</span> -->
         <div class="staff">
-            <button type="button" class="btn-all">Select all</button>
+            <!-- <button type="button" class="btn-all">All</button> -->
             {#each locationStaff as item}
                 <StaffChip label={item.first_name} />
             {/each}
+            <!-- <button type="button" class="btn-new"><Plus size={16} /></button> -->
         </div>
     </div>
+    <!-- <div class="details"> -->
+        <div class="actions">
+            <button type="button"><Pencil size={16} /></button>
+            <button type="button"><X size={16} /></button>
+        </div>
+    <!-- </div> -->
 </div>
 
 <style>
     .fl-service-location {
-        padding: 0.25rem 0.375rem;
-        display: flex;
-        flex-direction: column;
+        padding: 0.5rem 0.5rem;
+        display: grid;
+        grid-template-columns: 1fr 1fr auto;
+        align-items: center;
+        /* flex-direction: column; */
         gap: 0.25rem;
     }
     .fl-service-location:hover {
@@ -62,25 +68,46 @@
         outline: 2px solid var(--primary);
         /* background-color: var(--lighter); */
     }
-    .fl-service-location > .header {
+    /* .fl-service-location > .header {
         display: flex;
         align-items: center;
         justify-content: space-between;
-    }
-    .fl-service-location > .header > .title {
+    } */
+    /* .fl-service-location > .header > .title { */
+    .fl-service-location > .title {
         /* font-style: italic; */
         font-weight: 300;
     }
-    .fl-service-location > .header > .title {
+    /* .fl-service-location > .header > .title { */
+    .fl-service-location > .title {
         display: flex;
         align-items: center;
+        gap: 0.75rem;
         font-size: 0.875rem;
         font-weight: 500;
     }
-    .fl-service-location > .header > .title > .name {
-        font-weight: 300;
+    .fl-service-location > .title > .icon {
+        background-color: var(--light);
+        border: 0;
+        border-radius: 0.25rem;
+        outline: none;
+        height: 2rem;
+        width: 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
-    .fl-service-location > .header > .details > .actions > button {
+    /* .fl-service-location > .header > .title > .name { */
+    /* .fl-service-location > .title > .name {
+        font-weight: 300;
+    } */
+    .fl-service-location > .actions {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    /* .fl-service-location > .header > .details > .actions > button { */
+    .fl-service-location > .actions > button {
         background-color: transparent;
         font-size: 0.75rem;
         color: var(--primary);
@@ -91,24 +118,24 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        height: 1.5rem;
-        width: 1.5rem;
+        height: 2rem;
+        width: 2rem;
     }
-    /* .fl-service-variant > .header > .details > .actions > button:hover { */
-    .fl-service-location > .header > .details > .actions > button:hover {
+    /* .fl-service-location > .header > .details > .actions > button:hover { */
+    .fl-service-location > .actions > button:hover {
         background-color: var(--primary);
         color: var(--white);
     }
     .fl-service-location > .contents {
-        margin-left: 1rem;
+        /* margin-left: 1rem; */
         display: flex;
         align-items: first baseline;
-        gap: 1rem;
+        gap: 0.5rem;
     }
     .fl-service-location > .contents > .title {
         font-size: 0.875rem;
         font-weight: 300;
-        margin-bottom: 0.5rem;
+        /* margin-bottom: 0.5rem; */
         opacity: 0.8;
     }
     .fl-service-location > .contents > .staff {

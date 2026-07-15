@@ -9,9 +9,9 @@
     // import FormFieldPills from "$lib/components/ui/calendar/forms/form-field-pills.svelte";
     // import FormFieldText from "$lib/components/ui/calendar/forms/form-field-text.svelte";
     // import FormStaffLocation from "$lib/components/ui/calendar/forms/form-staff-location.svelte";
-    import InputSearch from "$lib/components/ui/input-search.svelte";
-    import ServiceCard from "./service-card.svelte";
     import ListPageContent from "../list-page-content.svelte";
+    import InputSearch from "$lib/components/ui/input-search.svelte";
+    // import ServiceCard from "./service-card.svelte";
     import { sortByKey } from "$lib/modules/sort";
 
     let { data } = $props();
@@ -97,25 +97,23 @@
     const editService = (id) => {};
 </script>
 
-<ListPageContent title="Services" count={allServices.length}>
+<ListPageContent title="Locations" count={locations.length}>
     {#snippet controls()}
-        <InputSearch bind:value={searchValue} />
+        <InputSearch />
         <button type="button" command="show-modal" commandfor="fl-service-new" class="fl-btn-new">
-            <Plus size={16} />Add service
+            <Plus size={16} />Add location
         </button>
     {/snippet}
     
-    {#each filteredServices as service}
+    <!-- {#each filteredServices as service}
         <ServiceCard data={service} onedit={() => {}} />
-    {/each}
+    {/each} -->
 </ListPageContent>
+
 <!-- <div class="wrapper"> -->
 
 <!-- <div class="fl-page-header flex-center between">
-    <div class="title">
-        <span class="name">Services</span>
-        <div class="count">{services.length}</div>
-    </div>
+    <h2 class="flex-center">Locations</h2>
     <div class="fl-page-controls flex-center">
         <InputSearch bind:value={searchValue} />
         <button type="button" command="show-modal" commandfor="fl-service-new" class="fl-btn-new-service">
@@ -198,36 +196,17 @@
 
 <style>
     .fl-page-header {
-        border-bottom: 1px solid var(--light);
-        /* padding-bottom: 1rem; */
-        margin: 0 0.625rem 1rem;
-        /* margin-bottom: 1rem; */
-        padding: 0 0 1rem;
+        /* border: 1px solid red; */
+        margin-bottom: 1rem;
+        padding: 0 0.62rem;
     }
-    .fl-page-header > .title {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-    }
-    .fl-page-header > .title > .name {
+    .fl-page-header > h2 {
         color: var(--darker);
         font-size: 1.5rem;
         gap: 0.5rem;
         font-weight: 600;
     }
-    .fl-page-header > .title > .count {
-        background-color: var(--primary-light);
-        font-weight: 500;
-        height: 2rem;
-        /* width: 2rem; */
-        padding: 0 0.75rem;
-        border: 0;
-        border-radius: 0.25rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    .fl-btn-new,
+    .fl-btn-new-service,
     .fl-btn-default,
     .fl-btn-submit {
         background-color: var(--lighter);
@@ -243,12 +222,12 @@
         gap: 0.25rem;
         anchor-name: --anchor-add-staff;
     }
-    .fl-btn-new,
+    .fl-btn-new-service,
     .fl-btn-submit {
         background-color: var(--primary);
         color: var(--white);
     }
-    .fl-btn-new:hover,
+    .fl-btn-new-service:hover,
     .fl-btn-submit:hover {
         background-color: var(--primary-dark);
     }

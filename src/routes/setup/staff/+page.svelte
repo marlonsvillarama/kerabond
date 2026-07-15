@@ -8,6 +8,7 @@
     import FormFieldText from "$lib/components/ui/calendar/forms/form-field-text.svelte";
     import FormStaffLocation from "$lib/components/ui/calendar/forms/form-staff-location.svelte";
     import InputSearch from "$lib/components/ui/input-search.svelte";
+    import ListPageContent from "../list-page-content.svelte";
     import StaffCard from "./staff-card.svelte";
     import { sortByKey } from "$lib/modules/sort";
 
@@ -101,9 +102,26 @@
     };
 </script>
 
-<div class="wrapper">
+<ListPageContent title="Staff" count={allStaff.length}>
+    {#snippet controls()}
+        <InputSearch />
+        <button type="button" command="show-modal" commandfor="fl-service-new" class="fl-btn-new">
+            <Plus size={16} />Add staff
+        </button>
+    {/snippet}
+    
+    {#each filteredStaff as staff}
+        <StaffCard data={staff}
+            ondelete={deleteStaff}
+            onedit={() => {}}
+            onselect={toggleOne}
+        />
+    {/each}
+</ListPageContent>
 
-<div class="fl-page-header flex-center between">
+<!-- <div class="wrapper"> -->
+
+<!-- <div class="fl-page-header flex-center between">
     <h2 class="flex-center"><IdCard size={32} />Manage Staff</h2>
     <div class="fl-page-controls flex-center">
         <InputSearch bind:value={searchValue} />
@@ -111,9 +129,9 @@
             <Plus size={16} />Add staff
         </button>
     </div>
-</div>
+</div> -->
 
-<div class="fl-table-controls">
+<!-- <div class="fl-table-controls">
     <div>
         <button type="button" onclick={toggleAll}>
             {#if selectAll}Uncheck{:else}Select{/if} all
@@ -128,9 +146,9 @@
     <div>
         <span class="found">Found {filteredStaff.length} records</span>
     </div>
-</div>
+</div> -->
 
-<div class="fl-full-scrollable fl-page-content">
+<!-- <div class="fl-full-scrollable fl-page-content">
     {#each filteredStaff as staff}
         <StaffCard data={staff}
             ondelete={deleteStaff}
@@ -138,10 +156,9 @@
             onselect={toggleOne}
         />
     {/each}
-    <!-- <TableStaff rows={filteredStaff} {headers} /> -->
-</div>
+</div> -->
 
-</div>
+<!-- </div> -->
 
 <dialog class="fl-staff-dlg" id="fl-staff-new"
     bind:this={staffPopover}

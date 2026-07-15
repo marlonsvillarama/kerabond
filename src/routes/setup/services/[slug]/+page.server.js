@@ -12,6 +12,10 @@ export async function load({ params }) {
             is_active,
             category,
             has_variants,
+            is_online,
+            review_count,
+            rating_ave,
+            revenue_total,
             variants:kb_service_variants (
                 id,
                 created_at,

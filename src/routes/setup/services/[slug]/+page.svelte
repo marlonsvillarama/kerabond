@@ -1,7 +1,6 @@
 <script>
     import { setContext } from "svelte";
-    import Collapsible from "$lib/components/ui/collapsible.svelte";
-    import ServiceBadge from "../service-badge.svelte";
+    import { Scissors } from "@lucide/svelte";
     import ServiceLocations from "./service-locations.svelte";
     import ServiceVariants from "./service-variants.svelte";
     import Toggle from "$lib/components/ui/toggle.svelte";
@@ -20,34 +19,43 @@
         }
     };
 
+    const clickOnline = (e) => {
+        if (service.is_online === true && confirm('Are you sure you want to take this service offline?') === false) {
+            e.preventDefault();
+        }
+    };
+
     const clickHasVariants = (e) => {
         if (service.has_variants === true && confirm('Are you sure you want to inactivate all variants for this service?') === false) {
             e.preventDefault();
         }
     }
+
+    let revenue = $derived.by(() => {
+        if (service.revenue_total > 1000000) {
+            return `$${(service.revenue_total / 1000000).toFixed(1)}M`
+        }
+        else if (service.revenue_total > 1000) {
+            return `$${(service.revenue_total / 1000).toFixed(1)}K`
+        }
+        else {
+            return `$${service.revenue_total.toFixed(0)}`
+        }
+    });
 </script>
 
-<!-- {JSON.stringify(service)} -->
+<!-- {JSON.stringify(data)} -->
 
 <div class="fl-service wrapper">
     <div class="breadcrumbs">crumbs</div>
     
     <section class="fl-page-header">
-        <!-- <h2 class="flex-center"><Scissors size={24} />Services</h2> -->
-        <h2 class="flex-center">{service.name}</h2>
-        <!-- <div class="fl-page-controls flex-center">
-            <InputSearch bind:value={searchValue} />
-            <button type="button" command="show-modal" commandfor="fl-service-new" class="fl-btn-new-service">
-                <Plus size={16} />Add service
-            </button>
-        </div> -->
-        <!-- {#if service.is_active === false}
-        <div class="fl-page-status">
-            <ServiceBadge type="alert">Inactive</ServiceBadge>
+        <div class="name">
+            <Scissors size={24} />
+            <input type="text" class="name" value={service.name} />
         </div>
-        {/if} -->
         <textarea>{service.description}</textarea>
-        <div class="toggle">
+        <!-- <div class="toggle">
             <Toggle id="active-{service.id}" bind:checked={service.is_active} onclick={(e) => clickActive(e)} />
             <label for="active-{service.id}"
                 class:inactive={service.is_active !== true}
@@ -58,13 +66,46 @@
                     This service is currently unavailable.
                 {/if}
             </label>
+        </div> -->
+    </section>
+
+    <section class="fl-summary">
+        <div class="kpi">
+            <span class="title">Total Revenue Generated</span>
+            <div class="value">{revenue}</div>
+            <span class="detail">Down 10% from last month</span>
+        </div>
+        <div class="kpi">
+            <span class="title">Average Rating</span>
+            <div class="value">{service.rating_ave}</div>
+            <span class="detail">From {service.review_count} customer reviews</span>
+        </div>
+        <div class="kpi">
+            <span class="title">Average Rating</span>
+            <div class="value">{service.rating_ave}</div>
+            <span class="detail">From {service.review_count} customer reviews</span>
+        </div>
+    </section>
+
+    <section class="fl-settings">
+        <div class="toggle">
+            <Toggle id="online-{service.id}" bind:checked={service.is_online} onclick={(e) => clickOnline(e)} />
+            <label for="online-{service.id}"
+                class:inactive={service.is_online !== true}
+            >
+                {#if service.is_online === true}
+                    This service can be booked online.
+                {:else}
+                    This service is not bookable online.
+                {/if}
+            </label>
         </div>
     </section>
     <!-- <section class="fl-page-controls">
     </section> -->
 
     <section class="fl-variants">
-        <div class="toggle">
+        <!-- <div class="toggle">
             <Toggle id="has-variants-{service.id}" bind:checked={service.has_variants} onclick={(e) => clickHasVariants(e)} />
             <label for="has-variants-{service.id}"
                 class:inactive={service.has_variants !== true}
@@ -75,11 +116,11 @@
                     This service does not use variants.
                 {/if}
             </label>
-        </div>
+        </div> -->
 
-        {#if service.has_variants}
+        <!-- {#if service.has_variants} -->
             <ServiceVariants bind:data={service.variants} />
-        {/if}
+        <!-- {/if} -->
     </section>
 
     <section class="fl-locations">
@@ -108,31 +149,50 @@
         color: var(--dark);
         display: flex;
         flex-direction: column;
-        /* gap: 1rem; */
+        gap: 2rem;
     }
     .fl-service > section {
-        margin-bottom: 1rem;
+        /* margin-bottom: 1rem; */
         display: flex;
         flex-direction: column;
-        gap: 1rem;
     }
     /* .fl-page-header {
         margin-bottom: 1rem;
     } */
-    .fl-page-header {
-        margin-top: 1rem;
+    /* .fl-page-header {
+        margin-top: 1.25rem;
+    } */
+    .fl-page-header > .name {
+        /* border: 1px solid red; */
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 0.5rem;
+        width: calc(100% - 0.25rem);
     }
-    .fl-page-header > h2 {
+    .fl-page-header > .name > input[type=text] {
+        border: 1px solid transparent;
+        border-radius: 0.25rem;
         color: var(--darkest);
-        font-size: 1.75rem;
+        font-size: 1.5rem;
         gap: 0.5rem;
         font-weight: 500;
-        /* margin-bottom: 1rem; */
+        padding: 0.25rem 0.375rem;
+        flex: 1;
+    }
+    .fl-page-header > .name > input[type=text]:hover {
+        border: 1px solid var(--light);
+    }
+    .fl-page-header > .name > input[type=text]:focus {
+        border: 1px solid var(--primary);
+        outline: 1px solid var(--primary);
+        /* outline-offset: 1px; */
     }
     .fl-page-header > textarea {
+        background-color: var(--lighter);
         border: 1px solid var(--light);
         border-radius: 0.25rem;
-        color: var(--dark);
+        color: var(--darker);
         font-family: var(--font-default);
         font-size: 0.875rem;
         font-weight: 300;
@@ -140,12 +200,44 @@
         outline: none;
         padding: 0.25rem 0.375rem;
         resize: none;
-        width: 100%;
+        width: calc(100% - 0.25rem);
     }
     .fl-page-header > textarea:focus {
         border: 1px solid var(--primary);
         outline: 1px solid var(--primary);
         /* outline-offset: 1px; */
+    }
+    section.fl-summary {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+        margin: 1rem 0;
+    }
+    section.fl-summary > .kpi {
+        padding: 1rem;
+        border: 1px solid var(--light);
+        border-left: 4px solid var(--primary);
+        border-radius: 0.5rem;
+        text-align: center;
+        /* box-shadow: var(--shadow); */
+        /* display: grid;
+        grid-template-columns: 35% 65%; */
+    }
+    section.fl-summary > .kpi > .title {
+        color: var(--dark);
+        opacity: 0.8;
+    }
+    section.fl-summary > .kpi > .value {
+        color: var(--darkest);
+        font-size: 3rem;
+        font-weight: bold;
+        margin: 0.5rem 0;
+    }
+    section.fl-summary > .kpi > .detail {
+        /* color: var(--dark); */
+        font-size: 0.875rem;
+        font-weight: 300;
+        opacity: 0.6;
     }
     .fl-page-controls {
         display: flex;

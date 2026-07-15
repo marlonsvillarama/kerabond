@@ -12,7 +12,7 @@
     <div class="header">
         <span class="title">Variants</span>
         <span class="badge">{data.length}</span>
-        <button type="button" class="btn-add"><Plus size={10} />Add variant</button>
+        <button type="button" class="btn-add"><Plus size={16} />Add variant</button>
     </div>
 
     <div class="content">
@@ -23,9 +23,9 @@
 </div>
 
 <style>
-    .fl-service-variants {
+    /* .fl-service-variants {
         margin-top: 1rem;
-    }
+    } */
     .fl-service-variants > .header {
         /* border: 1px solid */
         cursor: pointer;
@@ -67,13 +67,15 @@
         outline: 0;
         display: flex;
         align-items: center;
-        justify-content: center;
-        height: 1.375rem;
+        gap: 0.25rem;
+        /* justify-content: center; */
+        /* height: 1.375rem; */
         /* width: 1.25rem; */
-        padding: 0 0.5rem;
+        padding: 0.375rem 0.5rem;
     }
     .fl-service-variants > .content {
-        margin: 0 1.5rem;
+        /* margin: 0 1.5rem; */
+        margin: 0 1.25rem;
         display: flex;
         flex-direction: column;
         gap: 0.5rem;

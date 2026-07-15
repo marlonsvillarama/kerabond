@@ -1,9 +1,9 @@
 <script>
     import { getContext } from "svelte";
     import { Dot, IdCard, Pencil, Plus, Scissors, X } from "@lucide/svelte";
-    import ServiceBadge from "./service-badge.svelte";
-    import ServiceStaff from "./service-staff.svelte";
-    import ServiceVariant from "./service-variant.svelte";
+    // import ServiceBadge from "./service-badge.svelte";
+    // import ServiceStaff from "./service-staff.svelte";
+    // import ServiceVariant from "./service-variant.svelte";
 
     let {
         data = $bindable(),
@@ -12,34 +12,34 @@
         onselect,
     } = $props();
 
-    let allVariants = getContext('VARIANTS');
-    let serviceVariants = $derived(allVariants.filter(d => d.service === data.id));
+    // let allVariants = getContext('VARIANTS');
+    // let serviceVariants = $derived(allVariants.filter(d => d.service === data.id));
 
-    let allStaff = getContext('STAFF');
-    console.log('allStaff', allStaff);
-    let allStaffServices = getContext('STAFF_SERVICES')
-    let staffServices = $derived.by(() => {
-        return allStaffServices.filter(d => d.service === data.id)
-            .map(d => {
-                return {
-                    ...d,
-                    staff: allStaff.find(s => s.id === d.staff)
-                }
-            });
-    });
-    console.log('staffServices', staffServices);
+    // let allStaff = getContext('STAFF');
+    // console.log('allStaff', allStaff);
+    // let allStaffServices = getContext('STAFF_SERVICES')
+    // let staffServices = $derived.by(() => {
+    //     return allStaffServices.filter(d => d.service === data.id)
+    //         .map(d => {
+    //             return {
+    //                 ...d,
+    //                 staff: allStaff.find(s => s.id === d.staff)
+    //             }
+    //         });
+    // });
+    // console.log('staffServices', staffServices);
     
-    const toggleActive = async () => {
-        const { data, error } = await supabase.from('kb_services').update({ is_active: data.is_active }).eq('id', data.id).select();
-        if (error) {
-            console.error(error);
-        }
-    }
+    // const toggleActive = async () => {
+    //     const { data, error } = await supabase.from('kb_services').update({ is_active: data.is_active }).eq('id', data.id).select();
+    //     if (error) {
+    //         console.error(error);
+    //     }
+    // }
 </script>
 
 <!-- {JSON.stringify(data)} -->
 
-<div class="fl-service-card">
+<!-- <div class="fl-service-card">
     <div class="icon"><Scissors size={20} /></div>
     <div class="info">
         <div class="details"
@@ -52,14 +52,8 @@
                 <Dot size={16} />
                 {staffServices.length} locations
             </div>
-            <!-- <span class="desc">{data.description}</span> -->
         </div>
         <div class="controls">
-            <!-- <div class="subdetails">
-                <ServiceBadge>{serviceVariants.length > 0 ? serviceVariants.length : 'No'} variant{serviceVariants.length === 1 ? '' : 's'}</ServiceBadge>
-                <Dot size={16} />
-                <ServiceBadge>{staffServices.length} assigned staff</ServiceBadge>
-            </div> -->
             <div class="badges">
                 {#if data.is_active}
                     <ServiceBadge type="primary">Active</ServiceBadge>
@@ -68,13 +62,12 @@
                 {/if}
             </div>
             <div class="actions">
-                <!-- <a href="./{data.id}" type="button" onclick={() => onedit(data.id)}><Pencil size={16} /></a> -->
                 <a href="./services/{data.id}"><Pencil size={16} /></a>
                 <button type="button" onclick={() => ondelete(data.id)}><X size={16} /></button>
             </div>
         </div>
     </div>
-</div>
+</div> -->
 
 <style>
     .fl-service-card {

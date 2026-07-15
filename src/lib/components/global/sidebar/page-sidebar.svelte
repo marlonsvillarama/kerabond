@@ -18,7 +18,7 @@
     let activeTab = $derived.by(() => {
         let pathName = page.url.pathname;
         let pathParts = pathName.split('/');
-        return pathParts[pathParts.length - 1];
+        return pathParts[2];
     });
 
     const navigateToPage = (id) => {
@@ -52,9 +52,10 @@
     .fl-sidebar {
         /* background-color: var(--accent); */
         /* color: var(--white); */
-        /* border-right: 1px solid var(--border); */
-        width: 14rem;
-        /* padding: 0.5rem; */
+        border-right: 2px solid var(--semi-light);
+        width: 17rem;
+        padding: 1rem;
+        padding-right: 0;
         display: flex;
         flex-direction: column;
         /* align-items: flex-start; */
@@ -63,9 +64,12 @@
     .fl-sidebar-link {
         /* flex: 1; */
         /* border: 1px solid red; */
+        border-top-left-radius: 0.25rem;
+        border-bottom-left-radius: 0.25rem;
         color: var(--dark);
         cursor: pointer;
         /* font-size: 0.875rem; */
+        font-weight: 300;
         padding: 0.5rem 0.75rem;
         text-decoration: none;
         display: flex;
@@ -73,11 +77,13 @@
         gap: 0.75rem;
     }
     .fl-sidebar-link-active {
-        background-color: var(--primary);
-        color: var(--white);
+        background-color: var(--semi-light);
+        color: var(--darker);
+        font-weight: 600;
     }
     .fl-sidebar-link:not(.fl-sidebar-link-active):hover {
-        background-color: var(--light);
+        /* background-color: var(--lighter); */
+        outline: 1px solid var(--light);
     }
     :global(.fl-sidebar > *) {
         /* flex: 1; */

@@ -11,7 +11,6 @@
     // import FormStaffLocation from "$lib/components/ui/calendar/forms/form-staff-location.svelte";
     import InputSearch from "$lib/components/ui/input-search.svelte";
     import ServiceCard from "./service-card.svelte";
-    import ListPageContent from "../list-page-content.svelte";
     import { sortByKey } from "$lib/modules/sort";
 
     let { data } = $props();
@@ -97,21 +96,10 @@
     const editService = (id) => {};
 </script>
 
-<ListPageContent title="Services" count={allServices.length}>
-    {#snippet controls()}
-        <InputSearch bind:value={searchValue} />
-        <button type="button" command="show-modal" commandfor="fl-service-new" class="fl-btn-new">
-            <Plus size={16} />Add service
-        </button>
-    {/snippet}
-    
-    {#each filteredServices as service}
-        <ServiceCard data={service} onedit={() => {}} />
-    {/each}
-</ListPageContent>
-<!-- <div class="wrapper"> -->
+<div class="wrapper">
 
-<!-- <div class="fl-page-header flex-center between">
+<div class="fl-page-header flex-center between">
+    <!-- <h2 class="flex-center"><Scissors size={24} />Services</h2> -->
     <div class="title">
         <span class="name">Services</span>
         <div class="count">{services.length}</div>
@@ -122,7 +110,7 @@
             <Plus size={16} />Add service
         </button>
     </div>
-</div> -->
+</div>
 
 <!-- <div class="fl-table-controls">
     <div>
@@ -140,13 +128,13 @@
     </div>
 </div> -->
 
-<!-- <div class="fl-full-scrollable fl-page-content">
+<div class="fl-full-scrollable fl-page-content">
     {#each filteredServices as service}
         <ServiceCard data={service} onedit={() => {}} />
     {/each}
-</div> -->
+</div>
 
-<!-- </div> -->
+</div>
 
 <!-- <dialog class="fl-staff-dlg" id="fl-staff-new"
     bind:this={staffPopover}
@@ -227,7 +215,7 @@
         align-items: center;
         justify-content: center;
     }
-    .fl-btn-new,
+    .fl-btn-new-service,
     .fl-btn-default,
     .fl-btn-submit {
         background-color: var(--lighter);
@@ -243,12 +231,12 @@
         gap: 0.25rem;
         anchor-name: --anchor-add-staff;
     }
-    .fl-btn-new,
+    .fl-btn-new-service,
     .fl-btn-submit {
         background-color: var(--primary);
         color: var(--white);
     }
-    .fl-btn-new:hover,
+    .fl-btn-new-service:hover,
     .fl-btn-submit:hover {
         background-color: var(--primary-dark);
     }
