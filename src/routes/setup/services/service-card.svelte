@@ -1,9 +1,9 @@
 <script>
     import { getContext } from "svelte";
     import { Dot, IdCard, Pencil, Plus, Scissors, X } from "@lucide/svelte";
-    import ServiceBadge from "./service-badge.svelte";
-    import ServiceStaff from "./service-staff.svelte";
-    import ServiceVariant from "./service-variant.svelte";
+    import Badge from "$lib/components/ui/badge.svelte";
+    import ListItem from "$lib/components/global/list-item.svelte";
+    // import ServiceBadge from "./service-badge.svelte";
 
     let {
         data = $bindable(),
@@ -39,7 +39,38 @@
 
 <!-- {JSON.stringify(data)} -->
 
-<div class="fl-service-card">
+<ListItem Icon={Scissors}>
+    {#snippet details()}
+    <div class="service-details"
+        class:service-details-disabled={data.is_active === false}
+    >
+        <div class="header">{data.name}</div>
+        <div class="desc">{data.description}</div>
+        <div class="subdetails">
+            {serviceVariants.length} variant{serviceVariants.length === 1 ? '' : 's'}
+            <Dot size={16} />
+            {staffServices.length} locations
+        </div>
+    </div>
+    {/snippet}
+
+    {#snippet badges()}
+        {#if data.is_active}
+            <Badge type="primary">Active</Badge>
+            {:else}
+            <Badge type="disabled">Inactive</Badge>
+        {/if}
+    {/snippet}
+
+    <!-- <div class="service-actions"> -->
+    {#snippet controls()}
+        <a href="./services/{data.id}"><Pencil size={16} /></a>
+        <button type="button" onclick={() => ondelete(data.id)}><X size={16} /></button>
+    {/snippet}
+    <!-- </div> -->
+</ListItem>
+
+<!-- <div class="fl-service-card">
     <div class="icon"><Scissors size={20} /></div>
     <div class="info">
         <div class="details"
@@ -52,14 +83,8 @@
                 <Dot size={16} />
                 {staffServices.length} locations
             </div>
-            <!-- <span class="desc">{data.description}</span> -->
         </div>
         <div class="controls">
-            <!-- <div class="subdetails">
-                <ServiceBadge>{serviceVariants.length > 0 ? serviceVariants.length : 'No'} variant{serviceVariants.length === 1 ? '' : 's'}</ServiceBadge>
-                <Dot size={16} />
-                <ServiceBadge>{staffServices.length} assigned staff</ServiceBadge>
-            </div> -->
             <div class="badges">
                 {#if data.is_active}
                     <ServiceBadge type="primary">Active</ServiceBadge>
@@ -68,38 +93,30 @@
                 {/if}
             </div>
             <div class="actions">
-                <!-- <a href="./{data.id}" type="button" onclick={() => onedit(data.id)}><Pencil size={16} /></a> -->
                 <a href="./services/{data.id}"><Pencil size={16} /></a>
                 <button type="button" onclick={() => ondelete(data.id)}><X size={16} /></button>
             </div>
         </div>
     </div>
-</div>
+</div> -->
 
 <style>
-    .fl-service-card {
-        /* border: 1px solid var(--light); */
-        /* border-left: 4px solid var(--primary); */
+    /* .fl-service-card {
         align-items: center;
         background-color: transparent;
         border: 0;
         border-radius: 0.5rem;
         display: flex;
         gap: 0.75rem;
-        /* gap: 1.5rem; */
-        /* margin: 0.25rem; */
-        /* min-width: max(23rem, calc(100% - 0.5rem)); */
         outline: none;
-        /* padding: 1rem 1.25rem; */
         padding: 0.5rem 0.625rem;
         position: relative;
-        /* width: min(50rem, 100%); */
         text-align: start;
-    }
-    .fl-service-card:hover {
+    } */
+    /* .fl-service-card:hover {
         background-color: var(--lighter);
-    }
-    .fl-service-card > .icon {
+    } */
+    /* .fl-service-card > .icon {
         color: var(--semi-dark);
         height: 2.5rem;
         width: 2.5rem;
@@ -108,61 +125,41 @@
         display: flex;
         align-items: center;
         justify-content: center;
-    }
-    .fl-service-card > .info {
+    } */
+    /* .fl-service-card > .info {
         align-items: center;
         display: flex;
         flex: 1;
         justify-content: space-between;
-    }
-    .info > .details {
-        /* border: 1px solid red; */
+    } */
+    .service-details {
         display: flex;
         flex: 1;
         flex-direction: column;
         gap: 0.25rem;
     }
-    .info > .details-disabled {
+    .service-details-disabled {
         opacity: 0.4;
     }
-    .info > .details > .header {
-        /* color: var(--darkest); */
-        /* font-size: 1rem; */
+    .service-details > .header {
         font-weight: 600;
-        /* padding: 2px; */
     }
-    /* .info > .details > .header-disabled { */
-        /* background-color: var(--light); */
-        /* color: var(--semi-dark); */
-        /* opacity: 0.5; */
-    /* } */
-    .subdetails {
-        display: flex;
-        align-items: center;
-        /* gap: 0.25rem; */
-    }
-    .info > .details > .desc {
+    .service-details > .desc {
         font-size: 0.875rem;
-        /* font-weight: 500; */
         opacity: 0.5;
     }
-    .subdetails {
+    .service-details > .subdetails {
+        align-items: center;
+        display: flex;
         font-size: 0.75rem;
-        /* font-weight: 500; */
         opacity: 0.8;
     }
-    .info > .controls {
-        /* margin-left: 0.5rem; */
-        display: flex;
-        align-items: center;
-        gap: 2rem;
-    }
-    .info > .controls > .actions {
+    .service-actions {
         display: flex;
         align-items: center;
         gap: 0.25rem;
     }
-    .info > .controls > .actions > * {
+    .service-actions > * {
         align-items: center;
         background-color: transparent;
         border: 0;
@@ -175,118 +172,75 @@
         height: 2rem;
         width: 2rem;
     }
-    .info > .controls > .actions > *:hover {
+    .service-actions > *:hover {
         background-color: var(--primary);
         color: var(--white);
     }
-    /* @media (min-width: 60rem) {
-        .fl-service-card {
-            grid-template-columns: 14rem auto;
-        }
-    } */
-    /* .service-img {
-        background-image: url('/images/spa-concept-001.jpg');
-        background-size: cover;
-        background-position: left;
-        border-top-left-radius: 0.5rem;
-        border-bottom-left-radius: 0.5rem;
-        min-height: 12rem;
-    } */
-    /* @media (min-width: 60rem) {
-        .fl-service-card > .service-img {
-            display: block;
-        }
-    } */
-    /* .fl-service-card > .service-details { */
-    /* .service-details {
-        position: relative;
-        display: grid;
-        gap: 1.5rem;
-    } */
-    /* @media (min-width: 60rem) {
-        .service-details {
-            grid-template-columns: 3fr 2fr;
-            gap: 3rem;
-        }
-    } */
-    /* .service-details > .card-title { */
-    .card-title {
-        /* background-color: var(--lighter); */
-        /* border: 1px solid var(--light); */
+    /* .card-title {
         border-radius: 0.25rem;
         outline: none;
         color: var(--dark);
-        /* font-size: 0.875rem; */
-        /* line-height: 1.375rem; */
-        /* font-family: var(--font-default); */
-        /* font-weight: 400; */
-        /* margin-bottom: 2rem; */
-        /* opacity: 0.8; */
         padding: 0.25rem 0.375rem;
         font-size: 1.375rem;
         font-weight: 600;
         width: calc(60% - 1rem);
         margin-bottom: 0.5rem;
-    }
-    .card-title:hover {
+    } */
+    /* .card-title:hover {
         outline: 1px solid var(--primary-light);
-    }
-    .card-title:focus {
+    } */
+    /* .card-title:focus {
         background-color: var(--white);
         outline: 2px solid var(--primary);
-    }
+    } */
     /* .service-details > .card-details { */
-    .card-details {
+    /* .card-details {
         display: none;
-        /* grid-template-columns: 3fr 2fr; */
         gap: 1.5rem;
-    }
-    @media (min-width: 80rem) {
-        /* .service-details > .card-details { */
+    } */
+    /* @media (min-width: 80rem) {
         .card-details {
             grid-template-columns: 3fr 2fr;
         }
-    }
-    .card-details > .primary {
-        /* border: 1px solid red; */
+    } */
+    /* .card-details > .primary {
         display: flex;
         flex-direction: column;
-        /* gap: 1rem; */
-    }
-    .primary > .controls {
+    } */
+    /* .primary > .controls { */
     /* .service-details > .controls { */
         /* border: 1px solid red; */
         /* position: absolute;
         top: 0;
         right: 0; */
-        display: flex;
-        align-items: center;
+        /* display: flex;
+        align-items: center; */
         /* gap: 1px; */
-        gap: 0.25rem;
+        /* gap: 0.25rem;
         margin-bottom: 2rem;
-    }
-    .primary > .controls > button {
+    } */
+    /* .primary > .controls > button { */
     /* .service-details > .controls > button { */
         /* background-color: transparent; */
-        background-color: var(--primary-lighter);
+        /* background-color: var(--primary-lighter);
         border: 0;
-        border-radius: 0.25rem;
+        border-radius: 0.25rem; */
         /* border-bottom: 1px solid transparent; */
-        color: var(--primary);
+        /* color: var(--primary);
         cursor: pointer;
         display: flex;
         align-items: center;
         gap: 0.375rem;
         padding: 0.375rem 0.5rem;
-    }
+    } */
     /* .service-details > .controls > button:last-child {
         border-top-right-radius: 0.5rem;
     } */
-    .primary > .controls > button:hover {
+    /* .primary > .controls > button:hover { */
     /* .service-details > .controls > button:hover { */
-        background-color: var(--primary-light);
+        /* background-color: var(--primary-light); */
         /* border-bottom: 1px solid var(--primary); */
-    }
+    /* } */
     /* .primary > .desc { */
     /* .desc {
         background-color: var(--lighter);

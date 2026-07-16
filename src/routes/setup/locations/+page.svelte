@@ -2,16 +2,9 @@
     import { supabase } from "$lib/supabaseClient";
     import { getContext, setContext } from "svelte";
     import { Scissors, Plus, Save, X } from "@lucide/svelte";
-    // import Drawer from "$lib/components/ui/drawer.svelte";
-    // import FormCheckboxPill from "$lib/components/ui/calendar/forms/form-checkbox-pill.svelte";
-    // import FormFieldEmail from "$lib/components/ui/calendar/forms/form-field-email.svelte";
-    // import FormFieldPhone from "$lib/components/ui/calendar/forms/form-field-phone.svelte";
-    // import FormFieldPills from "$lib/components/ui/calendar/forms/form-field-pills.svelte";
-    // import FormFieldText from "$lib/components/ui/calendar/forms/form-field-text.svelte";
-    // import FormStaffLocation from "$lib/components/ui/calendar/forms/form-staff-location.svelte";
     import ListPageContent from "../list-page-content.svelte";
     import InputSearch from "$lib/components/ui/input-search.svelte";
-    // import ServiceCard from "./service-card.svelte";
+    import LocationCard from "./location-card.svelte";
     import { sortByKey } from "$lib/modules/sort";
 
     let { data } = $props();
@@ -36,20 +29,13 @@
     setContext('STAFF_SERVICES', staffServices ?? []);
     setContext('VARIANTS', variants ?? []);
     
-    let allServices = $state(services);
-    // let allServices = $state(
-    //     serviceList.map(d => {
-    //         return {
-    //             ...d,
-    //             name: `${d.first_name}${d.last_name ? ' ' + d.last_name : ''}`
-    //         }
-    //     })
-    // );
-    sortByKey(allServices, 'name');
-    console.log('allServices sorted', allServices);
+    let allLocations = $state(locations);
+    sortByKey(allLocations, 'name');
+    console.log('allLocations sorted', allLocations);
+
     let searchValue = $state('');
-    let filteredServices = $derived(searchValue ?
-        allServices.filter(d => d.name.toLowerCase().indexOf(searchValue.toLowerCase()) === 0) : allServices
+    let filteredLocations = $derived(searchValue ?
+        allLocations.filter(d => d.name.toLowerCase().indexOf(searchValue.toLowerCase()) === 0) : allLocations
     );
 
     // let staffDetails = $state(Object.assign({}, BLANK_DETAILS));
@@ -81,7 +67,7 @@
     //     console.log(`toggleAll (${add === true}) tableRows`, tableRows);
     // };
 
-    let selectedCount = $derived(filteredServices.filter(d => d.selected === true).length);
+    let selectedCount = $derived(filteredLocations.filter(d => d.selected === true).length);
     // const toggleRows = () => {
     //     toggleAll(selectedCount < tableRows.length);
     // };
@@ -94,20 +80,21 @@
     //     tableRows = tableRows.filter(d => rowsToDelete.indexOf(d.id) < 0);
     // };
 
-    const editService = (id) => {};
+    const editLocation = (id) => {};
 </script>
 
 <ListPageContent title="Locations" count={locations.length}>
     {#snippet controls()}
         <InputSearch />
-        <button type="button" command="show-modal" commandfor="fl-service-new" class="fl-btn-new">
+        <button type="button" command="show-modal" commandfor="fl-dlg-new" class="fl-btn-new">
             <Plus size={16} />Add location
         </button>
     {/snippet}
     
-    <!-- {#each filteredServices as service}
-        <ServiceCard data={service} onedit={() => {}} />
-    {/each} -->
+    {#each filteredLocations as location}
+        <LocationCard data={location} onedit={() => {}} />
+        <!-- <ServiceCard data={service} onedit={() => {}} /> -->
+    {/each}
 </ListPageContent>
 
 <!-- <div class="wrapper"> -->
@@ -206,7 +193,7 @@
         gap: 0.5rem;
         font-weight: 600;
     }
-    .fl-btn-new-service,
+    .fl-btn-new,
     .fl-btn-default,
     .fl-btn-submit {
         background-color: var(--lighter);
@@ -222,12 +209,12 @@
         gap: 0.25rem;
         anchor-name: --anchor-add-staff;
     }
-    .fl-btn-new-service,
+    .fl-btn-new,
     .fl-btn-submit {
         background-color: var(--primary);
         color: var(--white);
     }
-    .fl-btn-new-service:hover,
+    .fl-btn-new:hover,
     .fl-btn-submit:hover {
         background-color: var(--primary-dark);
     }

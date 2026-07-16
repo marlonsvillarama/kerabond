@@ -2,13 +2,6 @@
     import { supabase } from "$lib/supabaseClient";
     import { getContext, setContext } from "svelte";
     import { Scissors, Plus, Save, X } from "@lucide/svelte";
-    // import Drawer from "$lib/components/ui/drawer.svelte";
-    // import FormCheckboxPill from "$lib/components/ui/calendar/forms/form-checkbox-pill.svelte";
-    // import FormFieldEmail from "$lib/components/ui/calendar/forms/form-field-email.svelte";
-    // import FormFieldPhone from "$lib/components/ui/calendar/forms/form-field-phone.svelte";
-    // import FormFieldPills from "$lib/components/ui/calendar/forms/form-field-pills.svelte";
-    // import FormFieldText from "$lib/components/ui/calendar/forms/form-field-text.svelte";
-    // import FormStaffLocation from "$lib/components/ui/calendar/forms/form-staff-location.svelte";
     import InputSearch from "$lib/components/ui/input-search.svelte";
     import ServiceCard from "./service-card.svelte";
     import ListPageContent from "../list-page-content.svelte";
@@ -37,62 +30,15 @@
     setContext('VARIANTS', variants ?? []);
     
     let allServices = $state(services);
-    // let allServices = $state(
-    //     serviceList.map(d => {
-    //         return {
-    //             ...d,
-    //             name: `${d.first_name}${d.last_name ? ' ' + d.last_name : ''}`
-    //         }
-    //     })
-    // );
     sortByKey(allServices, 'name');
     console.log('allServices sorted', allServices);
+
     let searchValue = $state('');
     let filteredServices = $derived(searchValue ?
-        allServices.filter(d => d.name.toLowerCase().indexOf(searchValue.toLowerCase()) === 0) : allServices
+        allServices.filter(d => d.name.toLowerCase().indexOf(searchValue.toLowerCase()) >= 0) : allServices
     );
 
-    // let staffDetails = $state(Object.assign({}, BLANK_DETAILS));
-    // const cancelForm = (e) => {
-    //     if (confirm('Are you sure you want to close?') === false) {
-    //         e.preventDefault();
-    //         return;
-    //     }
-    //     resetDetails();
-    // };
-    // const submitForm = async (e) => {
-    //     const actionTaken = e.submitter?.value;
-    //     if (actionTaken !== 'submit') { return; }
-
-    //     staffDetails.phone = staffDetails.phone.replace(/\s/g, "");
-
-    //     const { data, error } = await supabase.from('kb_staff').insert(staffDetails).select();
-    //     staffList.push(data[0]);
-    //     staffList = staffList;
-    //     resetDetails();
-    // };
-
-    // const toggleAll = (add) => {
-    //     console.log('toggleAll', add === true);
-    //     for (let i = 0, count = tableRows.length; i < count; i++) {
-    //         tableRows[i].selected = (add === true);
-    //     }
-    //     tableRows = tableRows;
-    //     console.log(`toggleAll (${add === true}) tableRows`, tableRows);
-    // };
-
     let selectedCount = $derived(filteredServices.filter(d => d.selected === true).length);
-    // const toggleRows = () => {
-    //     toggleAll(selectedCount < tableRows.length);
-    // };
-
-    // const deleteRows = async () => {
-    //     if (confirm('Are you sure you want to delete the selected rows?') === false) { return; }
-
-    //     let rowsToDelete = tableRows.filter(d => d.selected === true).map(d => d.id);
-    //     const { data, error } = await supabase.from('kb_staff').delete().in('id', rowsToDelete);
-    //     tableRows = tableRows.filter(d => rowsToDelete.indexOf(d.id) < 0);
-    // };
 
     const editService = (id) => {};
 </script>
@@ -109,46 +55,8 @@
         <ServiceCard data={service} onedit={() => {}} />
     {/each}
 </ListPageContent>
-<!-- <div class="wrapper"> -->
 
-<!-- <div class="fl-page-header flex-center between">
-    <div class="title">
-        <span class="name">Services</span>
-        <div class="count">{services.length}</div>
-    </div>
-    <div class="fl-page-controls flex-center">
-        <InputSearch bind:value={searchValue} />
-        <button type="button" command="show-modal" commandfor="fl-service-new" class="fl-btn-new-service">
-            <Plus size={16} />Add service
-        </button>
-    </div>
-</div> -->
-
-<!-- <div class="fl-table-controls">
-    <div>
-        <button type="button" onclick={() => {}}>Select all</button>
-        <button type="button" onclick={() => {}}>Uncheck all</button>
-
-        {#if selectedCount > 0}
-            <button type="button" onclick={() => {}}
-                class="fl-btn-alert"
-            >Delete {selectedCount} row{selectedCount === 1 ? '' : 's'}</button>
-        {/if}
-    </div>
-    <div>
-        <span class="found">Found {filteredServices.length} services</span>
-    </div>
-</div> -->
-
-<!-- <div class="fl-full-scrollable fl-page-content">
-    {#each filteredServices as service}
-        <ServiceCard data={service} onedit={() => {}} />
-    {/each}
-</div> -->
-
-<!-- </div> -->
-
-<!-- <dialog class="fl-staff-dlg" id="fl-staff-new"
+<!-- <dialog class="fl-staff-dlg" id="fl-service-new"
     bind:this={staffPopover}
     oncancel={cancelForm}
     onsubmit={submitForm}
@@ -158,41 +66,41 @@
             <div class="form-title">
                 <span class="title">Add New Staff</span>
             </div>
-            <button type="button" command="request-close" commandfor="fl-staff-new"><X size={20} /></button>
+            <button type="button" command="request-close" commandfor="fl-service-new"><X size={20} /></button>
         </div>
-    <div class="form-content">
-        <div class="staff-details">
-            <div class="fl-section-header">
-                <span class="title">Primary Details</span>
-                <span class="subtitle">Select the locations for this employee</span>
-            </div>
-            <div class="fl-section-content">
-                <div class="split-2">
-                    <FormFieldText id="fl-staff-fn" label="First Name" required={true} bind:value={staffDetails.first_name} />
-                    <FormFieldText id="fl-staff-ln" label="Last Name" required={true} bind:value={staffDetails.last_name} />
+        <div class="form-content">
+            <div class="staff-details">
+                <div class="fl-section-header">
+                    <span class="title">Primary Details</span>
+                    <span class="subtitle">Select the locations for this employee</span>
                 </div>
-                <FormFieldPhone id="fl-staff-ph" label="Phone No." width="12rem" bind:value={staffDetails.phone} />
-                <FormFieldEmail id="fl-staff-em" label="Email" bind:value={staffDetails.email} />
+                <div class="fl-section-content">
+                    <div class="split-2">
+                        <FormFieldText id="fl-staff-fn" label="First Name" required={true} bind:value={staffDetails.first_name} />
+                        <FormFieldText id="fl-staff-ln" label="Last Name" required={true} bind:value={staffDetails.last_name} />
+                    </div>
+                    <FormFieldPhone id="fl-staff-ph" label="Phone No." width="12rem" bind:value={staffDetails.phone} />
+                    <FormFieldEmail id="fl-staff-em" label="Email" bind:value={staffDetails.email} />
+                </div>
+            </div>
+            <div class="fl-staff-locations">
+                <div class="fl-section-header">
+                    <span class="title">Staff Locations</span>
+                    <span class="subtitle">Select the locations for this employee</span>
+                </div>
+                <div class="section-list">
+                    {#each data.locations as loc}
+                        <FormStaffLocation id={loc.id} label={loc.name || loc.street_1} />
+                    {/each}
+                </div>
+            </div>
+            <div class="form-buttons">
+                <button type="submit" class="fl-btn-submit" value="submit">
+                    <Save size={16} />Create Staff
+                </button>
+                <button type="button" class="fl-btn-default" command="request-close" commandfor="fl-service-new">Cancel</button>
             </div>
         </div>
-        <div class="fl-staff-locations">
-            <div class="fl-section-header">
-                <span class="title">Staff Locations</span>
-                <span class="subtitle">Select the locations for this employee</span>
-            </div>
-            <div class="section-list">
-                {#each data.locations as loc}
-                    <FormStaffLocation id={loc.id} label={loc.name || loc.street_1} />
-                {/each}
-            </div>
-        </div>
-        <div class="form-buttons">
-            <button type="submit" class="fl-btn-submit" value="submit">
-                <Save size={16} />Create Staff
-            </button>
-            <button type="button" class="fl-btn-default" command="request-close" commandfor="fl-staff-new">Cancel</button>
-        </div>
-    </div>
     </form>
 </dialog> -->
 
@@ -227,9 +135,9 @@
         align-items: center;
         justify-content: center;
     }
-    .fl-btn-new,
-    .fl-btn-default,
-    .fl-btn-submit {
+    .fl-btn-new {
+        /* .fl-btn-default, */
+        /* .fl-btn-submit { */
         background-color: var(--lighter);
         border: 0;
         border-radius: 0.375rem;

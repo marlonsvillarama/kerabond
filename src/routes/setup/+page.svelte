@@ -13,10 +13,10 @@
         <div class="fl-sub-wrapper">
             <h2>Setup</h2>
             <!-- <CalendarHeader /> -->
-            <div class="fl-full-scrollable">
-                {@render children?.()}
+            <!-- <div class="fl-full-scrollable">
+                {@render children?.()} -->
                 <!-- <div class="fl-cal-content">Sales content</div> -->
-            </div>
+            <!-- </div> -->
         </div>
     <!-- </div>
 </div> -->

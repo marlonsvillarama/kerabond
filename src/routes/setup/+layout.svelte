@@ -4,13 +4,12 @@
         IdCard,
         MapPin,
         Package,
+        Plus,
         Scissors
     } from "@lucide/svelte";
 
-    import { Plus } from "@lucide/svelte";
-
-    import Button from "$lib/components/ui/button.svelte";
-    import InputSearch from "$lib/components/ui/input-search.svelte";
+    // import Button from "$lib/components/ui/button.svelte";
+    // import InputSearch from "$lib/components/ui/input-search.svelte";
     import Sidebar from "$lib/components/global/sidebar/page-sidebar.svelte";
 
     let {

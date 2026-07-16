@@ -1,9 +1,12 @@
 <script>
     import { getContext } from "svelte";
-    import { Dot, IdCard, Pencil, Plus, Scissors, X } from "@lucide/svelte";
+    import { Dot, IdCard, MapPin, Pencil, Plus, Scissors, X } from "@lucide/svelte";
     // import ServiceBadge from "./service-badge.svelte";
     // import ServiceStaff from "./service-staff.svelte";
     // import ServiceVariant from "./service-variant.svelte";
+    import Badge from "$lib/components/ui/badge.svelte";
+    import ListItem from "$lib/components/global/list-item.svelte";
+    import Rating from "$lib/components/ui/rating.svelte";
 
     let {
         data = $bindable(),
@@ -39,6 +42,41 @@
 
 <!-- {JSON.stringify(data)} -->
 
+<ListItem Icon={MapPin}>
+    {#snippet details()}
+    <div class="location-details"
+        class:location-details-disabled={data.is_active === false}
+    >
+        <div class="header">
+            <span class="title">{data.name || data.street_1}</span>
+        </div>
+        <!-- <div class="desc">{data.description}</div> -->
+        <div class="location-address">
+            <span class="title">{data.street_1}</span>
+            {#if data.street_2}<span>{data.street_2}</span>{/if}
+            <span>{data.city}, {data.region}</span>
+        </div>
+        <div class="location-rating">
+            <!-- <Rating value={3} /> -->
+        </div>
+    </div>
+    {/snippet}
+
+    <!-- {#snippet badges()}
+        {#if data.is_primary}
+            <Badge type="primary">Primary</Badge>
+        {:else}
+            <Badge type="disabled">Inactive</Badge>
+        {/if}
+    {/snippet} -->
+
+    {#snippet controls()}
+        <a href="./locations/{data.id}"><Pencil size={16} /></a>
+        <button type="button" onclick={() => ondelete(data.id)}><X size={16} /></button>
+    <!-- </div> -->
+    {/snippet}
+</ListItem>
+
 <!-- <div class="fl-service-card">
     <div class="icon"><Scissors size={20} /></div>
     <div class="info">
@@ -70,29 +108,78 @@
 </div> -->
 
 <style>
-    .fl-service-card {
-        /* border: 1px solid var(--light); */
-        /* border-left: 4px solid var(--primary); */
+    .location-details {
+        /* border: 1px solid red; */
+        flex: 1;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        align-items: center;
+        /* flex-direction: column; */
+        gap: 1rem;
+    }
+    .location-details-disabled {
+        opacity: 0.4;
+    }
+    .location-details > .header {
+        display: flex;
+        flex-direction: column;
+        gap: 0.125rem;
+    }
+    .location-details > .header > .title {
+        font-weight: 600;
+    }
+    .location-address {
+        display: flex;
+        flex-direction: column;
+        font-size: 0.875rem;
+        gap: 0.125rem;
+        color: var(--semi-dark);
+    }
+    .location-address > .title {
+        color: var(--darker);
+        font-size: 1rem;
+        font-weight: 600;
+    }
+
+
+    .service-actions {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+    }
+    .service-actions > * {
+        align-items: center;
+        background-color: transparent;
+        border: 0;
+        border-radius: 0.25rem;
+        color: var(--primary);
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        outline: none;
+        height: 2rem;
+        width: 2rem;
+    }
+    .service-actions > *:hover {
+        background-color: var(--primary);
+        color: var(--white);
+    }
+    /* .fl-service-card {
         align-items: center;
         background-color: transparent;
         border: 0;
         border-radius: 0.5rem;
         display: flex;
         gap: 0.75rem;
-        /* gap: 1.5rem; */
-        /* margin: 0.25rem; */
-        /* min-width: max(23rem, calc(100% - 0.5rem)); */
         outline: none;
-        /* padding: 1rem 1.25rem; */
         padding: 0.5rem 0.625rem;
         position: relative;
-        /* width: min(50rem, 100%); */
         text-align: start;
-    }
-    .fl-service-card:hover {
+    } */
+    /* .fl-service-card:hover {
         background-color: var(--lighter);
-    }
-    .fl-service-card > .icon {
+    } */
+    /* .fl-service-card > .icon {
         color: var(--semi-dark);
         height: 2.5rem;
         width: 2.5rem;
@@ -101,29 +188,25 @@
         display: flex;
         align-items: center;
         justify-content: center;
-    }
-    .fl-service-card > .info {
+    } */
+    /* .fl-service-card > .info {
         align-items: center;
         display: flex;
         flex: 1;
         justify-content: space-between;
-    }
-    .info > .details {
-        /* border: 1px solid red; */
+    } */
+    /* .info > .details {
         display: flex;
         flex: 1;
         flex-direction: column;
         gap: 0.25rem;
-    }
-    .info > .details-disabled {
+    } */
+    /* .info > .details-disabled {
         opacity: 0.4;
-    }
-    .info > .details > .header {
-        /* color: var(--darkest); */
-        /* font-size: 1rem; */
+    } */
+    /* .info > .details > .header {
         font-weight: 600;
-        /* padding: 2px; */
-    }
+    } */
     /* .info > .details > .header-disabled { */
         /* background-color: var(--light); */
         /* color: var(--semi-dark); */
