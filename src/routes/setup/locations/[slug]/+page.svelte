@@ -1,7 +1,7 @@
 <script>
     import { setContext } from "svelte";
     import { MapPin } from "@lucide/svelte";
-    
+
 
     let {
         data
@@ -31,6 +31,18 @@
                 {/if}
             </label>
         </div> -->
+    </section>
+
+    <section class="fl-location-address">
+        address
+    </section>
+
+    <section class="fl-location-staff">
+        staff
+    </section>
+
+    <section class="fl-location-staff">
+        schedule
     </section>
 </div>
 
