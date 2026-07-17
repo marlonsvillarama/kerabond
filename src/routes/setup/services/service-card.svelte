@@ -136,7 +136,7 @@
         display: flex;
         flex: 1;
         flex-direction: column;
-        gap: 0.25rem;
+        gap: 0.125rem;
     }
     .service-details-disabled {
         opacity: 0.4;

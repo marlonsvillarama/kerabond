@@ -3,7 +3,7 @@
         id = '',
         errorMessage = 'This field is required.',
         label = 'Text Field',
-        required = true,
+        required = false,
         subtext = '',
         value = $bindable(),
         width
@@ -37,7 +37,7 @@
     .fl-fld-text > label {
         color: var(--dark);
         font-size: 0.875rem;
-        font-weight: 500;
+        font-weight: 600;
     }
     .fl-fld-text > .subtext {
         color: var(--dark);
@@ -46,9 +46,9 @@
         opacity: 0.5;
     }
     .fl-fld-text > .optional {
-        color: var(--border);
+        color: var(--dark);
         font-weight: 300 !important;
-        opacity: 0.6;
+        opacity: 0.7;
     }
     .fl-fld-text > .optional::after {
         content: " (Optional)";

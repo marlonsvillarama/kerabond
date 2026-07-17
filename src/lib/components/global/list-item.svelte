@@ -58,6 +58,7 @@
     }
     .fl-item > .content {
         flex: 1;
+        /* border: 1px solid red; */
         align-items: center;
         display: flex;
         justify-content: space-between;

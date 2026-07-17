@@ -87,7 +87,7 @@
         </div>
     </section>
 
-    <section class="fl-settings">
+    <section class="fl-settings mb">
         <div class="toggle">
             <Toggle id="online-{service.id}" bind:checked={service.is_online} onclick={(e) => clickOnline(e)} />
             <label for="online-{service.id}"
@@ -104,7 +104,7 @@
     <!-- <section class="fl-page-controls">
     </section> -->
 
-    <section class="fl-variants">
+    <section class="fl-variants mb">
         <!-- <div class="toggle">
             <Toggle id="has-variants-{service.id}" bind:checked={service.has_variants} onclick={(e) => clickHasVariants(e)} />
             <label for="has-variants-{service.id}"
@@ -123,7 +123,7 @@
         <!-- {/if} -->
     </section>
 
-    <section class="fl-locations">
+    <section class="fl-locations mb">
         <!-- <div class="toggle">
             <Toggle id="has-variants-{service.id}" bind:checked={service.has_variants} onclick={(e) => clickHasVariants(e)} />
             <label for="has-variants-{service.id}"
@@ -149,12 +149,15 @@
         color: var(--dark);
         display: flex;
         flex-direction: column;
-        gap: 2rem;
+        gap: 1rem;
     }
     .fl-service > section {
         /* margin-bottom: 1rem; */
         display: flex;
         flex-direction: column;
+    }
+    .fl-service > section.mb {
+        margin-bottom: 2rem;
     }
     /* .fl-page-header {
         margin-bottom: 1rem;

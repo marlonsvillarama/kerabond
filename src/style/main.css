@@ -35,6 +35,10 @@
 .w-full {
     width: 100%;
 }
+.split-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
 .fl-content {
     /* border: 2px solid blue; */
     /* height: 100%; */

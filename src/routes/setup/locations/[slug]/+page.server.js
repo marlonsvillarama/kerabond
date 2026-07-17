@@ -20,6 +20,7 @@ export async function load({ params }) {
             staff:kb_staff_locations (
                 id,
                 created_at,
+                is_active,
                 details:kb_staff (
                     id,
                     first_name,

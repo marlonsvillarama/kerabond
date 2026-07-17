@@ -49,12 +49,15 @@
     >
         <div class="header">
             <span class="title">{data.name || data.street_1}</span>
+            <span class="address">{data.street_1}{#if data.street_2}<span>, {data.street_2}</span>{/if}</span>
+            <span class="city">{data.city}</span>
         </div>
         <!-- <div class="desc">{data.description}</div> -->
         <div class="location-address">
-            <span class="title">{data.street_1}</span>
-            {#if data.street_2}<span>{data.street_2}</span>{/if}
-            <span>{data.city}, {data.region}</span>
+            <!-- <span class="title">{data.street_1}</span> -->
+            <!-- {#if data.street_2}<span>{data.street_2}</span>{/if} -->
+            <span>{data.city}</span>
+            <span>{data.region}</span>
         </div>
         <div class="location-rating">
             <!-- <Rating value={3} /> -->
@@ -127,6 +130,11 @@
     }
     .location-details > .header > .title {
         font-weight: 600;
+    }
+    .location-details > .header > .address,
+    .location-details > .header > .city {
+        font-size: 0.875rem;
+        opacity: 0.5;
     }
     .location-address {
         display: flex;

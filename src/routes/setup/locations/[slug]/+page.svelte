@@ -1,7 +1,10 @@
 <script>
     import { setContext } from "svelte";
     import { MapPin } from "@lucide/svelte";
-
+    import BreadCrumbs from "$lib/components/ui/bread-crumbs.svelte";
+    import FieldText from "$lib/components/ui/form/field-text.svelte";
+    import LocationHours from "./location-hours.svelte";
+    import Toggle from "$lib/components/ui/toggle.svelte";
 
     let {
         data
@@ -11,7 +14,11 @@
 <!-- {JSON.stringify(data)} -->
 
 <div class="fl-location wrapper">
-    <div class="breadcrumbs">crumbs</div>
+    <BreadCrumbs items={[
+        { link: '/services', text: 'Services' },
+        { link: `/services/${data.location.id}`, text: data.location.name },
+    ]} />
+    <!-- <div class="breadcrumbs">crumbs</div> -->
     
     <section class="fl-page-header">
         <div class="name">
@@ -33,8 +40,44 @@
         </div> -->
     </section>
 
-    <section class="fl-location-address">
-        address
+    <section class="fl-location-details split-row">
+        <div class="address">
+            <FieldText id="loc-street_1" label="Street Address - Line 1" required={true}
+                bind:value={data.location.street_1}
+                errorMessage="Street Address - Line 1 is required."
+            />
+            <FieldText id="loc-street_2" label="Street Address - Line 2"
+                bind:value={data.location.street_2}
+            />
+            <!-- <div class="split-row"> -->
+            <FieldText id="loc-city" label="City"
+                bind:value={data.location.city}
+                width="15rem"
+            />
+            <FieldText id="loc-region" label="Region"
+                bind:value={data.location.region}
+                width="15rem"
+            />
+            <!-- </div> -->
+        </div>
+
+        <div class="settings">
+            <div class="toggle">
+                <Toggle id="active-{data.location.id}" bind:checked={data.location.is_active} onclick={(e) => clickActive(e)} />
+                <label for="active-{data.location.id}"
+                    class:inactive={data.location.is_active !== true}
+                >
+                    {#if data.location.is_active === true}
+                        This location is open for bookings.
+                    {:else}
+                        This location is not open.
+                    {/if}
+                </label>
+            </div>
+            <!-- <div class="fl-location-hours"> -->
+                <LocationHours bind:data={data.location.schedule} />
+            <!-- </div> -->
+        </div>
     </section>
 
     <section class="fl-location-staff">
@@ -51,7 +94,7 @@
         color: var(--dark);
         display: flex;
         flex-direction: column;
-        gap: 2rem;
+        gap: 1rem;
     }
     .fl-location > section {
         /* margin-bottom: 1rem; */
@@ -78,5 +121,41 @@
     }
     .fl-page-header > .name > input[type=text]:hover {
         border: 1px solid var(--light);
+    }
+    .fl-location > .fl-location-details {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: flex-start;
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+    .fl-location-details > .address {
+        border: 1px solid var(--primary);
+        border-left: 4px solid var(--primary);
+        border-radius: 0.5rem;
+        padding: 1.75rem 1.75rem 2rem;
+        display: grid;
+        gap: 2rem;
+    }
+    .fl-location-details > .settings {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+    .fl-location-details > .settings > .toggle {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-size: 0.875rem;
+    }
+    .fl-location-details > .settings > .toggle > label {
+        color: var(--dark);
+        cursor: pointer;
+        font-size: 0.875rem;
+        font-weight: 300;
+    }
+    .fl-location-details > .settings > .toggle > label.inactive {
+        /* color: var(--semi-dark); */
+        opacity: 0.6;
     }
 </style>
