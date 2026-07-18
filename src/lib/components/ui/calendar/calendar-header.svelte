@@ -14,7 +14,7 @@
     import { getContext } from "svelte";
     import Button from "$lib/components/ui/button.svelte";
     import ButtonGroup from "$lib/components/ui/button-group.svelte";
-    import Select from "$lib/components/ui/select.svelte";
+    import Select from "$lib/components/ui/select-OLD.svelte";
     import CalendarCreateBooking from "./calendar-create-booking.svelte";
     import CalendarDateSelect from "./calendar-date-select.svelte";
     import CalendarLocationSelect from "./calendar-location-select.svelte";

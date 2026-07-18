@@ -9,14 +9,16 @@
     let {
         data
     } = $props();
+
+    setContext('GLOBAL', data.global);
 </script>
 
 <!-- {JSON.stringify(data)} -->
 
 <div class="fl-location wrapper">
     <BreadCrumbs items={[
-        { link: '/services', text: 'Services' },
-        { link: `/services/${data.location.id}`, text: data.location.name },
+        { link: '/locations', text: 'Locations' },
+        { link: `/locations/${data.location.id}`, text: data.location.name },
     ]} />
     <!-- <div class="breadcrumbs">crumbs</div> -->
     
@@ -125,7 +127,7 @@
     .fl-location > .fl-location-details {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        align-items: flex-start;
+        /* align-items: flex-start; */
         gap: 2rem;
         margin-bottom: 2rem;
     }
@@ -140,7 +142,9 @@
     .fl-location-details > .settings {
         display: flex;
         flex-direction: column;
-        gap: 2rem;
+        justify-content: space-between;
+        /* border: 1px solid red; */
+        /* gap: 2rem; */
     }
     .fl-location-details > .settings > .toggle {
         display: flex;

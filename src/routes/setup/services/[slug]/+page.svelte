@@ -1,6 +1,7 @@
 <script>
     import { setContext } from "svelte";
     import { Scissors } from "@lucide/svelte";
+    import BreadCrumbs from "$lib/components/ui/bread-crumbs.svelte";
     import ServiceLocations from "./service-locations.svelte";
     import ServiceVariants from "./service-variants.svelte";
     import Toggle from "$lib/components/ui/toggle.svelte";
@@ -47,7 +48,10 @@
 <!-- {JSON.stringify(data)} -->
 
 <div class="fl-service wrapper">
-    <div class="breadcrumbs">crumbs</div>
+    <BreadCrumbs items={[
+        { link: '/services', text: 'Services' },
+        { link: `/services/${service.id}`, text: service.name },
+    ]} />
     
     <section class="fl-page-header">
         <div class="name">

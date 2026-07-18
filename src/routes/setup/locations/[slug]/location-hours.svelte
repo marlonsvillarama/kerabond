@@ -1,6 +1,7 @@
 <script>
-    import { onMount } from "svelte";
-    import TimeSelect from "$lib/components/ui/time-select.svelte";
+    import { onMount, getContext, setContext } from "svelte";
+    import { ArrowRight } from "@lucide/svelte";
+    import Select from "$lib/components/ui/select.svelte";
     import Toggle from "$lib/components/ui/toggle.svelte";
 
     let {
@@ -49,6 +50,36 @@
         console.log('weekDays', weekDays);
     });
 
+    let globalPrefs = getContext('GLOBAL');
+    console.log('globalPrefs', globalPrefs);
+    let timeSlotOptions = $derived.by(() => {
+        let output = [];
+        let today = new Date();
+        let startDate = new Date(
+            today.getFullYear(),
+            today.getMonth(),
+            today.getDate(),
+            parseInt(globalPrefs.start_hour.slice(0, 2)),
+            parseInt(globalPrefs.start_hour.slice(2))
+        );
+
+        do {
+            output.push({
+                text: (new Intl.DateTimeFormat(
+                    'en-NZ',
+                    { hour: '2-digit', minute: '2-digit', hour12: true }
+                )).format(startDate).toUpperCase(),
+                value: `${startDate.getHours().toString().padStart(2, '0')}${startDate.getMinutes().toString().padStart(2, '0')}`
+            });
+            startDate.setMinutes(startDate.getMinutes() + 15);
+            console.log('startDate', startDate);
+        } while (startDate.getHours() < parseInt(globalPrefs.end_hour.slice(0, 2)));
+
+        console.log('timeOptions', output);
+        return output;
+    });
+    setContext('TIME_SLOTS', timeSlotOptions);
+
     const toggleDay = (day) => {
         console.log('toggleDay', day);
         let index = weekDays.findIndex(d => d.day.toString() === day.toString());
@@ -68,7 +99,7 @@
     };
 </script>
 
-<!-- data = {JSON.stringify(data)} -->
+data = {JSON.stringify(data)}
 
 <div class="fl-loc-hours">
     <!-- <div class="row" data-id="0">
@@ -77,7 +108,7 @@
         <span class="header">From</span>
         <span class="header">To</span>
     </div> -->
-    <!-- {JSON.stringify(weekDays)} -->
+    {JSON.stringify(weekDays)}
     {#each weekDays as _, i}
     <div class="row">
         <div class="day" data-day={weekDays[i].day}>
@@ -89,8 +120,9 @@
             ontoggle={() => toggleDay(weekDays[i].day)}
         />
         <div class="controls">
-            <TimeSelect value={weekDays[i].start} />
-            <TimeSelect value={weekDays[i].end} />
+            <Select value={weekDays[i].start} options={timeSlotOptions} />
+            <ArrowRight size={16} />
+            <Select value={weekDays[i].end} options={timeSlotOptions} />
         </div>
     </div>
     {/each}
@@ -104,12 +136,13 @@
         /* border: 1px solid red; */
     }
     .fl-loc-hours > .row {
+        background-color: var(--lightest);
         display: grid;
         grid-template-columns: 1fr 1fr auto;
         /* border:  1px solid red; */
         font-size: 0.875rem;
-        padding: 0.5rem 0;
-        margin-left: 1rem;
+        padding: 0.5rem 0.75rem;
+        /* margin-left: 1rem; */
     }
     .fl-loc-hours > .row:nth-child(odd) {
         background-color: var(--lighter);

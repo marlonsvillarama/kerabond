@@ -1,99 +1,106 @@
 <script>
-    import { ChevronDown, ChevronUp } from "@lucide/svelte";
+    import { getContext } from "svelte";
 
     let {
-        flat = false,
-        items = [],
-        placeholder = '...',
-        style = ''
+        // start = '0800',
+        // end = '1800',
+        // interval = 30,
+        options = [],
+        value = $bindable('0800')
     } = $props();
 
-    const getRandomString = (length = 12) => {
-        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        let result = '';
+    let timeSlots = getContext('TIME_SLOTS');
+    let timeDisplay = $derived.by(() => {
+        let hours = value.slice(0, 2);
+        let hoursInt = parseInt(hours);
+        let minutes = value.slice(2);
 
-        let counter = 0;
-        while (counter < length) {
-            result += characters.charAt(Math.floor(Math.random() * characters.length));
-            counter++;
-        }
+        return `${hoursInt}:${minutes} ${hoursInt >= 12 ? 'PM' : 'AM'}`
+    });
 
-        return result;
-    };
-
-    let optionsPopover = $state();
-    let targetId = $state('');
-    let selectedValue = $state('');
-    let selectedText = $derived(items.find(d => d.value === selectedValue)?.text || placeholder);
-
-    const selectOption = (v) => {
-        selectedValue = v;
-        optionsPopover.hidePopover();
-    };
+    let isOpen = $state(false);
+    let selectRoot = $state();
+    let selectTrigger = $state();
+    let selectedContent = $derived(options.find(d => d.value === value)?.text || '---');
 </script>
 
-<button type="button" class="fl-select flex-center between shadow" popovertarget="options-{targetId}" {style}
-    class:flat={flat === true}
-    class:placeholder={selectedText === placeholder}>
-    {selectedText || ''}
-    <ChevronDown size={20} class="fl-select-icon" />
-</button>
+<div class="fl-select-root" bind:this={selectRoot}>
+    <button type="button" class="fl-select-trigger" bind:this={selectTrigger}>
+        <span class="selected-value">{selectedContent}</span>
+    </button>
 
-<div class="fl-select-options shadow" popover id="options-{targetId}" bind:this={optionsPopover} {style}>
-    {#each items as item}
-    <button type="button" data-fl-select-option-value={item.value} onclick={() => selectOption(item.value)}>{item.text}</button>
-    {/each}
+    {#if isOpen}
+    <ul class="fl-select-options">
+        {#each options as option, i}
+        <li value={option.value}>{option.text}</li>
+        {/each}
+    </ul>
+    {/if}
 </div>
 
 <style>
-    .fl-select {
-        anchor-name: --button;
-        background-color: var(--white);
-        border: 0;
-        border-radius: var(--border-radius);
-        color: var(--espresso);
-        cursor: pointer;
-        font-size: 0.875rem;
-        min-width: 10rem;
-        outline: none;
-        padding: 0.65rem 0.5rem 0.625rem 1rem;
+    .fl-select-root {
         position: relative;
-        text-align: left;
     }
-    :global(.fl-select-icon) {
-        position: absolute;
-        right: 0;
-        top: 50%;
-        transform: translateX(-60%) translateY(-50%);
-    }
-    [popover] {
+    .fl-select-trigger {
+        background-color: var(--semi-light);
         border: 0;
-        border-radius: var(--border-radius);
-        margin-top: 0.5rem;
-        top: anchor(--button bottom);
-        left: anchor(--button left);
-        position-anchor: --button;
-        position-try-fallbacks: flip-block, flip-inline, flip-start;
-        padding: 0.25rem;
-    }
-    .fl-select-options > button {
-        background-color: var(--white);
-        border: 0;
-        display: block;
+        border-radius: 0.25rem;
+        color: var(--darker);
         cursor: pointer;
-        font-size: 0.875rem;
-        min-width: 10rem;
-        padding: 0.5rem 1rem;
-        text-align: left;
-        transition: all 100ms ease-in-out;
-        width: 100%;
+        font-size: 0.75rem;
+        outline: 0;
+        padding: 0.25rem 0.375rem;
+        width: 6rem;
     }
-    .fl-select-options > button:hover {
-        background-color: var(--accent);
-        border-radius: var(--border-radius);
-        color: var(--white);
+    .fl-select-options {
+        position: absolute;
+        z-index: 20;
+        top: calc(100% + 0.25rem);
+        left: 0;
+        right: 0;
+        list-style: none;
+        background-color: var(--white);
+        border: 1px solid var(--light);
+        border-radius: 0.25rem;
+        max-height: 15rem;
+        overflow-y: auto;
+        overscroll-behavior: contain;
     }
-    :global(.fl-select.placeholder) {
-        opacity: 0.6;
+    :global(.fl-select-option > li) {
+        display: flex;
+        font-size: 0.75rem;
+        padding: 0.375rem 0.5rem;
     }
+    .fl-select-options::-webkit-scrollbar {
+        width: 0.5rem;
+    }
+    .fl-select-options::-webkit-scrollbar-thumb {
+        background: var(--light);
+        border-radius: 0.25rem;
+    }
+    .fl-select-options::-webkit-scrollbar-thumb:hover {
+        background: var(--semi-light);
+    }
+    /* .fl-time-select {
+        position-area: bottom;
+        margin: 0;
+        flex-direction: column;
+        width: 6rem;
+        max-height: 12rem;
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: var(--semi-light);
+        border: none;
+        border-radius: 0.5rem;
+        box-sizing: border-box;
+        outline: 1px solid var(--semi-light);
+    }
+    .fl-time-select > * {
+        font-size: 0.75rem;
+        padding: 0.375rem 0.5rem;
+    } */
+    /* .fl-time-select::picker {
+        max-height: 10rem;
+    } */
 </style>

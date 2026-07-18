@@ -1,6 +1,9 @@
 import { supabase } from "$lib/supabaseClient";
+import { getContext } from "svelte";
 
 export async function load() {
+    // let tenant = getContext('TENANT');
+    
     const { data:locations } = await supabase.from('kb_locations').select();
     const { data:services } = await supabase.from('kb_services').select();
     const { data:staff } = await supabase.from('kb_staff').select();

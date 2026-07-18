@@ -16,6 +16,7 @@
         variants
     } = data;
     let staffPopover = $state();
+    let isStaffPopoverShown = $state(false);
 
     const BLANK_DETAILS = {
         name: ''
@@ -56,7 +57,7 @@
     {/each}
 </ListPageContent>
 
-<!-- <dialog class="fl-staff-dlg" id="fl-service-new"
+<dialog class="fl-staff-dlg" id="fl-service-new"
     bind:this={staffPopover}
     oncancel={cancelForm}
     onsubmit={submitForm}
@@ -66,7 +67,7 @@
             <div class="form-title">
                 <span class="title">Add New Staff</span>
             </div>
-            <button type="button" command="request-close" commandfor="fl-service-new"><X size={20} /></button>
+            <button type="button" onclick={() => showAddForm()}><X size={20} /></button>
         </div>
         <div class="form-content">
             <div class="staff-details">
@@ -76,11 +77,11 @@
                 </div>
                 <div class="fl-section-content">
                     <div class="split-2">
-                        <FormFieldText id="fl-staff-fn" label="First Name" required={true} bind:value={staffDetails.first_name} />
-                        <FormFieldText id="fl-staff-ln" label="Last Name" required={true} bind:value={staffDetails.last_name} />
+                        <!-- <FormFieldText id="fl-staff-fn" label="First Name" required={true} bind:value={staffDetails.first_name} /> -->
+                        <!-- <FormFieldText id="fl-staff-ln" label="Last Name" required={true} bind:value={staffDetails.last_name} /> -->
                     </div>
-                    <FormFieldPhone id="fl-staff-ph" label="Phone No." width="12rem" bind:value={staffDetails.phone} />
-                    <FormFieldEmail id="fl-staff-em" label="Email" bind:value={staffDetails.email} />
+                    <!-- <FormFieldPhone id="fl-staff-ph" label="Phone No." width="12rem" bind:value={staffDetails.phone} /> -->
+                    <!-- <FormFieldEmail id="fl-staff-em" label="Email" bind:value={staffDetails.email} /> -->
                 </div>
             </div>
             <div class="fl-staff-locations">
@@ -90,7 +91,7 @@
                 </div>
                 <div class="section-list">
                     {#each data.locations as loc}
-                        <FormStaffLocation id={loc.id} label={loc.name || loc.street_1} />
+                        <!-- <FormStaffLocation id={loc.id} label={loc.name || loc.street_1} /> -->
                     {/each}
                 </div>
             </div>
@@ -102,7 +103,7 @@
             </div>
         </div>
     </form>
-</dialog> -->
+</dialog>
 
 <style>
     .fl-page-header {
@@ -325,5 +326,9 @@
         /* flex-wrap: wrap; */
         /* column-gap: 2rem; */
         gap: 1rem;
+    }
+
+    #fl-service-new {
+        position-area: bottom;
     }
 </style>

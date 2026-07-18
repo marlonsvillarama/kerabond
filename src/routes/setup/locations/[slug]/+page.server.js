@@ -43,8 +43,16 @@ export async function load({ params }) {
         `)
         .eq('is_active', true)
         .order('first_name');
+    const { data:global, error:globalError } = await supabase.from('kb_pref_global')
+        .select(`
+            id,
+            start_hour,
+            end_hour,
+            slot_interval
+        `).single();
 
     return {
+        global: global ?? {},
         location: location ?? {},
         staff: staff ?? []
     };

@@ -20,7 +20,7 @@
     import Button from "$lib/components/ui/button.svelte";
     import InputSearch from "$lib/components/ui/input-search.svelte";
     import InputText from "$lib/components/ui/input-text.svelte";
-    import Select from "$lib/components/ui/select.svelte";
+    import Select from "$lib/components/ui/select-OLD.svelte";
 
     let items = [
         { value: 1, text: "First Pick" },
