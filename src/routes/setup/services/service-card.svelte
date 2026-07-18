@@ -30,7 +30,8 @@
     console.log('staffServices', staffServices);
     
     const toggleActive = async () => {
-        const { data, error } = await supabase.from('kb_services').update({ is_active: data.is_active }).eq('id', data.id).select();
+        const { data, error } = await supabase.from('kb_services')
+            .update({ is_active: data.is_active }).eq('id', data.id).select();
         if (error) {
             console.error(error);
         }

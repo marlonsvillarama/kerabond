@@ -1,6 +1,7 @@
 <script>
     let {
         formatter = null,
+        disabled = false,
         onchange,
         options = [],
         value = $bindable()

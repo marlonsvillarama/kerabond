@@ -1,5 +1,6 @@
 <script>
     import { setContext } from "svelte";
+    import { supabase } from "$lib/supabaseClient";
     import { MapPin } from "@lucide/svelte";
     import BreadCrumbs from "$lib/components/ui/bread-crumbs.svelte";
     import FieldText from "$lib/components/ui/form/field-text.svelte";
@@ -11,6 +12,16 @@
     } = $props();
 
     setContext('GLOBAL', data.global);
+
+    const updateActive = () => {
+        console.log(`*** updateActive id = ${data.location.id}`, data.location.is_active);
+        // await supabase.from('kb_locations').update({ is_active: data.})
+        // .eq('id', data.location.id);
+    };
+
+    const logSchedule = () => {
+        console.log('*** logSchedule', data.location.schedule);
+    };
 </script>
 
 <!-- {JSON.stringify(data)} -->
@@ -65,7 +76,7 @@
 
         <div class="settings">
             <div class="toggle">
-                <Toggle id="active-{data.location.id}" bind:checked={data.location.is_active} onclick={(e) => clickActive(e)} />
+                <Toggle id="active-{data.location.id}" bind:checked={data.location.is_active} ontoggle={updateActive} />
                 <label for="active-{data.location.id}"
                     class:inactive={data.location.is_active !== true}
                 >
@@ -77,7 +88,7 @@
                 </label>
             </div>
             <!-- <div class="fl-location-hours"> -->
-                <LocationHours bind:data={data.location.schedule} />
+                <LocationHours bind:data={data.location.schedule} onchange={logSchedule} />
             <!-- </div> -->
         </div>
     </section>

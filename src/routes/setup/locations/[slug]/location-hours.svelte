@@ -6,8 +6,11 @@
 
     let {
         onchange,
-        data
+        data = $bindable()
     } = $props();
+
+    let globalPrefs = getContext('GLOBAL');
+    // console.log('globalPrefs', globalPrefs);
 
     let weekDays = $state([
         { day: 0, name: 'Sunday' },
@@ -21,10 +24,10 @@
 
     onMount(() => {
         let days = (data || '').split(',');
-        console.log('days', days);
+        // console.log('days', days);
 
         if (days.length <= 0) {
-            return weekDays.map(d => {
+            weekDays = weekDays.map(d => {
                 return { ...d, is_active: false }
             });
         }
@@ -48,11 +51,9 @@
                 end: bizHours[1]
             };
         });
-        console.log('weekDays', weekDays);
+        // console.log('*** onMount weekDays', weekDays);
     });
 
-    let globalPrefs = getContext('GLOBAL');
-    console.log('globalPrefs', globalPrefs);
     let timeSlotOptions = $derived.by(() => {
         let output = [];
         let today = new Date();
@@ -64,6 +65,9 @@
             parseInt(globalPrefs.start_hour.slice(2))
         );
 
+        let endHour = parseInt(globalPrefs.end_hour.slice(0, 2));
+        let endMinutes = parseInt(globalPrefs.end_hour.slice(2));
+
         do {
             output.push({
                 text: (new Intl.DateTimeFormat(
@@ -73,50 +77,75 @@
                 value: `${startDate.getHours().toString().padStart(2, '0')}${startDate.getMinutes().toString().padStart(2, '0')}`
             });
             startDate.setMinutes(startDate.getMinutes() + 15);
-            console.log('startDate', startDate);
-        } while (startDate.getHours() < parseInt(globalPrefs.end_hour.slice(0, 2)));
+            // console.log('startDate', startDate);
+        } while (
+            startDate.getHours() < endHour ||
+            (startDate.getHours() === endHour && startDate.getMinutes() <= endMinutes)
+        );
 
-        console.log('timeOptions', output);
+        // console.log('timeOptions', output);
         return output;
     });
     setContext('TIME_SLOTS', timeSlotOptions);
 
+    const confirmToggleDay = (e) => {
+        console.log('confirmToggleDay e', e.target.id);
+        let idParts = e.target.id.split('-');
+        let index = idParts[1];
+
+        if (weekDays[index].is_active !== true) { return; }
+        if (!confirm(`Close this location on ${weekDays[index].name}s?`)) {
+            e.preventDefault();
+            return;
+        }
+    };
+
     const toggleDay = (day) => {
         let index = weekDays.findIndex(d => d.day.toString() === day.toString());
-        weekDays[index].is_active = !weekDays[index].is_active;
+        console.log(`*** toggleDay ${day} BEFORE is_active = ${weekDays[index].is_active}`, weekDays[index].is_active);
 
+        // let isConfirmed = confirm(`Close this location on ${weekDays[index].name}s?`);
+        // console.log('*** toggleDay > isConfirmed', isConfirmed);
+        // console.log(`*** toggleDay ${day} AFTER is_active = ${weekDays[index].is_active}`, weekDays[index].is_active);
+        // if (!isConfirmed) { return; }
+
+        weekDays[index].is_active = !weekDays[index].is_active;
+        weekDays[index].start = weekDays[index].is_active ? globalPrefs.start_hour : null;
+        weekDays[index].end = weekDays[index].is_active ? globalPrefs.end_hour : null;
         updateSchedule();
+        onchange();
     };
 
     const updateSchedule = () => {
-        console.log('updateSchedule weekDays', weekDays);
+        // console.log('updateSchedule weekDays', weekDays);
         data = weekDays.map(d => {
             let hours = (d.is_active) ? `${d.start || ''}-${d.end || ''}` : '';
-            console.log(`. > hours = ${hours}`);
+            // console.log(`. > hours = ${hours}`);
             return `${d.day}${hours ? `:${hours}` : ''}`;
         }).join(',');
-        console.log('*** updateSchedule data', data);
+        console.log('*** locationHours > updateSchedule data', data);
     };
 </script>
 
 <div class="fl-loc-hours">
-    {JSON.stringify(weekDays)}
+    <!-- {JSON.stringify(weekDays)} -->
     {#each weekDays as _, i}
-    <div class="row">
-        <div class="day" data-day={weekDays[i].day}>
-            <div class="avatar">{weekDays[i].name[0]}</div>
-            <div>{weekDays[i].name}</div>
+        <div class="row">
+            <div class="day" data-day={weekDays[i].day}>
+                <div class="avatar">{weekDays[i].name[0]}</div>
+                <div>{weekDays[i].name}</div>
+            </div>
+            <Toggle id="day_active-{weekDays[i].day}"
+                bind:checked={weekDays[i].is_active}
+                onclick={confirmToggleDay}
+                ontoggle={() => toggleDay(weekDays[i].day)}
+            />
+            <div class="controls">
+                <Select bind:value={weekDays[i].start} options={timeSlotOptions} onchange={updateSchedule} />
+                <ArrowRight size={16} />
+                <Select bind:value={weekDays[i].end} options={timeSlotOptions} onchange={updateSchedule} />
+            </div>
         </div>
-        <Toggle id="bizday-active-{weekDays[i].day}"
-            checked={weekDays[i].is_active}
-            ontoggle={() => toggleDay(weekDays[i].day)}
-        />
-        <div class="controls">
-            <Select bind:value={weekDays[i].start} options={timeSlotOptions} onchange={updateSchedule} />
-            <ArrowRight size={16} />
-            <Select value={weekDays[i].end} options={timeSlotOptions} onchange={updateSchedule} />
-        </div>
-    </div>
     {/each}
 </div>
 

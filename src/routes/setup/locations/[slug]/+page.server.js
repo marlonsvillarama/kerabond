@@ -7,6 +7,7 @@ export async function load({ params }) {
 
     const { data:location, error } = await supabase.from('kb_locations')
         .select(`
+            id,
             created_at,
             is_active,
             name,

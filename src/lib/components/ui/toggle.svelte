@@ -1,7 +1,7 @@
 <script>
     let {
         // checked = $bindable(),
-        checked,
+        checked = $bindable(),
         id = 'toggle',
         onclick,
         ontoggle
@@ -11,7 +11,7 @@
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div class="toggle">
-    <input type="checkbox" checked {id} name={id} onchange={ontoggle} {onclick} />
+    <input type="checkbox" {checked} {id} name={id} {onclick} onchange={ontoggle} />
     <!-- svelte-ignore a11y_label_has_associated_control -->
     <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
     <!-- {#if label} -->
@@ -30,7 +30,9 @@
     .toggle input[type="checkbox"] {
         position: absolute;
         left: -9999px;
+        /* left: 0; */
         top: -9999px;
+        /* top: 0; */
         z-index: 10;
         width: 100%;
         height: 100%;
