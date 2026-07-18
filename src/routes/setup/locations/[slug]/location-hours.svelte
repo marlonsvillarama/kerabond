@@ -101,7 +101,7 @@
     };
 
     const toggleDay = (day) => {
-        let index = weekDays.findIndex(d => d.day.toString() === day.toString());
+        let index = data.findIndex(d => d.day.toString() === day.toString());
         console.log(`*** toggleDay ${day} BEFORE is_active = ${weekDays[index].is_active}`, weekDays[index].is_active);
 
         // let isConfirmed = confirm(`Close this location on ${weekDays[index].name}s?`);
@@ -112,24 +112,29 @@
         weekDays[index].is_active = !weekDays[index].is_active;
         weekDays[index].start = weekDays[index].is_active ? globalPrefs.start_hour : null;
         weekDays[index].end = weekDays[index].is_active ? globalPrefs.end_hour : null;
+        console.log(`*** toggleDay ${day} AFTER is_active = ${weekDays[index].is_active}`, weekDays[index].is_active);
         updateSchedule();
-        onchange();
     };
 
-    const updateSchedule = () => {
-        // console.log('updateSchedule weekDays', weekDays);
+    const formatSchedule = () => {
         data = weekDays.map(d => {
             let hours = (d.is_active) ? `${d.start || ''}-${d.end || ''}` : '';
             // console.log(`. > hours = ${hours}`);
             return `${d.day}${hours ? `:${hours}` : ''}`;
         }).join(',');
-        console.log('*** locationHours > updateSchedule data', data);
+        console.log('*** locationHours > formatSchedule data', data);
+    };
+
+    const updateSchedule = () => {
+        // console.log('updateSchedule weekDays', weekDays);
+        formatSchedule();
+        onchange();
     };
 </script>
 
 <div class="fl-loc-hours">
-    <!-- {JSON.stringify(weekDays)} -->
-    {#each weekDays as _, i}
+    {#each weekDays as weekDay, i}
+        {JSON.stringify(weekDay)}
         <div class="row">
             <div class="day" data-day={weekDays[i].day}>
                 <div class="avatar">{weekDays[i].name[0]}</div>

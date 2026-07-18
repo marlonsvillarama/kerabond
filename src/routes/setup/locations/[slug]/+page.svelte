@@ -1,5 +1,5 @@
 <script>
-    import { setContext } from "svelte";
+    import { getContext, onMount, setContext } from "svelte";
     import { supabase } from "$lib/supabaseClient";
     import { MapPin } from "@lucide/svelte";
     import BreadCrumbs from "$lib/components/ui/bread-crumbs.svelte";
@@ -11,32 +11,40 @@
         data
     } = $props();
 
+    // onMount(() => {
+        //     location = data.location;
     setContext('GLOBAL', data.global);
+    let location = $state(data.location);
 
-    const updateActive = () => {
-        console.log(`*** updateActive id = ${data.location.id}`, data.location.is_active);
-        // await supabase.from('kb_locations').update({ is_active: data.})
-        // .eq('id', data.location.id);
+    const updateLocation = async (key) => {
+        console.log(`*** updateLocation id = ${location.id}`, location);
+        const { error } = await supabase.from('kb_locations')
+            .update({ [key]: location[key] })
+            .eq('id', location.id);
+        if (error) {
+            console.error('updateActive', error);
+        }
     };
 
     const logSchedule = () => {
-        console.log('*** logSchedule', data.location.schedule);
+        console.log('*** logSchedule', location.schedule);
+        updateLocation('schedule')
     };
 </script>
 
-<!-- {JSON.stringify(data)} -->
+{JSON.stringify(location)}
 
 <div class="fl-location wrapper">
     <BreadCrumbs items={[
         { link: '/locations', text: 'Locations' },
-        { link: `/locations/${data.location.id}`, text: data.location.name },
+        { link: `/locations/${location.id}`, text: location.name },
     ]} />
     <!-- <div class="breadcrumbs">crumbs</div> -->
     
     <section class="fl-page-header">
         <div class="name">
             <MapPin size={24} />
-            <input type="text" class="name" value={data.location.name} />
+            <input type="text" class="name" bind:value={location.name} onblur={() => updateLocation('name')} />
         </div>
         <!-- <textarea>{service.description}</textarea> -->
         <!-- <div class="toggle">
@@ -56,19 +64,19 @@
     <section class="fl-location-details split-row">
         <div class="address">
             <FieldText id="loc-street_1" label="Street Address - Line 1" required={true}
-                bind:value={data.location.street_1}
+                bind:value={location.street_1}
                 errorMessage="Street Address - Line 1 is required."
             />
             <FieldText id="loc-street_2" label="Street Address - Line 2"
-                bind:value={data.location.street_2}
+                bind:value={location.street_2}
             />
             <!-- <div class="split-row"> -->
             <FieldText id="loc-city" label="City"
-                bind:value={data.location.city}
+                bind:value={location.city}
                 width="15rem"
             />
             <FieldText id="loc-region" label="Region"
-                bind:value={data.location.region}
+                bind:value={location.region}
                 width="15rem"
             />
             <!-- </div> -->
@@ -76,11 +84,12 @@
 
         <div class="settings">
             <div class="toggle">
-                <Toggle id="active-{data.location.id}" bind:checked={data.location.is_active} ontoggle={updateActive} />
-                <label for="active-{data.location.id}"
-                    class:inactive={data.location.is_active !== true}
+                <!-- <input type="checkbox" bind:checked={location.is_active} /> -->
+                <Toggle id="active-{location.id}" bind:checked={location.is_active} ontoggle={() => updateLocation('is_active')} />
+                <label for="active-{location.id}"
+                    class:inactive={location.is_active !== true}
                 >
-                    {#if data.location.is_active === true}
+                    {#if location.is_active === true}
                         This location is open for bookings.
                     {:else}
                         This location is not open.
@@ -88,7 +97,7 @@
                 </label>
             </div>
             <!-- <div class="fl-location-hours"> -->
-                <LocationHours bind:data={data.location.schedule} onchange={logSchedule} />
+                <LocationHours bind:data={location.schedule} onchange={logSchedule} />
             <!-- </div> -->
         </div>
     </section>
