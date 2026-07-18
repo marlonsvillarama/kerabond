@@ -1,40 +1,69 @@
 <script>
-    import { getContext } from "svelte";
-
     let {
-        // start = '0800',
-        // end = '1800',
-        // interval = 30,
+        formatter = null,
+        onchange,
         options = [],
-        value = $bindable('0800')
+        value = $bindable()
     } = $props();
-
-    let timeSlots = getContext('TIME_SLOTS');
-    let timeDisplay = $derived.by(() => {
-        let hours = value.slice(0, 2);
-        let hoursInt = parseInt(hours);
-        let minutes = value.slice(2);
-
-        return `${hoursInt}:${minutes} ${hoursInt >= 12 ? 'PM' : 'AM'}`
-    });
 
     let isOpen = $state(false);
     let selectRoot = $state();
     let selectTrigger = $state();
     let selectedContent = $derived(options.find(d => d.value === value)?.text || '---');
+
+    const selectOption = (option) => {
+        value = option.value;
+        isOpen = false;
+        console.log('selectOption value', value);
+        onchange();
+    };
+
+    const handleKeyUp = (e) => {
+        console.log(e.key);
+        if (e.key === 'Escape' && isOpen) {
+            e.preventDefault();
+            isOpen = false;
+        }
+    };
+
+    const onDocumentClick = (e) => {
+        console.log('onDocumentClick', e.target);
+        if (isOpen && selectRoot && !selectRoot.contains(e.target)) {
+            isOpen = false;
+        }
+    };
+
+    $effect(() => {
+        if (isOpen) {
+            document.addEventListener('mousedown', onDocumentClick);
+            return () => document.removeEventListener('mousedown', onDocumentClick);
+        }
+    })
 </script>
 
 <div class="fl-select-root" bind:this={selectRoot}>
-    <button type="button" class="fl-select-trigger" bind:this={selectTrigger}>
+    <button type="button" class="fl-select-trigger" bind:this={selectTrigger}
+        onclick={() => isOpen = !isOpen}
+        // onblur={() => isOpen = false}
+        onkeyup={handleKeyUp}
+    >
         <span class="selected-value">{selectedContent}</span>
     </button>
 
     {#if isOpen}
-    <ul class="fl-select-options">
-        {#each options as option, i}
-        <li value={option.value}>{option.text}</li>
-        {/each}
-    </ul>
+        <ul class="fl-select-options">
+            {#each options as option, i}
+                <!-- svelte-ignore a11y_role_has_required_aria_props -->
+                <!-- svelte-ignore a11y_click_events_have_key_events -->
+                <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+                <li type="button"
+                    id="option-{i}"
+                    data-index={i}
+                    class:selected={value === option.value}
+                    onclick={() => selectOption(option)}
+                >{option.text}</li>
+            {/each}
+        </ul>
     {/if}
 </div>
 
@@ -67,10 +96,18 @@
         overflow-y: auto;
         overscroll-behavior: contain;
     }
-    :global(.fl-select-option > li) {
+    :global(.fl-select-options > li) {
         display: flex;
         font-size: 0.75rem;
         padding: 0.375rem 0.5rem;
+    }
+    :global(.fl-select-options > li:hover) {
+        background-color: var(--light);
+        cursor: pointer;
+    }
+    :global(.fl-select-options > li.selected) {
+        background-color: var(--primary);
+        color: var(--white);
     }
     .fl-select-options::-webkit-scrollbar {
         width: 0.5rem;

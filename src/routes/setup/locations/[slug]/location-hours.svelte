@@ -5,7 +5,8 @@
     import Toggle from "$lib/components/ui/toggle.svelte";
 
     let {
-        data = $bindable()
+        onchange,
+        data
     } = $props();
 
     let weekDays = $state([
@@ -81,33 +82,24 @@
     setContext('TIME_SLOTS', timeSlotOptions);
 
     const toggleDay = (day) => {
-        console.log('toggleDay', day);
         let index = weekDays.findIndex(d => d.day.toString() === day.toString());
-        console.log('toggleDay index', index);
         weekDays[index].is_active = !weekDays[index].is_active;
-        let schedule = updateSchedule();
-        console.log('schedule', schedule);
-        data = schedule;
+
+        updateSchedule();
     };
 
     const updateSchedule = () => {
-        return weekDays.map(d => {
-            let hours = (d.is_active && d.start && d.end) ?
-                `${d.start}-${d.end}` : '';
-            return `${d.day}${d.hours ? `:${d.hours}` : ''}`;
+        console.log('updateSchedule weekDays', weekDays);
+        data = weekDays.map(d => {
+            let hours = (d.is_active) ? `${d.start || ''}-${d.end || ''}` : '';
+            console.log(`. > hours = ${hours}`);
+            return `${d.day}${hours ? `:${hours}` : ''}`;
         }).join(',');
+        console.log('*** updateSchedule data', data);
     };
 </script>
 
-data = {JSON.stringify(data)}
-
 <div class="fl-loc-hours">
-    <!-- <div class="row" data-id="0">
-        <span class="header">&nbsp;</span>
-        <span class="header">Open</span>
-        <span class="header">From</span>
-        <span class="header">To</span>
-    </div> -->
     {JSON.stringify(weekDays)}
     {#each weekDays as _, i}
     <div class="row">
@@ -120,9 +112,9 @@ data = {JSON.stringify(data)}
             ontoggle={() => toggleDay(weekDays[i].day)}
         />
         <div class="controls">
-            <Select value={weekDays[i].start} options={timeSlotOptions} />
+            <Select bind:value={weekDays[i].start} options={timeSlotOptions} onchange={updateSchedule} />
             <ArrowRight size={16} />
-            <Select value={weekDays[i].end} options={timeSlotOptions} />
+            <Select value={weekDays[i].end} options={timeSlotOptions} onchange={updateSchedule} />
         </div>
     </div>
     {/each}
