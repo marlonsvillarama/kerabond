@@ -116,11 +116,14 @@
         updateSchedule();
     };
 
-    const formatSchedule = () => {
-        data = weekDays.map(d => {
+    const formatSchedule = (schedule) => {
+        data = schedule.map(d => {
+            d.start = d.is_active ? (d.start || globalPrefs.start_hour) : null;
+            d.end = d.is_active ? (d.end || globalPrefs.end_hour) : null;
+
             let hours = (d.is_active) ? `${d.start || ''}-${d.end || ''}` : '';
-            // console.log(`. > hours = ${hours}`);
-            return `${d.day}${hours ? `:${hours}` : ''}`;
+            console.log(`. > hours = ${hours}`);
+            return `${d.day}${d.is_active ? `:${hours}` : ''}`;
         }).join(',');
         console.log('*** locationHours > formatSchedule data', data);
     };
@@ -130,11 +133,16 @@
         formatSchedule();
         onchange();
     };
+
+    $effect(() => {
+        formatSchedule(weekDays);
+        onchange();
+    });
 </script>
 
 <div class="fl-loc-hours">
     {#each weekDays as weekDay, i}
-        {JSON.stringify(weekDay)}
+        <!-- {JSON.stringify(weekDay)} -->
         <div class="row">
             <div class="day" data-day={weekDays[i].day}>
                 <div class="avatar">{weekDays[i].name[0]}</div>
@@ -143,12 +151,12 @@
             <Toggle id="day_active-{weekDays[i].day}"
                 bind:checked={weekDays[i].is_active}
                 onclick={confirmToggleDay}
-                ontoggle={() => toggleDay(weekDays[i].day)}
             />
+                <!-- ontoggle={() => toggleDay(weekDays[i].day)} -->
             <div class="controls">
-                <Select bind:value={weekDays[i].start} options={timeSlotOptions} onchange={updateSchedule} />
+                <Select bind:value={weekDays[i].start} options={timeSlotOptions} />
                 <ArrowRight size={16} />
-                <Select bind:value={weekDays[i].end} options={timeSlotOptions} onchange={updateSchedule} />
+                <Select bind:value={weekDays[i].end} options={timeSlotOptions} />
             </div>
         </div>
     {/each}

@@ -11,13 +11,10 @@
         data
     } = $props();
 
-    // onMount(() => {
-        //     location = data.location;
     setContext('GLOBAL', data.global);
     let location = $state(data.location);
 
     const updateLocation = async (key) => {
-        console.log(`*** updateLocation id = ${location.id}`, location);
         const { error } = await supabase.from('kb_locations')
             .update({ [key]: location[key] })
             .eq('id', location.id);
@@ -27,38 +24,22 @@
     };
 
     const logSchedule = () => {
-        console.log('*** logSchedule', location.schedule);
         updateLocation('schedule')
     };
 </script>
 
-{JSON.stringify(location)}
-
+<!-- {JSON.stringify(location)} -->
 <div class="fl-location wrapper">
     <BreadCrumbs items={[
         { link: '/locations', text: 'Locations' },
         { link: `/locations/${location.id}`, text: location.name },
     ]} />
-    <!-- <div class="breadcrumbs">crumbs</div> -->
     
     <section class="fl-page-header">
         <div class="name">
             <MapPin size={24} />
             <input type="text" class="name" bind:value={location.name} onblur={() => updateLocation('name')} />
         </div>
-        <!-- <textarea>{service.description}</textarea> -->
-        <!-- <div class="toggle">
-            <Toggle id="active-{service.id}" bind:checked={service.is_active} onclick={(e) => clickActive(e)} />
-            <label for="active-{service.id}"
-                class:inactive={service.is_active !== true}
-            >
-                {#if service.is_active === true}
-                    This service is active and can be booked.
-                {:else}
-                    This service is currently unavailable.
-                {/if}
-            </label>
-        </div> -->
     </section>
 
     <section class="fl-location-details split-row">
@@ -66,18 +47,22 @@
             <FieldText id="loc-street_1" label="Street Address - Line 1" required={true}
                 bind:value={location.street_1}
                 errorMessage="Street Address - Line 1 is required."
+                onblur={() => updateLocation('street_1')}
             />
             <FieldText id="loc-street_2" label="Street Address - Line 2"
                 bind:value={location.street_2}
+                onblur={() => updateLocation('street_2')}
             />
             <!-- <div class="split-row"> -->
             <FieldText id="loc-city" label="City"
                 bind:value={location.city}
                 width="15rem"
+                onblur={() => updateLocation('city')}
             />
             <FieldText id="loc-region" label="Region"
                 bind:value={location.region}
                 width="15rem"
+                onblur={() => updateLocation('region')}
             />
             <!-- </div> -->
         </div>
@@ -97,7 +82,8 @@
                 </label>
             </div>
             <!-- <div class="fl-location-hours"> -->
-                <LocationHours bind:data={location.schedule} onchange={logSchedule} />
+            <!-- {JSON.stringify(location.schedule)} -->
+            <LocationHours bind:data={location.schedule} onchange={logSchedule} />
             <!-- </div> -->
         </div>
     </section>

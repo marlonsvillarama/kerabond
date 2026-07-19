@@ -3,6 +3,7 @@
         id = '',
         errorMessage = 'This field is required.',
         label = 'Text Field',
+        onblur,
         required = false,
         subtext = '',
         value = $bindable(),
@@ -11,8 +12,12 @@
 
     let showError = $state(false);
     const validate = () => {
-        if (required === false) { return; }
-        showError = required === true && !value;
+        // if (required === false) { return; }
+
+        showError = required === true && !value?.trim();
+        if (showError) { return; }
+
+        onblur?.();
     };
 </script>
 
