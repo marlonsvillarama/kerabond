@@ -17,10 +17,10 @@
     } = $props();
     let sidebarItems = [
         { id: 'services', label: 'Services', Icon: Scissors },
-        { id: 'locations', label: 'Locations', Icon: MapPin },
+        { id: 'locations', label: 'Branches', Icon: MapPin },
         { id: 'staff', label: 'Staff', Icon: IdCard },
         { id: 'schedule', label: 'Schedule', Icon: CalendarRange },
-        { id: 'inventory', label: 'Inventory', Icon: Package }
+        { id: 'inventory', label: 'Products', Icon: Package }
     ];
 
     let pageTitle = $state('Setup Overview');
@@ -39,6 +39,7 @@
 
 <style>
     .fl-setup {
+        background-color: var(--lighter);
         flex: 1;
         display: grid;
         grid-template-columns: auto 1fr;

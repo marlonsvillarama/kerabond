@@ -15,12 +15,10 @@
     const selectOption = (option) => {
         value = option.value;
         isOpen = false;
-        console.log('selectOption value', value);
         onchange();
     };
 
     const handleKeyUp = (e) => {
-        console.log(e.key);
         if (e.key === 'Escape' && isOpen) {
             e.preventDefault();
             isOpen = false;
@@ -28,7 +26,6 @@
     };
 
     const onDocumentClick = (e) => {
-        console.log('onDocumentClick', e.target);
         if (isOpen && selectRoot && !selectRoot.contains(e.target)) {
             isOpen = false;
         }
@@ -45,7 +42,6 @@
 <div class="fl-select-root" bind:this={selectRoot}>
     <button type="button" class="fl-select-trigger" bind:this={selectTrigger}
         onclick={() => isOpen = !isOpen}
-        // onblur={() => isOpen = false}
         onkeyup={handleKeyUp}
     >
         <span class="selected-value">{selectedContent}</span>
@@ -120,25 +116,4 @@
     .fl-select-options::-webkit-scrollbar-thumb:hover {
         background: var(--semi-light);
     }
-    /* .fl-time-select {
-        position-area: bottom;
-        margin: 0;
-        flex-direction: column;
-        width: 6rem;
-        max-height: 12rem;
-        overflow-y: auto;
-        scrollbar-width: thin;
-        scrollbar-color: var(--semi-light);
-        border: none;
-        border-radius: 0.5rem;
-        box-sizing: border-box;
-        outline: 1px solid var(--semi-light);
-    }
-    .fl-time-select > * {
-        font-size: 0.75rem;
-        padding: 0.375rem 0.5rem;
-    } */
-    /* .fl-time-select::picker {
-        max-height: 10rem;
-    } */
 </style>

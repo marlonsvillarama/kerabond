@@ -2,6 +2,7 @@
     import { setContext } from "svelte";
     import { Scissors } from "@lucide/svelte";
     import BreadCrumbs from "$lib/components/ui/bread-crumbs.svelte";
+    import Card from "$lib/components/ui/card.svelte";
     import ServiceLocations from "./service-locations.svelte";
     import ServiceVariants from "./service-variants.svelte";
     import Toggle from "$lib/components/ui/toggle.svelte";
@@ -108,7 +109,8 @@
     <!-- <section class="fl-page-controls">
     </section> -->
 
-    <section class="fl-variants mb">
+    <Card>
+    <!-- <section class="fl-variants mb"> -->
         <!-- <div class="toggle">
             <Toggle id="has-variants-{service.id}" bind:checked={service.has_variants} onclick={(e) => clickHasVariants(e)} />
             <label for="has-variants-{service.id}"
@@ -125,7 +127,8 @@
         <!-- {#if service.has_variants} -->
             <ServiceVariants bind:data={service.variants} />
         <!-- {/if} -->
-    </section>
+    <!-- </section> -->
+    </Card>
 
     <section class="fl-locations mb">
         <!-- <div class="toggle">
@@ -196,8 +199,8 @@
         /* outline-offset: 1px; */
     }
     .fl-page-header > textarea {
-        background-color: var(--lighter);
-        border: 1px solid var(--light);
+        background-color: var(--white);
+        border: 1px solid var(--semi-light);
         border-radius: 0.25rem;
         color: var(--darker);
         font-family: var(--font-default);
@@ -205,9 +208,9 @@
         font-weight: 300;
         height: 4rem;
         outline: none;
-        padding: 0.25rem 0.375rem;
+        padding: 0.375rem 0.5rem;
         resize: none;
-        width: calc(100% - 0.25rem);
+        /* width: calc(100% - 0.25rem); */
     }
     .fl-page-header > textarea:focus {
         border: 1px solid var(--primary);
@@ -222,6 +225,7 @@
     }
     section.fl-summary > .kpi {
         padding: 1rem;
+        background-color: var(--white);
         border: 1px solid var(--light);
         border-left: 4px solid var(--primary);
         border-radius: 0.5rem;

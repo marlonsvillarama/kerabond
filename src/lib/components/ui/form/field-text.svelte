@@ -23,11 +23,13 @@
 
 <div class="fl-fld-text">
     <label for="text-{id}" class:optional={required === false}>{label}</label>
-    <!-- <input type="text" id="text-{id}" bind:value /> -->
+
     {#if subtext}
         <span class="subtext">{subtext}</span>
     {/if}
+
     <input type="text" text="text-{id}" name="text-{id}" style="width: {width || '100%'}" bind:value onblur={validate} />
+
     {#if showError}
         <span class="error">{errorMessage}</span>
     {/if}
@@ -59,7 +61,6 @@
         content: " (Optional)";
     }
     :global(.fl-fld-text > input[type=text]) {
-        /* border: 1px solid var(--light); */
         background-color: var(--lighter);
         border: none;
         outline: none;

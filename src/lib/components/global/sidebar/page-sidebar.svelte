@@ -34,7 +34,7 @@
         <a href="/setup/{item.id}"
             class="fl-sidebar-link"
             class:fl-sidebar-link-active={activeTab === item.id}>
-            <item.Icon size={24} />
+            <item.Icon size={20} />
             {item.label}
         </a>
     {/each}
@@ -50,9 +50,9 @@
 
 <style>
     .fl-sidebar {
-        /* background-color: var(--accent); */
+        background-color: var(--white);
         /* color: var(--white); */
-        border-right: 2px solid var(--semi-light);
+        /* border-right: 2px solid var(--semi-light); */
         width: 17rem;
         padding: 1rem;
         padding-right: 0;
@@ -68,7 +68,7 @@
         border-bottom-left-radius: 0.25rem;
         color: var(--dark);
         cursor: pointer;
-        /* font-size: 0.875rem; */
+        font-size: 0.875rem;
         font-weight: 300;
         padding: 0.5rem 0.75rem;
         text-decoration: none;

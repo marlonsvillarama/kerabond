@@ -33,8 +33,8 @@
 <style>
     .fl-item {
         align-items: center;
-        background-color: transparent;
-        border: 0;
+        background-color: var(--white);
+        border: 1px solid var(--semi-light);
         border-radius: 0.5rem;
         display: flex;
         gap: 0.75rem;

@@ -10,8 +10,6 @@
     } = $props();
 
     let globalPrefs = getContext('GLOBAL');
-    // console.log('globalPrefs', globalPrefs);
-
     let weekDays = $state([
         { day: 0, name: 'Sunday' },
         { day: 1, name: 'Monday' },
@@ -24,7 +22,6 @@
 
     onMount(() => {
         let days = (data || '').split(',');
-        // console.log('days', days);
 
         if (days.length <= 0) {
             weekDays = weekDays.map(d => {
@@ -51,7 +48,6 @@
                 end: bizHours[1]
             };
         });
-        // console.log('*** onMount weekDays', weekDays);
     });
 
     let timeSlotOptions = $derived.by(() => {
@@ -77,19 +73,16 @@
                 value: `${startDate.getHours().toString().padStart(2, '0')}${startDate.getMinutes().toString().padStart(2, '0')}`
             });
             startDate.setMinutes(startDate.getMinutes() + 15);
-            // console.log('startDate', startDate);
         } while (
             startDate.getHours() < endHour ||
             (startDate.getHours() === endHour && startDate.getMinutes() <= endMinutes)
         );
 
-        // console.log('timeOptions', output);
         return output;
     });
     setContext('TIME_SLOTS', timeSlotOptions);
 
     const confirmToggleDay = (e) => {
-        console.log('confirmToggleDay e', e.target.id);
         let idParts = e.target.id.split('-');
         let index = idParts[1];
 
@@ -102,17 +95,11 @@
 
     const toggleDay = (day) => {
         let index = data.findIndex(d => d.day.toString() === day.toString());
-        console.log(`*** toggleDay ${day} BEFORE is_active = ${weekDays[index].is_active}`, weekDays[index].is_active);
-
-        // let isConfirmed = confirm(`Close this location on ${weekDays[index].name}s?`);
-        // console.log('*** toggleDay > isConfirmed', isConfirmed);
-        // console.log(`*** toggleDay ${day} AFTER is_active = ${weekDays[index].is_active}`, weekDays[index].is_active);
-        // if (!isConfirmed) { return; }
 
         weekDays[index].is_active = !weekDays[index].is_active;
         weekDays[index].start = weekDays[index].is_active ? globalPrefs.start_hour : null;
         weekDays[index].end = weekDays[index].is_active ? globalPrefs.end_hour : null;
-        console.log(`*** toggleDay ${day} AFTER is_active = ${weekDays[index].is_active}`, weekDays[index].is_active);
+
         updateSchedule();
     };
 
@@ -122,14 +109,11 @@
             d.end = d.is_active ? (d.end || globalPrefs.end_hour) : null;
 
             let hours = (d.is_active) ? `${d.start || ''}-${d.end || ''}` : '';
-            console.log(`. > hours = ${hours}`);
             return `${d.day}${d.is_active ? `:${hours}` : ''}`;
         }).join(',');
-        console.log('*** locationHours > formatSchedule data', data);
     };
 
     const updateSchedule = () => {
-        // console.log('updateSchedule weekDays', weekDays);
         formatSchedule();
         onchange();
     };
@@ -142,7 +126,6 @@
 
 <div class="fl-loc-hours">
     {#each weekDays as weekDay, i}
-        <!-- {JSON.stringify(weekDay)} -->
         <div class="row">
             <div class="day" data-day={weekDays[i].day}>
                 <div class="avatar">{weekDays[i].name[0]}</div>
@@ -152,7 +135,6 @@
                 bind:checked={weekDays[i].is_active}
                 onclick={confirmToggleDay}
             />
-                <!-- ontoggle={() => toggleDay(weekDays[i].day)} -->
             <div class="controls">
                 <Select bind:value={weekDays[i].start} options={timeSlotOptions} />
                 <ArrowRight size={16} />
@@ -164,19 +146,16 @@
 
 <style>
     .fl-loc-hours {
+        /* border: 1px solid red; */
         display: flex;
         flex-direction: column;
-        /* gap: 0.25rem; */
-        /* border: 1px solid red; */
     }
     .fl-loc-hours > .row {
         background-color: var(--lightest);
         display: grid;
         grid-template-columns: 1fr 1fr auto;
-        /* border:  1px solid red; */
         font-size: 0.875rem;
         padding: 0.5rem 0.75rem;
-        /* margin-left: 1rem; */
     }
     .fl-loc-hours > .row:nth-child(odd) {
         background-color: var(--lighter);
