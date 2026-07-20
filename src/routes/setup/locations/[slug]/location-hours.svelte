@@ -161,11 +161,11 @@
         flex-direction: column;
     }
     .fl-loc-hours > .row {
-        background-color: var(--lightest);
+        /* background-color: var(--lightest); */
         display: grid;
         grid-template-columns: 1fr 1fr auto;
         font-size: 0.875rem;
-        padding: 0.5rem 0.75rem;
+        padding: 1rem 0.75rem;
     }
     .fl-loc-hours > .row:nth-child(odd) {
         background-color: var(--lighter);

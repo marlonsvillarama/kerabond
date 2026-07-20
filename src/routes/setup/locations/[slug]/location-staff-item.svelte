@@ -6,28 +6,24 @@
     let {
         data
     } = $props();
-
-    let details = data.details;
 </script>
 
-<!-- {JSON.stringify(data)} -->
-<div class="fl-loc-staff-item" data-staff={details.id}>
+<div class="fl-loc-staff-item" data-staff={data.id}>
     <div class="fl-staff-profile">
-        <div class="avatar">{details.first_name[0]}</div>
+        <div class="avatar">{data.first_name[0]}</div>
     </div>
     <div class="fl-staff-details">
-        <span class="name">{details.first_name}</span>
+        <span class="name">{data.first_name}</span>
         <div class="contact-info">
-            <span><Phone size={16} /><span>{NZPhoneFormatter(details.phone)}</span></span>
-            <span><Mail size={16} /><span>{details.email}</span></span>
+            <span><Phone size={16} /><span>{NZPhoneFormatter(data.phone)}</span></span>
+            <span><Mail size={16} /><span>{data.email}</span></span>
         </div>
         <div class="rating-info">
-            {#if details.review_count}
-                <Rating value={details.rating_ave} />
-                <span>{details.rating_ave} from {details.review_count} reviews</span>
+            {#if data.review_count}
+                <Rating value={data.rating_ave} />
+                <span>{data.review_count} reviews</span>
             {:else}
                 <Rating value={0} />
-                <span>No reviews yet.</span>
             {/if}
         </div>
     </div>

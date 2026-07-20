@@ -44,12 +44,13 @@
         display: flex;
         gap: 0.75rem;
         outline: none;
-        padding: 0.5rem 0.625rem;
+        padding: 0.75rem 0.625rem;
         position: relative;
         text-align: start;
+        transition: all 100ms ease-in-out;
     }
     .fl-item:hover {
-        background-color: var(--lighter);
+        background-color: var(--primary-lighter);
     }
     .fl-item-active {
         /* border: 1px solid var(--primary); */

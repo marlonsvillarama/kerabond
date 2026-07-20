@@ -1,5 +1,6 @@
 <script>
     import { getContext } from "svelte";
+    import { goto } from "$app/navigation";
     import { Dot, IdCard, Pencil, Plus, Scissors, X } from "@lucide/svelte";
     import Badge from "$lib/components/ui/badge.svelte";
     import ListItem from "$lib/components/global/list-item.svelte";
@@ -65,7 +66,7 @@
 
     <!-- <div class="service-actions"> -->
     {#snippet controls()}
-        <a href="./services/{data.id}"><Pencil size={16} /></a>
+        <button type="button" onclick={() => goto(`./services/${data.id}`)}><Pencil size={16} /></button>
         <button type="button" onclick={() => ondelete(data.id)}><X size={16} /></button>
     {/snippet}
     <!-- </div> -->

@@ -1,5 +1,6 @@
 <script>
     import { getContext } from "svelte";
+    import { goto } from "$app/navigation";
     import { Dot, IdCard, MapPin, Pencil, Plus, Scissors, X } from "@lucide/svelte";
     // import ServiceBadge from "./service-badge.svelte";
     // import ServiceStaff from "./service-staff.svelte";
@@ -74,7 +75,7 @@
     {/snippet} -->
 
     {#snippet controls()}
-        <a href="./locations/{data.id}"><Pencil size={16} /></a>
+        <button type="button" onclick={() => goto(`./locations/${data.id}`)}><Pencil size={16} /></button>
         <button type="button" onclick={() => ondelete(data.id)}><X size={16} /></button>
     <!-- </div> -->
     {/snippet}

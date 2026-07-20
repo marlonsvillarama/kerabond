@@ -127,7 +127,7 @@
             <LocationHours bind:data={location.schedule} onupdate={updateLocation} />
         </Card>
 
-        <LocationStaff bind:items={location.staff} />
+        <LocationStaff items={location.staff.map(d => { return { ...d.details, selected: true }})} {location} />
     </div>
 </div>
 

@@ -1,4 +1,5 @@
 <script>
+    import { supabase } from "$lib/supabaseClient";
     import { getContext } from "svelte";
     import { NZPhoneFormatter } from "$lib/modules/phone";
     import { Calendar, Check, IdCard, Mail, Pencil, Phone, Rows, Star, StarHalf, Trash, X } from "@lucide/svelte";
@@ -6,10 +7,10 @@
     import Rating from "$lib/components/ui/rating.svelte";
     import Toggle from "$lib/components/ui/toggle.svelte";
 
+        // onedit,
+        // ondelete,
     let {
-        data = $bindable(),
-        onedit,
-        ondelete,
+        data,
         onselect,
     } = $props();
 
@@ -24,10 +25,6 @@
             console.error(error);
         }
     }
-
-    const toggleAssign = async () => {
-        data.selected = !data.selected;
-    };
 </script>
 
 <ListItem Icon={IdCard} active={data.selected}>
@@ -64,7 +61,7 @@
         <div class="fl-staff-item-controls">
             <!-- <a href="./locations/{data.id}"><Pencil size={16} /></a> -->
             <button type="button" class:fl-control-selected={data.selected === true}
-                onclick={toggleAssign}
+                onclick={() => onselect(data)}
             >
                 {#if data.selected}
                     <span>Remove</span>

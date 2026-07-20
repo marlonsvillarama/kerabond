@@ -2,14 +2,16 @@
     import { supabase } from "$lib/supabaseClient";
     import { Plus } from "@lucide/svelte";
     import LocationStaffItem from "./location-staff-item.svelte";
-    // import StaffCard from "../../staff/staff-card.svelte";
     import StaffItem from "../../staff/staff-item.svelte";
 
     let {
-        items = $bindable(),
+        items,
+        location,
         onchange
     } = $props();
-    let sortedItems = $derived(items.toSorted((a, b) => a.details.first_name.localeCompare(b.details.first_name)));
+    console.log('LocationStaff items', items);
+    let locationStaff = $state(items);
+    let sortedItems = $derived(locationStaff.toSorted((a, b) => a.first_name.localeCompare(b.first_name)));
 
     let dialog = $state();
     let dialogData = $state([]);
@@ -21,7 +23,10 @@
             const { data:staff } = await supabase.from('kb_staff')
                 .select().eq('is_active', true);
             dialogData = staff.map(d => {
-                return { ...d, selected: items.map(item => item.id).indexOf(d.id) >= 0}
+                return {
+                    ...d,
+                    selected: locationStaff.map(item => item.id).indexOf(d.id) >= 0
+                };
             });
         }
         catch (ex) {
@@ -40,12 +45,36 @@
     const closeDialog = () => {
         dialog?.close();
     };
+
+    const assignStaff = async (staff) => {
+        staff.selected = !staff.selected;
+        console.log(`assignStaff; selected = ${staff.selected}`, staff);
+
+        if (staff.selected === true) {
+            locationStaff.push(staff);
+
+            const { data, error } = await supabase.from('kb_staff_locations')
+                .insert({
+                    location: location.id,
+                    staff: staff.id
+                }).select();
+        }
+        else {
+            locationStaff = locationStaff.filter(d => d.id !== staff.id);
+
+            const { data, error } = await supabase.from('kb_staff_locations')
+                .delete()
+                .eq('staff', staff.id)
+                .eq('location', location.id);
+        }
+
+    };
 </script>
 
 <div class="fl-loc-staff">
     <div class="header">
         <span class="title">Staff</span>
-        <span class="badge">{items.length}</span>
+        <span class="badge">{locationStaff.length}</span>
         <button type="button" class="btn-add" onclick={openDialog}>
             <Plus size={16} />Assign staff
         </button>
@@ -69,7 +98,7 @@
         </div>
         <div class="content">
             {#each dialogData as item}
-                <StaffItem data={item} />
+                <StaffItem data={item} onselect={assignStaff} />
             {/each}
         </div>
     {/if}
