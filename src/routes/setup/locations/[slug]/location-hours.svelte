@@ -5,8 +5,8 @@
     import Toggle from "$lib/components/ui/toggle.svelte";
 
     let {
-        onchange,
-        data = $bindable()
+        data = $bindable(),
+        onupdate,
     } = $props();
 
     let globalPrefs = getContext('GLOBAL');
@@ -114,14 +114,10 @@
     };
 
     const updateSchedule = () => {
-        formatSchedule();
-        onchange();
-    };
-
-    $effect(() => {
+        console.log('updateSchedule', weekDays);
         formatSchedule(weekDays);
-        onchange();
-    });
+        onupdate('schedule');
+    };
 </script>
 
 <div class="fl-loc-hours">
@@ -131,14 +127,28 @@
                 <div class="avatar">{weekDays[i].name[0]}</div>
                 <div>{weekDays[i].name}</div>
             </div>
-            <Toggle id="day_active-{weekDays[i].day}"
-                bind:checked={weekDays[i].is_active}
-                onclick={confirmToggleDay}
-            />
+
+            <div class="fl-toggle">
+                <Toggle id="day_active-{weekDays[i].day}"
+                    bind:checked={weekDays[i].is_active}
+                    onclick={confirmToggleDay}
+                    ontoggle={updateSchedule}
+                ></Toggle>
+                <label for="day_active-{weekDays[i].day}"
+                    class:inactive={weekDays[i].is_active !== true}
+                >
+                    {#if weekDays[i].is_active === true}
+                        Open
+                    {:else}
+                        Closed
+                    {/if}
+                </label>
+            </div>
+            
             <div class="controls">
-                <Select bind:value={weekDays[i].start} options={timeSlotOptions} />
+                <Select bind:value={weekDays[i].start} options={timeSlotOptions} onchange={updateSchedule} />
                 <ArrowRight size={16} />
-                <Select bind:value={weekDays[i].end} options={timeSlotOptions} />
+                <Select bind:value={weekDays[i].end} options={timeSlotOptions} onchange={updateSchedule} />
             </div>
         </div>
     {/each}
@@ -179,6 +189,11 @@
         display: flex;
         align-items: center;
         gap: 0.5rem;
+    }
+    .fl-toggle {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
     }
     /* .fl-loc-hours > .row > .controls > input[type=text] {
         border: 1px solid red;

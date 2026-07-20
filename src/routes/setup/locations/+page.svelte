@@ -2,6 +2,7 @@
     import { supabase } from "$lib/supabaseClient";
     import { getContext, setContext } from "svelte";
     import { Scissors, Plus, Save, X } from "@lucide/svelte";
+    import BreadCrumbs from "$lib/components/ui/bread-crumbs.svelte";
     import ListPageContent from "../list-page-content.svelte";
     import InputSearch from "$lib/components/ui/input-search.svelte";
     import LocationCard from "./location-card.svelte";
@@ -83,11 +84,18 @@
     const editLocation = (id) => {};
 </script>
 
-<ListPageContent title="Locations" count={locations.length}>
+<ListPageContent title="Branches" count={locations.length}>
+    {#snippet crumbs()}
+        <BreadCrumbs items={[
+            { link: '/setup', text: 'Setup' },
+            { link: `/setup/locations`, text: 'Branches' },
+        ]} />
+    {/snippet}
+
     {#snippet controls()}
         <InputSearch />
         <button type="button" command="show-modal" commandfor="fl-dlg-new" class="fl-btn-new">
-            <Plus size={16} />Add location
+            <Plus size={16} />Add branch
         </button>
     {/snippet}
     

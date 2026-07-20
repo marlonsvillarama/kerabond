@@ -1,8 +1,12 @@
 <script>
+    import { tabsContext } from "./tabs-context.svelte";
+    
     let {
         children,
         orientation = 'horizontal'
     } = $props();
+
+    const tabsState = tabsContext.get();
 </script>
 
 <div class="fl-tabs-list"

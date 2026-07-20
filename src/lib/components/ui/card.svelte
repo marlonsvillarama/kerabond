@@ -34,8 +34,6 @@
     .fl-card {
         display: flex;
         flex-direction: column;
-        /* gap: 2rem; */
-        /* padding: 1.5rem 1.5rem 2rem; */
         background-color: var(--white);
         border: 1px solid var(--semi-light);
         border-top: 4px solid var(--semi-light);
@@ -49,7 +47,8 @@
         display: flex;
         flex-direction: column;
         gap: 0.25rem;
-        padding: 1rem 1.5rem;
+        /* padding: 1rem 1.5rem; */
+        padding: 1rem 2rem;
         border-bottom: 1px solid var(--semi-light);
     }
     .fl-card > .header > .title {
@@ -68,6 +67,7 @@
         display: flex;
         flex-direction: column;
         gap: 1.5rem;
-        padding: 1.5rem 1.5rem 2rem;
+        /* padding: 1.5rem 1.5rem; */
+        padding: 2rem;
     }
 </style>

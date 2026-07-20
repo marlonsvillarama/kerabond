@@ -6,11 +6,13 @@
         searchValue = $bindable(),
 
         controls,
-        children
+        children,
+        crumbs
     } = $props();
 </script>
 
-<div class="wrapper">
+<div class="fl-page wrapper">
+    {@render crumbs?.()}
 
     <div class="fl-page-header flex-center between">
         <div class="title">
@@ -35,10 +37,14 @@
 </div>
 
 <style>
+    .fl-page {
+        display: grid;
+        gap: 1rem;
+    }
     .fl-page-header {
         border-bottom: 1px solid var(--light);
         /* padding-bottom: 1rem; */
-        margin: 0 0.625rem 1rem;
+        /* margin: 0 0.625rem 1rem; */
         /* margin-bottom: 1rem; */
         padding: 0 0 1rem;
     }

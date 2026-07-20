@@ -1,12 +1,15 @@
 <script>
-    import { getContext } from "svelte";
+    // import { getContext } from "svelte";
+    import { tabsContext } from "./tabs-context.svelte";
 
     let {
         children,
+        id,
         value = 'trigger'
     } = $props();
 
-    let tabsContext = getContext('TABS');
+    const tabsState = tabsContext.get();
+    const isActive = $derived(tabsState.activeTab === id);
 </script>
 
 <button type="button" class="fl-tabs-trigger"

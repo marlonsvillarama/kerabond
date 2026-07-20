@@ -11,9 +11,8 @@
 
 <Card title="Address"
     subtitle="Update the branch address below."
-    accent={true}
 >
-    <div class="fl-address-toggle">
+    <!-- <div class="fl-address-toggle">
         <Toggle id="active-{location.id}" bind:checked={location.is_active} ontoggle={() => onupdate('is_active')} />
         <label for="active-{location.id}"
             class:inactive={location.is_active !== true}
@@ -24,7 +23,7 @@
                 This location is not open.
             {/if}
         </label>
-    </div>
+    </div> -->
     <FieldText id="loc-street_1" label="Street Address - Line 1" required={true}
         bind:value={location.street_1}
         errorMessage="Street Address - Line 1 is required."

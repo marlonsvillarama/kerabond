@@ -2,6 +2,7 @@
     import { supabase } from "$lib/supabaseClient";
     import { getContext, setContext } from "svelte";
     import { Scissors, Plus, Save, X } from "@lucide/svelte";
+    import BreadCrumbs from "$lib/components/ui/bread-crumbs.svelte";
     import InputSearch from "$lib/components/ui/input-search.svelte";
     import ServiceCard from "./service-card.svelte";
     import ListPageContent from "../list-page-content.svelte";
@@ -15,8 +16,7 @@
         staffServices,
         variants
     } = data;
-    let staffPopover = $state();
-    let isStaffPopoverShown = $state(false);
+    let servicePopover = $state();
 
     const BLANK_DETAILS = {
         name: ''
@@ -42,9 +42,41 @@
     let selectedCount = $derived(filteredServices.filter(d => d.selected === true).length);
 
     const editService = (id) => {};
+
+    let serviceDetails = $state(Object.assign({}, BLANK_DETAILS));
+    const cancelForm = (e) => {
+        if (confirm('Are you sure you want to close?') === false) {
+            e.preventDefault();
+            return;
+        }
+        resetDetails();
+    };
+    const submitForm = async (e) => {
+        const actionTaken = e.submitter?.value;
+        if (actionTaken !== 'submit') { return; }
+
+        staffDetails.phone = staffDetails.phone.replace(/\s/g, "");
+
+        const { data, error } = await supabase.from('kb_staff').insert(staffDetails).select();
+        allStaff.push(data[0]);
+        sortByKey(allStaff, 'first_name');
+        // allStaff = allStaff;
+        resetDetails();
+    };
 </script>
 
+<svelte:head>
+    <title>All Services</title>
+</svelte:head>
+
 <ListPageContent title="Services" count={allServices.length}>
+    {#snippet crumbs()}
+        <BreadCrumbs items={[
+            { link: '/setup', text: 'Setup' },
+            { link: `/setup/services`, text: 'Services' },
+        ]} />
+    {/snippet}
+
     {#snippet controls()}
         <InputSearch bind:value={searchValue} />
         <button type="button" command="show-modal" commandfor="fl-service-new" class="fl-btn-new">

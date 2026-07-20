@@ -32,16 +32,30 @@
 </div>
 
 <style>
-    /* .fl-service-locations {
-        margin-top: 1rem;
-    } */
+    .fl-service-locations {
+        /* margin-top: 1rem; */
+        /* margin-top: 1rem; */
+        display: flex;
+        flex-direction: column;
+        /* gap: 2rem; */
+        /* padding: 1.5rem 1.5rem 2rem; */
+        background-color: var(--white);
+        border: 1px solid var(--semi-light);
+        border-top: 4px solid var(--semi-light);
+        border-radius: 0.375rem;
+    }
     .fl-service-locations > .header {
         /* border: 1px solid */
-        cursor: pointer;
+        /* cursor: pointer;
         display: flex;
         align-items: center;
         gap: 0.75rem;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.5rem; */
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid var(--semi-light);
     }
     /* .fl-service-locations > .header > .icon {
         background-color: var(--light);
@@ -82,17 +96,22 @@
         padding: 0 0.5rem;
     }
     .fl-service-locations > .content {
-        margin: 0 1.25rem;
+        /* margin: 0 1.25rem; */
         display: flex;
         flex-direction: column;
-        gap: 0.25rem;
+        gap: 0.5rem;
+        padding: 1.5rem 1.5rem 2rem;
         /* border: 1px solid red; */
     }
     /* :global(.fl-service-locations > .content > *:hover) {
         background-color: var(--lighter);
     } */
-    /* :global(.fl-service-locations > .content > *:not(:last-child)) {
-        border-bottom: 1px solid var(--lighter);
-        margin-bottom: 0.5rem;
+    /* :global(.fl-service-variants > .content > *:nth-child(odd)) {
+        background-color: var(--lighter);
     } */
+    :global(.fl-service-locations > .content > *:nth-child(odd)) {
+        background-color: var(--lighter);
+        /* border-bottom: 1px solid var(--lighter);
+        margin-bottom: 0.5rem; */
+    }
 </style>

@@ -2,6 +2,7 @@
 	import '../style/main.css';
     import { navigating } from '$app/state';
     import { getContext, setContext } from 'svelte';
+    import { setToastState } from '$lib/components/ui/toaster/toaster-state.svelte';
 	import favicon from '$lib/assets/favicon.svg';
 	import AppHeader from '$lib/components/global/app-header.svelte';
 	// import CmdHeader from '$lib/components/global/cmd-header.svelte';
@@ -9,8 +10,10 @@
     // import Drawer from '$lib/components/ui/drawer.svelte';
     // import Dialog from "$lib/components/ui/dialog.svelte";
     import NavLoading from '$lib/components/ui/nav-loading.svelte';
+    import Toaster from '$lib/components/ui/toaster/toaster.svelte';
 
 	let { children } = $props();
+    setToastState();
 
     setContext('TENANT', {
         id: 2,
@@ -37,6 +40,8 @@
 <svelte:head>
 	<link rel="icon" href={favicon} />
 </svelte:head>
+
+<Toaster />
 
 {#if navigating}
     <NavLoading />

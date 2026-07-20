@@ -2,6 +2,7 @@
     import { supabase } from "$lib/supabaseClient";
     import { getContext, setContext } from "svelte";
     import { IdCard, Plus, Save, X } from "@lucide/svelte";
+    import BreadCrumbs from "$lib/components/ui/bread-crumbs.svelte";
     import Drawer from "$lib/components/ui/drawer.svelte";
     import FormFieldEmail from "$lib/components/ui/calendar/forms/form-field-email.svelte";
     import FormFieldPhone from "$lib/components/ui/calendar/forms/form-field-phone.svelte";
@@ -102,21 +103,35 @@
     };
 </script>
 
+<svelte:head>
+    <title>All Staff</title>
+</svelte:head>
+
 <ListPageContent title="Staff" count={allStaff.length}>
+    {#snippet crumbs()}
+        <BreadCrumbs items={[
+            { link: '/setup', text: 'Setup' },
+            { link: `/setup/staff`, text: 'Staff' },
+        ]} />
+    {/snippet}
+
     {#snippet controls()}
         <InputSearch />
-        <button type="button" command="show-modal" commandfor="fl-service-new" class="fl-btn-new">
+        <button type="button" command="show-modal" commandfor="fl-staff-new" class="fl-btn-new">
             <Plus size={16} />Add staff
         </button>
     {/snippet}
-    
+
+    <div class="fl-page-content">
     {#each filteredStaff as staff}
+
         <StaffCard data={staff}
             ondelete={deleteStaff}
             onedit={() => {}}
             onselect={toggleOne}
         />
     {/each}
+    </div>
 </ListPageContent>
 
 <!-- <div class="wrapper"> -->
@@ -212,7 +227,7 @@
     .fl-page-header > h2 {
         gap: 0.75rem;
     }
-    .fl-btn-new-staff,
+    .fl-btn-new,
     .fl-btn-default,
     .fl-btn-submit {
         background-color: var(--lighter);
@@ -228,12 +243,12 @@
         gap: 0.25rem;
         anchor-name: --anchor-add-staff;
     }
-    .fl-btn-new-staff,
+    .fl-btn-new,
     .fl-btn-submit {
         background-color: var(--primary);
         color: var(--white);
     }
-    .fl-btn-new-staff:hover,
+    .fl-btn-new:hover,
     .fl-btn-submit:hover {
         background-color: var(--primary-dark);
     }
@@ -396,11 +411,11 @@
     }
 
     .fl-page-content {
-        /* display: grid; */
-        /* grid-auto-columns: 25rem; */
-        /* grid-template-columns: repeat(3, 1fr); */
-        display: flex;
-        flex-wrap: wrap;
+        display: grid;
+        grid-auto-columns: 25rem;
+        grid-template-columns: repeat(3, 1fr);
+        /* display: flex; */
+        /* flex-wrap: wrap; */
         column-gap: 2rem;
         row-gap: 2rem;
     }

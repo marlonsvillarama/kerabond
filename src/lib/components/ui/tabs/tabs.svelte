@@ -1,17 +1,19 @@
 <script>
     import { setContext } from "svelte";
-    // import { tabsContext } from "./tabs";
+    import { TabsState, tabsContext } from "./tabs-context.svelte";
+    // import { TabsState, tabsContext } from "./tabs.svelte";
     // import TabsContent from "./tabs-content.svelte";
     // import TabsList from "./tabs-list.svelte";
     // import TabsTrigger from "./tabs-trigger.svelte";
 
     let {
         children,
+        defaultTab = 'address',
         orientation = 'horizontal',
     } = $props();
 
-    let tabsContext = $state({ currentTab: '' });
-    setContext('TABS', tabsContext);
+    const tabsState = new TabsState(defaultTab);
+    tabsContext.set(tabsState);
 </script>
 
 <div class="fl-tabs"

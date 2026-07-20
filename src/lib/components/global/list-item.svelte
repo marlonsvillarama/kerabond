@@ -1,5 +1,6 @@
 <script>
     let {
+        active = false,
         badges,
         controls,
         center,
@@ -8,7 +9,9 @@
     } = $props();
 </script>
 
-<div class="fl-item">
+<div class="fl-item"
+    class:fl-item-active={active === true}
+>
     <div class="icon"><Icon size={20} /></div>
     <div class="content">
         {@render details?.()}
@@ -34,7 +37,9 @@
     .fl-item {
         align-items: center;
         background-color: var(--white);
-        border: 1px solid var(--semi-light);
+        border: 0;
+        border-left: 4px solid transparent;
+        /* border: 1px solid var(--semi-light); */
         border-radius: 0.5rem;
         display: flex;
         gap: 0.75rem;
@@ -45,6 +50,13 @@
     }
     .fl-item:hover {
         background-color: var(--lighter);
+    }
+    .fl-item-active {
+        /* border: 1px solid var(--primary); */
+        background-color: var(--primary-lightest);
+        border: 0;
+        border-left: 4px solid var(--primary);
+        /* outline: 1px solid var(--primary); */
     }
     .fl-item > .icon {
         color: var(--semi-dark);
@@ -77,7 +89,7 @@
         align-items: center;
         gap: 0.25rem;
     }
-    :global(.fl-item > .content > .controls > *) {
+    :global(.fl-item > .content > .controls > button) {
         align-items: center;
         background-color: transparent;
         border: 0;
@@ -90,7 +102,7 @@
         height: 2rem;
         width: 2rem;
     }
-    :global(.fl-item > .content > .controls > *:hover) {
+    :global(.fl-item > .content > .controls > button:hover) {
         background-color: var(--primary);
         color: var(--white);
     }

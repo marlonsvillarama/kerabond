@@ -50,8 +50,9 @@
 
 <div class="fl-service wrapper">
     <BreadCrumbs items={[
-        { link: '/services', text: 'Services' },
-        { link: `/services/${service.id}`, text: service.name },
+        { link: '/setup', text: 'Setup' },
+        { link: '/setup/services', text: 'Services' },
+        { link: `/setup/services/${service.id}`, text: service.name },
     ]} />
     
     <section class="fl-page-header">
@@ -92,8 +93,8 @@
         </div>
     </section>
 
-    <section class="fl-settings mb">
-        <div class="toggle">
+    <Card class="fl-settings mb">
+        <div class="fl-toggle">
             <Toggle id="online-{service.id}" bind:checked={service.is_online} onclick={(e) => clickOnline(e)} />
             <label for="online-{service.id}"
                 class:inactive={service.is_online !== true}
@@ -105,11 +106,11 @@
                 {/if}
             </label>
         </div>
-    </section>
+    </Card>
     <!-- <section class="fl-page-controls">
     </section> -->
 
-    <Card>
+    <!-- <Card> -->
     <!-- <section class="fl-variants mb"> -->
         <!-- <div class="toggle">
             <Toggle id="has-variants-{service.id}" bind:checked={service.has_variants} onclick={(e) => clickHasVariants(e)} />
@@ -128,9 +129,9 @@
             <ServiceVariants bind:data={service.variants} />
         <!-- {/if} -->
     <!-- </section> -->
-    </Card>
+    <!-- </Card> -->
 
-    <section class="fl-locations mb">
+    <!-- <section class="fl-locations mb"> -->
         <!-- <div class="toggle">
             <Toggle id="has-variants-{service.id}" bind:checked={service.has_variants} onclick={(e) => clickHasVariants(e)} />
             <label for="has-variants-{service.id}"
@@ -147,7 +148,7 @@
         <!-- {#if service.has_variants} -->
             <ServiceLocations bind:data={service.locations} />
         <!-- {/if} -->
-    </section>
+    <!-- </section> -->
 
 </div>
 
@@ -163,7 +164,7 @@
         display: flex;
         flex-direction: column;
     }
-    .fl-service > section.mb {
+    .fl-service > .mb {
         margin-bottom: 2rem;
     }
     /* .fl-page-header {
@@ -249,6 +250,11 @@
         font-size: 0.875rem;
         font-weight: 300;
         opacity: 0.6;
+    }
+    .fl-toggle {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
     }
     .fl-page-controls {
         display: flex;

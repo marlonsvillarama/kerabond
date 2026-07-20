@@ -5,12 +5,17 @@
         onclick,
         ontoggle
     } = $props();
+
+    const toggleCheck = () => {
+        console.log('toggleCheck', checked);
+        ontoggle();
+    };
 </script>
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div class="toggle">
-    <input type="checkbox" bind:checked {id} name={id} {onclick} onchange={ontoggle} />
+    <input type="checkbox" bind:checked {id} name={id} {onclick} onchange={toggleCheck} />
     <!-- svelte-ignore a11y_label_has_associated_control -->
     <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
     <label for={id}></label>
@@ -22,22 +27,24 @@
         box-sizing: border-box;
     }
     .toggle input[type="checkbox"] {
-        position: absolute;
-        left: -9999px;
-        top: -9999px;
+        /* position: absolute; */
+        /* left: -100px; */
+        /* top: 0; */
         z-index: 10;
         width: 100%;
         height: 100%;
         cursor: pointer;
+        height: 20px;
+        width: 20px;
     }
-    .toggle label {
+    /* .toggle label {
         position: relative;
         display: flex;
         align-items: center;
         box-sizing: border-box;
         cursor: pointer;
-    }
-    .toggle label:before {
+    } */
+    /* .toggle label:before {
         content: '';
         width: 36px;
         height: 20px;
@@ -47,8 +54,8 @@
         border-radius: 0.25rem;
         box-sizing: border-box;
         transition: 0.2s ease-in;
-    }
-    .toggle label:after {
+    } */
+    /* .toggle label:after {
         content: '';
         position: absolute;
         width: 16px;
@@ -60,7 +67,7 @@
         background: #fff;
         box-sizing: border-box;
         transition: 100ms ease-in;
-    }
+    } */
     .toggle input[type="checkbox"]:checked + label:before {
         background: #4BD865;
     }
