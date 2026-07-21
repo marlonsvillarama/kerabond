@@ -31,7 +31,7 @@
             return;
         }
 
-        toastState.add('Update successful', `${key} successfully updated!`, 'error');
+        toastState.add('Update successful', `${key} successfully updated!`);
     };
 
     const logSchedule = () => {
@@ -62,60 +62,41 @@
             <Card title="Branch Settings"
                 subtitle="Update your branch settings below."
             >
-            <!-- <div class="settings"> -->
-                <div class="fl-toggle">
-                    <Toggle id="active-{location.id}" bind:checked={location.is_active} ontoggle={() => updateLocation('is_active')} />
-                    <label for="active-{location.id}"
+                <!-- <div class="fl-toggle"> -->
+                <Toggle id="active-{location.id}" label="This location is open for bookings."
+                    bind:checked={location.is_active}
+                    ontoggle={() => updateLocation('is_active')}
+                />
+                    <!-- <label for="active-{location.id}"
                         class:inactive={location.is_active !== true}
-                    >
-                        {#if location.is_active === true}
-                            This location is open for bookings.
+                    > -->
+                        <!-- This location is open for bookings. -->
+                        <!-- {#if location.is_active === true}
                         {:else}
                             This location is not open.
-                        {/if}
-                    </label>
-                </div>
-                <div class="fl-toggle">
-                    <Toggle id="active-{location.id}" bind:checked={location.is_active} ontoggle={() => updateLocation('is_active')} />
-                    <label for="active-{location.id}"
-                        class:inactive={location.is_active !== true}
-                    >
-                        {#if location.is_active === true}
-                            This location is open for bookings.
-                        {:else}
-                            This location is not open.
-                        {/if}
-                    </label>
-                </div>
-                <div class="fl-toggle">
-                    <Toggle id="active-{location.id}" bind:checked={location.is_active} ontoggle={() => updateLocation('is_active')} />
-                    <label for="active-{location.id}"
-                        class:inactive={location.is_active !== true}
-                    >
-                        {#if location.is_active === true}
-                            This location is open for bookings.
-                        {:else}
-                            This location is not open.
-                        {/if}
-                    </label>
-                </div>
-                <div class="fl-toggle">
-                    <Toggle id="active-{location.id}" bind:checked={location.is_active} ontoggle={() => updateLocation('is_active')} />
-                    <label for="active-{location.id}"
-                        class:inactive={location.is_active !== true}
-                    >
-                        {#if location.is_active === true}
-                            This location is open for bookings.
-                        {:else}
-                            This location is not open.
-                        {/if}
-                    </label>
-                </div>
-                <!-- <div class="fl-location-hours"> -->
-                <!-- {JSON.stringify(location.schedule)} -->
-                <!-- <LocationHours bind:data={location.schedule} onchange={logSchedule} /> -->
+                        {/if} -->
+                    <!-- </label> -->
                 <!-- </div> -->
-            <!-- </div> -->
+                <!-- <div class="fl-toggle"> -->
+                <Toggle id="primary-{location.is_primary}" label="This is your primary branch."
+                    bind:checked={location.is_primary}
+                    ontoggle={() => updateLocation('is_primary')}
+                />
+                    <!-- <label for="primary-{location.id}"
+                        class:inactive={location.is_primary !== true}
+                    > -->
+                        <!-- This is your primary location. -->
+                        <!-- {#if location.is_primary === true}
+                        {:else}
+                            NOT your primary location.
+                        {/if} -->
+                    <!-- </label> -->
+                <!-- </div> -->
+                <FieldText id="loc-ird" label="IRD"
+                    bind:value={location.ird}
+                    width="10rem"
+                    onblur={() => onupdate('ird')}
+                />
             </Card>
 
             <LocationAddress bind:location={location} onupdate={updateLocation} />
@@ -158,7 +139,7 @@
         font-size: 1.5rem;
         gap: 0.5rem;
         font-weight: 500;
-        padding: 0.25rem 0.375rem;
+        padding: 0.375rem 0.75rem;
         flex: 1;
     }
     .fl-page-header > .name > input[type=text]:hover {
@@ -178,5 +159,9 @@
         display: flex;
         align-items: center;
         gap: 0.75rem;
+        border: 1px solid red;
+    }
+    .fl-toggle > label {
+        font-size: 0.875rem;
     }
 </style>

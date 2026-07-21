@@ -21,15 +21,15 @@
         <span class="title">{toast.title}</span>
     </div>
     {#if toast.message}
-    <div>
-        <span></span>
-        <span class="message">{toast.message}</span>
-    </div>
+        <div>
+            <span></span>
+            <span class="message">{toast.message}</span>
+        </div>
     {/if}
     <!-- <div class="message">{toast.message}</div> -->
-    <button type="button">
+    <!-- <button type="button" onclick={}>
         <X size={16} />
-    </button>
+    </button> -->
 </div>
 
 <style>

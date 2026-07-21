@@ -70,9 +70,11 @@
     --darkest: #1B1B1B;
     --darker: #2E2E30;
     --dark: #59595B;
-    --semi-dark: #727272;
+    --semi-dark: #a3a3a3;
 
     --font-default: system-ui, sans-serif;
+
+    --success: #519e12;
 
 
 

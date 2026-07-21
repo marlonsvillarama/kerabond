@@ -187,39 +187,39 @@
             </div>
             <button type="button" command="request-close" commandfor="fl-staff-new"><X size={20} /></button>
         </div>
-    <div class="form-content">
-        <div class="staff-details">
-            <div class="fl-section-header">
-                <span class="title">Primary Details</span>
-                <span class="subtitle">Select the locations for this employee</span>
-            </div>
-            <div class="fl-section-content">
-                <div class="split-2">
-                    <FormFieldText id="fl-staff-fn" label="First Name" required={true} bind:value={staffDetails.first_name} />
-                    <FormFieldText id="fl-staff-ln" label="Last Name" required={true} bind:value={staffDetails.last_name} />
+        <div class="form-content">
+            <div class="staff-details">
+                <div class="fl-section-header">
+                    <span class="title">Primary Details</span>
+                    <span class="subtitle">Select the locations for this employee</span>
                 </div>
-                <FormFieldPhone id="fl-staff-ph" label="Phone No." width="12rem" bind:value={staffDetails.phone} />
-                <FormFieldEmail id="fl-staff-em" label="Email" bind:value={staffDetails.email} />
+                <div class="fl-section-content">
+                    <div class="split-2">
+                        <FormFieldText id="fl-staff-fn" label="First Name" required={true} bind:value={staffDetails.first_name} />
+                        <FormFieldText id="fl-staff-ln" label="Last Name" required={true} bind:value={staffDetails.last_name} />
+                    </div>
+                    <FormFieldPhone id="fl-staff-ph" label="Phone No." width="12rem" bind:value={staffDetails.phone} />
+                    <FormFieldEmail id="fl-staff-em" label="Email" bind:value={staffDetails.email} />
+                </div>
+            </div>
+            <div class="fl-staff-locations">
+                <div class="fl-section-header">
+                    <span class="title">Staff Locations</span>
+                    <span class="subtitle">Select the locations for this employee</span>
+                </div>
+                <div class="section-list">
+                    {#each data.locations as loc}
+                        <FormStaffLocation id={loc.id} label={loc.name || loc.street_1} />
+                    {/each}
+                </div>
+            </div>
+            <div class="form-buttons">
+                <button type="submit" class="fl-btn-submit" value="submit">
+                    <Save size={16} />Create Staff
+                </button>
+                <button type="button" class="fl-btn-default" command="request-close" commandfor="fl-staff-new">Cancel</button>
             </div>
         </div>
-        <div class="fl-staff-locations">
-            <div class="fl-section-header">
-                <span class="title">Staff Locations</span>
-                <span class="subtitle">Select the locations for this employee</span>
-            </div>
-            <div class="section-list">
-                {#each data.locations as loc}
-                    <FormStaffLocation id={loc.id} label={loc.name || loc.street_1} />
-                {/each}
-            </div>
-        </div>
-        <div class="form-buttons">
-            <button type="submit" class="fl-btn-submit" value="submit">
-                <Save size={16} />Create Staff
-            </button>
-            <button type="button" class="fl-btn-default" command="request-close" commandfor="fl-staff-new">Cancel</button>
-        </div>
-    </div>
     </form>
 </dialog>
 

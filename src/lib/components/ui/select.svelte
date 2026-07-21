@@ -1,12 +1,16 @@
 <script>
+    import { ChevronDown } from "@lucide/svelte";
+
     let {
         formatter = null,
         disabled = false,
         onchange,
         options = [],
-        value = $bindable()
+        value = $bindable(),
+        width
     } = $props();
 
+    let isDirty = $state(false);
     let isOpen = $state(false);
     let selectRoot = $state();
     let selectTrigger = $state();
@@ -39,12 +43,13 @@
     })
 </script>
 
-<div class="fl-select-root" bind:this={selectRoot}>
+<div class="fl-select-root" bind:this={selectRoot} style="width: {width || '100%'}">
     <button type="button" class="fl-select-trigger" bind:this={selectTrigger}
         onclick={() => isOpen = !isOpen}
         onkeyup={handleKeyUp}
     >
         <span class="selected-value">{selectedContent}</span>
+        <ChevronDown size={14} />
     </button>
 
     {#if isOpen}
@@ -69,15 +74,20 @@
         position: relative;
     }
     .fl-select-trigger {
-        background-color: var(--semi-light);
-        border: 0;
+        background-color: var(--white);
+        border: 1px solid var(--semi-light);
         border-radius: 0.25rem;
         color: var(--darker);
         cursor: pointer;
         font-size: 0.75rem;
         outline: 0;
-        padding: 0.25rem 0.375rem;
-        width: 6rem;
+        /* padding: 0.25rem 0.375rem; */
+        padding: 0.5rem 0.75rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        justify-content: space-between;
+        width: 100%;
     }
     .fl-select-options {
         position: absolute;
@@ -87,8 +97,9 @@
         right: 0;
         list-style: none;
         background-color: var(--white);
-        border: 1px solid var(--light);
+        border: 1px solid var(--semi-light);
         border-radius: 0.25rem;
+        box-shadow: var(--shadow);
         max-height: 15rem;
         overflow-y: auto;
         overscroll-behavior: contain;

@@ -1,6 +1,7 @@
 <script>
     import { getContext } from "svelte";
     import { ChevronRight, CircleMinus, Dot, MapPin, Pencil, Plus, X } from "@lucide/svelte";
+    import Badge from "$lib/components/ui/badge.svelte";
     import StaffChip from "./staff-chip.svelte";
     import Toggle from "$lib/components/ui/toggle.svelte";
 
@@ -12,8 +13,6 @@
 
     let service = getContext('SERVICE');
     let allStaff = getContext('STAFF');
-    // console.log('allStaff', allStaff);
-    // let serviceLocations = $state(data.locations)
     let locationStaff = $derived.by(() => {
         let staff = [ ...new Set(service.locations.filter(d => d.location === data.id).map(d => d.staff)) ];
         console.log('staff set', staff);
@@ -23,19 +22,20 @@
     console.log(`staff for location = ${data.id}`, locationStaff);
 </script>
 
-<!-- {JSON.stringify(service)} -->
+{JSON.stringify(service)}
 <!-- {JSON.stringify(locationStaff)} -->
 
 <div class="fl-service-location">
-    <!-- <div class="header"> -->
+    <div class="header">
+        <div class="icon"><MapPin size={16} /></div>
+        <!-- <ChevronRight class="icon" size={16} /> -->
+        <!-- Location #{index} -->
+        <!-- <Dot size={16} /> -->
         <div class="title">
-            <div class="icon"><MapPin size={16} /></div>
-            <!-- <ChevronRight class="icon" size={16} /> -->
-            <!-- Location #{index} -->
-            <!-- <Dot size={16} /> -->
             <span class="name">{data.name || data.street_1}</span>
+            <span class="address">{data.street_1}</span>
         </div>
-    <!-- </div> -->
+    </div>
     <div class="contents">
         <!-- <span class="title">Staff:</span> -->
         <div class="staff">
@@ -47,24 +47,25 @@
         </div>
     </div>
     <!-- <div class="details"> -->
-        <div class="actions">
-            <button type="button"><Pencil size={16} /></button>
-            <button type="button"><X size={16} /></button>
-        </div>
+    <div class="actions">
+        <!-- <button type="button"><Pencil size={16} /></button> -->
+        <button type="button"><X size={16} /></button>
+    </div>
     <!-- </div> -->
 </div>
 
 <style>
     .fl-service-location {
-        padding: 0.5rem 0.5rem;
+        /* padding: 0.5rem 0.5rem; */
         display: grid;
         grid-template-columns: 1fr 1fr auto;
         align-items: center;
         /* flex-direction: column; */
         gap: 0.25rem;
+        padding: 1rem 0.75rem;
+        border-radius: 0.25rem;
     }
     .fl-service-location:hover {
-        border-radius: 0.25rem;
         outline: 2px solid var(--primary);
         /* background-color: var(--lighter); */
     }
@@ -74,19 +75,19 @@
         justify-content: space-between;
     } */
     /* .fl-service-location > .header > .title { */
-    .fl-service-location > .title {
+    /* .fl-service-location > .header { */
         /* font-style: italic; */
-        font-weight: 300;
-    }
+        /* font-weight: 300; */
+    /* } */
     /* .fl-service-location > .header > .title { */
-    .fl-service-location > .title {
+    .fl-service-location > .header {
         display: flex;
         align-items: center;
         gap: 0.75rem;
         font-size: 0.875rem;
         font-weight: 500;
     }
-    .fl-service-location > .title > .icon {
+    .fl-service-location > .header > .icon {
         background-color: var(--light);
         border: 0;
         border-radius: 0.25rem;
@@ -96,6 +97,19 @@
         display: flex;
         align-items: center;
         justify-content: center;
+    }
+    .fl-service-location > .header > .title {
+        display: flex;
+        flex-direction: column;
+        gap: 0.125rem;
+    }
+    .fl-service-location > .header > .title > .name {
+        font-size: 1rem;
+        font-weight: 600;
+    }
+    .fl-service-location > .header > .title > .address {
+        font-weight: 400;
+        opacity: 0.7;
     }
     /* .fl-service-location > .header > .title > .name { */
     /* .fl-service-location > .title > .name {

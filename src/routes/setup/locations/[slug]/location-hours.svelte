@@ -128,13 +128,13 @@
                 <div>{weekDays[i].name}</div>
             </div>
 
-            <div class="fl-toggle">
-                <Toggle id="day_active-{weekDays[i].day}"
+            <!-- <div class="fl-toggle"> -->
+                <Toggle id="day_active-{weekDays[i].day}" labels={["Open", "Closed"]}
                     bind:checked={weekDays[i].is_active}
                     onclick={confirmToggleDay}
                     ontoggle={updateSchedule}
                 ></Toggle>
-                <label for="day_active-{weekDays[i].day}"
+                <!-- <label for="day_active-{weekDays[i].day}"
                     class:inactive={weekDays[i].is_active !== true}
                 >
                     {#if weekDays[i].is_active === true}
@@ -142,13 +142,19 @@
                     {:else}
                         Closed
                     {/if}
-                </label>
-            </div>
+                </label> -->
+            <!-- </div> -->
             
             <div class="controls">
-                <Select bind:value={weekDays[i].start} options={timeSlotOptions} onchange={updateSchedule} />
+                <Select options={timeSlotOptions} bind:value={weekDays[i].start}
+                    onchange={updateSchedule}
+                    width="7rem"
+                />
                 <ArrowRight size={16} />
-                <Select bind:value={weekDays[i].end} options={timeSlotOptions} onchange={updateSchedule} />
+                <Select bind:value={weekDays[i].end} options={timeSlotOptions}
+                    onchange={updateSchedule}
+                    width="7rem"
+                />
             </div>
         </div>
     {/each}
@@ -167,8 +173,9 @@
         font-size: 0.875rem;
         padding: 1rem 0.75rem;
     }
-    .fl-loc-hours > .row:nth-child(odd) {
-        background-color: var(--lighter);
+    .fl-loc-hours > .row:not(:last-child) {
+        border-bottom: 1px solid var(--light);
+        /* background-color: var(--lighter); */
     }
     .fl-loc-hours > .row > .day {
         display: flex;

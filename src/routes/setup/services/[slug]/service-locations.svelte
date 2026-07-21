@@ -83,6 +83,7 @@
     }
     .fl-service-locations > .header > button {
         background-color: var(--primary);
+        border-radius: 0.25rem;
         font-size: 0.75rem;
         color: var(--white);
         cursor: pointer;
@@ -91,9 +92,10 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        height: 1.375rem;
+        /* height: 1.375rem; */
         /* width: 1.25rem; */
-        padding: 0 0.5rem;
+        /* padding: 0 0.5rem; */
+        padding: 0.375rem 0.5rem;
     }
     .fl-service-locations > .content {
         /* margin: 0 1.25rem; */
@@ -109,9 +111,9 @@
     /* :global(.fl-service-variants > .content > *:nth-child(odd)) {
         background-color: var(--lighter);
     } */
-    :global(.fl-service-locations > .content > *:nth-child(odd)) {
-        background-color: var(--lighter);
-        /* border-bottom: 1px solid var(--lighter);
-        margin-bottom: 0.5rem; */
+    :global(.fl-service-locations > .content > *:not(:last-child)) {
+        /* background-color: var(--lighter); */
+        border-bottom: 1px solid var(--light);
+        /* margin-bottom: 0.5rem; */
     }
 </style>

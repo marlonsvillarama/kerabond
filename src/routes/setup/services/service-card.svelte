@@ -59,7 +59,7 @@
     {#snippet badges()}
         {#if data.is_active}
             <Badge type="primary">Active</Badge>
-            {:else}
+        {:else}
             <Badge type="disabled">Inactive</Badge>
         {/if}
     {/snippet}

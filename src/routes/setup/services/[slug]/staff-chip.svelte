@@ -9,24 +9,24 @@
     let selected = $state(true);
 </script>
 
-<button class="fl-staff-chip"
-    class:fl-staff-chip-selected={selected === true}
-    onclick={() => selected = !selected}
+<span class="fl-staff-chip"
+    // class:fl-staff-chip-selected={selected === true}
+    // onclick={() => selected = !selected}
 >
     {label}
-    {#if selected}
+    <!-- {#if selected}
     <Check size={16} />
     {:else}
     <Plus size={16} />
-    {/if}
-</button>
+    {/if} -->
+</span>
 
 <style>
     .fl-staff-chip {
         background-color: var(--light);
         border: 0;
         border-radius: 0.25rem;
-        cursor: pointer;
+        /* cursor: pointer; */
         /* color: var(--dark); */
         font-size: 0.875rem;
         outline: 0;
@@ -35,11 +35,11 @@
         align-items: center;
         gap: 0.5rem;
     }
-    .fl-staff-chip:not(.fl-staff-chip-selected):hover {
+    /* .fl-staff-chip:not(.fl-staff-chip-selected):hover {
         background-color: var(--border);
-    }
-    .fl-staff-chip-selected {
+    } */
+    /* .fl-staff-chip-selected {
         background-color: var(--primary);
         color: var(--white);
-    }
+    } */
 </style>
