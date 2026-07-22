@@ -25,10 +25,7 @@ export async function load({ params }) {
             ),
             locations:kb_service_locations (
                 id,
-                details:kb_location (
-                    id,
-                    name
-                )
+                location
             )
         `)
         .eq('id', id).single()
@@ -62,7 +59,13 @@ export async function load({ params }) {
             street_2,
             city,
             region,
-            country
+            country,
+            assigned:kb_staff_locations (
+                staff:kb_staff (
+                    id,
+                    first_name
+                )
+            )
         `);
     const { data:staff, error:staffError } = await supabase.from('kb_staff')
         .select(`

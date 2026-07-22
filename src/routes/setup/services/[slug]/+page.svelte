@@ -14,9 +14,13 @@
         data
     } = $props();
     let service = $state(data.service);
-    setContext('SERVICE', data.service);
+    setContext('SERVICE', service);
     setContext('LOCATIONS', data.locations);
-    console.log('SERVICE', data.service);
+
+    service.locations = [ ...new Set(service.locations.map(d => d.location)) ]
+        .map(d => data.locations.find(loc => loc.id === d));
+    console.log('SERVICE', service);
+    console.log('LOCATIONS', data.locations);
 
     setContext('STAFF', data.staff);
     const toastState = getToastState();
@@ -157,7 +161,7 @@
         </div> -->
 
         <!-- {#if service.has_variants} -->
-            <ServiceLocations bind:data={service.locations} />
+            <ServiceLocations {service} />
         <!-- {/if} -->
     <!-- </section> -->
     </div>

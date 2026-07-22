@@ -11,19 +11,21 @@
     } = $props();
     // let { detail, staff } = data;
 
-    let service = getContext('SERVICE');
-    let allStaff = getContext('STAFF');
-    let locationStaff = $derived.by(() => {
-        let staff = [ ...new Set(service.locations.filter(d => d.location === data.id).map(d => d.staff)) ];
-        console.log('staff set', staff);
-        return allStaff.filter(d => staff.indexOf(d.id) >= 0);
+    // let service = getContext('SERVICE');
+    // let allStaff = getContext('STAFF');
+    // let locationStaff = $derived.by(() => {
+    //     let staff = [ ...new Set(service.locations.filter(d => d.location === data.id).map(d => d.staff)) ];
+    //     console.log('staff set', staff);
+    //     return allStaff.filter(d => staff.indexOf(d.id) >= 0);
         // allStaff.filter(d => service.locations.map(l => l.location).includes(d.id))
-    });
-    console.log(`staff for location = ${data.id}`, locationStaff);
+    // });
+    console.log(`staff for location = ${data.id}`, data.staff);
+    
+    let locationStaff = $derived(data.assigned.toSorted((a, b) => (a.staff.first_name || '').localeCompare(b.staff.first_name)))
 </script>
 
-{JSON.stringify(service)}
-<!-- {JSON.stringify(locationStaff)} -->
+<!-- {JSON.stringify(service)} -->
+<!-- {JSON.stringify(data)} -->
 
 <div class="fl-service-location">
     <div class="header">
@@ -41,7 +43,7 @@
         <div class="staff">
             <!-- <button type="button" class="btn-all">All</button> -->
             {#each locationStaff as item}
-                <StaffChip label={item.first_name} />
+                <StaffChip label={item.staff.first_name} />
             {/each}
             <!-- <button type="button" class="btn-new"><Plus size={16} /></button> -->
         </div>

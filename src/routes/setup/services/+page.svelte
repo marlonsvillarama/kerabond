@@ -21,7 +21,7 @@
     const BLANK_DETAILS = {
         name: ''
     };
-    const newStaff = () => staffPopover.showModal();
+    const newStaff = () => servicePopover.showModal();
     const resetDetails = () => staffDetails = Object.assign({}, BLANK_DETAILS);
 
     setContext('LOCATIONS', locations ?? []);
@@ -90,7 +90,7 @@
 </ListPageContent>
 
 <dialog class="fl-staff-dlg" id="fl-service-new"
-    bind:this={staffPopover}
+    bind:this={servicePopover}
     oncancel={cancelForm}
     onsubmit={submitForm}
 >

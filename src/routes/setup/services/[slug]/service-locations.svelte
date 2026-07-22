@@ -5,14 +5,15 @@
     // import ServiceVariant from "./service-variant.svelte";
 
     let {
-        data = $bindable()
+        service = $bindable()
     } = $props();
 
-    const allLocations = getContext('LOCATIONS');
+    let serviceLocations = $state(service.locations);
+    // const allLocations = getContext('LOCATIONS');
     // console.log('allLocations', allLocations);
-    let uniqueLocations = [ ...(new Set(data.map(d => d.location))) ];
+    // let uniqueLocations = [ ...(new Set(data.map(d => d.location))) ];
     // console.log('uniqueLocations', uniqueLocations);
-    let serviceLocations = $derived(allLocations.filter(d => uniqueLocations.includes(d.id)));
+    // let serviceLocations = $derived(allLocations.filter(d => uniqueLocations.includes(d.id)));
     // console.log('serviceLocations', serviceLocations);
 </script>
 
