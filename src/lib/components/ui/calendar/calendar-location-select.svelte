@@ -1,8 +1,10 @@
 <script>
     import { Check, ChevronDown, ChevronUp, MapPin } from "@lucide/svelte";
     import { getContext } from "svelte";
+    import Select from "../select.svelte";
 
     const calendarState = getContext('CALENDAR_STATE');
+    console.log('** calendar-location-select locations', calendarState.locations);
     // let items = [ 'month', 'week', 'day' ];
 
     let popover = $state();
@@ -17,19 +19,27 @@
     );
 </script>
 
-<button type="button" class="fl-cal-loc-select" id="fl-cal-loc-select"
+<Select options={calendarState.locations}
+    placeholder="Select the branch..."
+    valueField="id"
+    textField="name"
+    bind:value={calendarState.selectedLocation}
+    // onchange={updateSchedule}
+    width="15rem"
+/>
+<!-- <button type="button" class="fl-cal-loc-select" id="fl-cal-loc-select"
     popovertarget="fl-cal-loc-popover"
 >
     <div class="loc">
         <MapPin size={16} />{selectedLocationText}
     </div>
     <ChevronDown size={16} />
-</button>
+</button> -->
 
-<div class="fl-cal-loc-popover" id="fl-cal-loc-popover" popover bind:this={popover}>
+<!-- <div class="fl-cal-loc-popover" id="fl-cal-loc-popover" popover bind:this={popover}>
     {#each calendarState.locations as location}
-        <!-- svelte-ignore a11y_click_events_have_key_events -->
-        <!-- svelte-ignore a11y_no_static_element_interactions -->
+        !-- svelte-ignore a11y_click_events_have_key_events --
+        !-- svelte-ignore a11y_no_static_element_interactions --
         <div class="option"
             class:selected={calendarState.selectedLocation === location.id}
             onclick={() => changeLocation(location.id)}
@@ -40,7 +50,7 @@
             {/if}
         </div>
     {/each}
-</div>
+</div> -->
 
 <style>
     .fl-cal-loc-select {

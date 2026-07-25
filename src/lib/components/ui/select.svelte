@@ -1,11 +1,14 @@
 <script>
-    import { ChevronDown } from "@lucide/svelte";
+    import { ChevronDown, ChevronUp } from "@lucide/svelte";
 
     let {
         formatter = null,
         disabled = false,
         onchange,
         options = [],
+        placeholder = '',
+        textField = 'text',
+        valueField = 'value',
         value = $bindable(),
         width
     } = $props();
@@ -14,10 +17,10 @@
     let isOpen = $state(false);
     let selectRoot = $state();
     let selectTrigger = $state();
-    let selectedContent = $derived(options.find(d => d.value === value)?.text || '---');
+    let selectedContent = $derived(options.find(d => d[valueField] === value)?.[textField] || (placeholder || '---'));
 
     const selectOption = (option) => {
-        value = option.value;
+        value = option[valueField];
         isOpen = false;
         onchange();
     };
@@ -49,7 +52,11 @@
         onkeyup={handleKeyUp}
     >
         <span class="selected-value">{selectedContent}</span>
-        <ChevronDown size={14} />
+        {#if isOpen}
+            <ChevronUp size={14} />
+        {:else}
+            <ChevronDown size={14} />
+        {/if}
     </button>
 
     {#if isOpen}
@@ -61,9 +68,9 @@
                 <li type="button"
                     id="option-{i}"
                     data-index={i}
-                    class:selected={value === option.value}
+                    class:selected={value === option[valueField]}
                     onclick={() => selectOption(option)}
-                >{option.text}</li>
+                >{option[textField]}</li>
             {/each}
         </ul>
     {/if}
@@ -76,6 +83,7 @@
     .fl-select-trigger {
         background-color: var(--white);
         border: 1px solid var(--semi-light);
+        border-bottom: 3px solid var(--semi-light);
         border-radius: 0.25rem;
         color: var(--darker);
         cursor: pointer;

@@ -14,28 +14,31 @@
     import { getContext } from "svelte";
     import Button from "$lib/components/ui/button.svelte";
     import ButtonGroup from "$lib/components/ui/button-group.svelte";
-    import Select from "$lib/components/ui/select-OLD.svelte";
+    // import Select from "../select.svelte";
+    // import Select from "$lib/components/ui/select-OLD.svelte";
     import CalendarCreateBooking from "./calendar-create-booking.svelte";
     import CalendarDateSelect from "./calendar-date-select.svelte";
     import CalendarLocationSelect from "./calendar-location-select.svelte";
     import CalendarModeSelect from "./calendar-mode-select.svelte";
-    import { formatDate, parseDate } from "./calendar-helper.svelte";
+    import { DateFormatter } from "$lib/modules/dates";
+    // import { formatDate, parseDate } from "./calendar-helper.svelte";
 
     let {
         oncreate
     } = $props();
 
     const calendarState = getContext('CALENDAR_STATE');
-    const staffState = getContext('STAFF_STATE');
+    // console.log('** calendar-header locations', getContext('LOCATIONS'));
+    const staffState = getContext('STAFF');
     const allStaff = staffState.map(d => {
-        return { text: d.name, value: d.id };
+        return { text: d.first_name, value: d.id };
     });
 
     // let locationText = '137 The Square';
     let activeLocation = $derived(calendarState.selectedLocation ? calendarState.locations.find(d => d.id === calendarState.selectedLocation) : null);
     let locationText = $derived(activeLocation ? activeLocation.text : 'Select Location...');
     let dayDisplay = $derived.by(() => {
-        let dt = parseDate(calendarState.date);
+        let dt = DateFormatter.toDate(calendarState.date);
         return dt.toLocaleDateString('en-NZ', { weekday: 'long' });
     });
     let dateDisplay = $derived.by(() => {

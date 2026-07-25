@@ -53,7 +53,7 @@
         background-color: var(--white);
         /* color: var(--white); */
         /* border-right: 2px solid var(--semi-light); */
-        width: 17rem;
+        width: 15rem;
         padding: 1rem;
         padding-right: 0;
         display: flex;
@@ -64,8 +64,9 @@
     .fl-sidebar-link {
         /* flex: 1; */
         /* border: 1px solid red; */
-        border-top-left-radius: 0.25rem;
-        border-bottom-left-radius: 0.25rem;
+        /* border-top-left-radius: 0.25rem; */
+        /* border-bottom-left-radius: 0.25rem; */
+        border-radius: 0.25rem;
         color: var(--dark);
         cursor: pointer;
         font-size: 0.875rem;
@@ -77,13 +78,13 @@
         gap: 0.75rem;
     }
     .fl-sidebar-link-active {
-        background-color: var(--semi-light);
-        color: var(--darker);
+        background-color: var(--primary-dark);
+        color: var(--white);
         font-weight: 600;
     }
     .fl-sidebar-link:not(.fl-sidebar-link-active):hover {
         /* background-color: var(--lighter); */
-        outline: 1px solid var(--light);
+        outline: 1px solid var(--semi-light);
     }
     :global(.fl-sidebar > *) {
         /* flex: 1; */

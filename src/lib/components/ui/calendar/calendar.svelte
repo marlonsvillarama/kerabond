@@ -1,16 +1,16 @@
 <script>
     import { getContext, setContext } from "svelte";
+    import { DateFormatter } from "$lib/modules/dates";
     import BookingForm from "./forms/booking-form.svelte";
     import Button from "../button.svelte";
     import CalendarHeader from "./calendar-header.svelte";
     import CalendarMonthView from "./calendar-month-view.svelte";
     import CalendarTimelineView from "./timeline/timeline.svelte";
     import Drawer from "../drawer.svelte";
-    import { formatDate, parseDate } from "./calendar-helper.svelte";
+    // import { formatDate, parseDate } from "./calendar-helper.svelte";
 
-    let staffState = getContext('STAFF_STATE');
+    // let staffState = getContext('STAFF_STATE');
     let openDrawer = $state(false);
-
     let { data } = $props();
     // let data = [
     //     { id: 1, date: '2026-06-15', slot: '1100', staff: 1, duration: 120, name: 'John', service: { id: 1, name: 'Haircut + blow-dry' } },
@@ -34,11 +34,8 @@
         });
         endHour = $state(21);
         interval = $state(15);
-        locations = $state([
-            { id: 1, text: '137 The Square' },
-            { id: 2, text: '351 Broadway Avenue' },
-        ]);
-        mode = $state('month');
+        locations = getContext('LOCATIONS');
+        mode = $state('day');
         selectedStaff = $state([]);
         selectedLocation = $state('');
         slot = $state('');
@@ -46,13 +43,14 @@
         startHour = $state(8);
         
         constructor (initialDate) {
-            let dt = new Date();
-            if (initialDate) {
-                dt = new Date(initialDate);
-            }
+            let dt = initialDate ? new Date(initialDate) : new Date();
+            // if (initialDate) {
+            //     dt = new Date(initialDate);
+            // }
 
-            this.date = formatDate(dt);
-            this.selectedStaff = staffState.map(d => d.id);
+            this.date = DateFormatter.toString(dt);
+            // this.date = formatDate(dt);
+            // this.selectedStaff = staffState.map(d => d.id);
         }
 
         prevDate (type) {
@@ -63,7 +61,8 @@
                 case 'week': { prevDay.setDate(prevDay.getDate() - 7); break }
                 default: { prevDay.setDate(prevDay.getDate() - 1); break }
             }
-            this.date = formatDate(prevDay);
+            this.date = DateFormatter.toString(prevDay);
+            // this.date = formatDate(prevDay);
         };
 
         nextDate (type) {
@@ -74,11 +73,13 @@
                 case 'week': { prevDay.setDate(prevDay.getDate() + 7); break }
                 default: { prevDay.setDate(prevDay.getDate() + 1); break }
             }
-            this.date = formatDate(prevDay);
+            this.date = DateFormatter.toString(prevDay);
+            // this.date = formatDate(prevDay);
         };
 
         today () {
-            this.date = formatDate(new Date());
+            this.date = DateFormatter.toString();
+            // this.date = formatDate(new Date());
         };
     }
 

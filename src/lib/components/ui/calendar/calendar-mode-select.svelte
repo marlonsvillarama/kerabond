@@ -1,9 +1,14 @@
 <script>
     import { Check, ChevronDown, ChevronUp } from "@lucide/svelte";
     import { getContext } from "svelte";
+    import Select from "../select.svelte";
 
     const calendarState = getContext('CALENDAR_STATE');
-    let items = [ 'month', 'week', 'day' ];
+    let items = [
+        { text: 'Month', value: 'month' },
+        { text: 'Week', value: 'week' },
+        { text: 'Day', value: 'day' },
+    ];
 
     let popover = $state();
     const changeMode = (value) => {
@@ -12,17 +17,25 @@
     };
 </script>
 
-<button type="button" class="fl-cal-mode-select" id="fl-cal-mode-select"
+<Select options={items}
+    // placeholder="Select the branch..."
+    // valueField="id"
+    // textField="name"
+    bind:value={calendarState.mode}
+    // onchange={updateSchedule}
+    width="6rem"
+/>
+<!-- <button type="button" class="fl-cal-mode-select" id="fl-cal-mode-select"
     popovertarget="fl-cal-mode-popover"
 >
     {calendarState.mode}
     <ChevronDown size={16} />
-</button>
+</button> -->
 
-<div class="fl-cal-mode-popover" id="fl-cal-mode-popover" popover bind:this={popover}>
+<!-- <div class="fl-cal-mode-popover" id="fl-cal-mode-popover" popover bind:this={popover}>
     {#each items as item}
-        <!-- svelte-ignore a11y_click_events_have_key_events -->
-        <!-- svelte-ignore a11y_no_static_element_interactions -->
+        !-- svelte-ignore a11y_click_events_have_key_events --
+        !-- svelte-ignore a11y_no_static_element_interactions --
         <div class="option"
             class:selected={calendarState.mode === item}
             onclick={() => changeMode(item)}
@@ -33,7 +46,7 @@
             {/if}
         </div>
     {/each}
-</div>
+</div> -->
 
 <style>
     .fl-cal-mode-select {

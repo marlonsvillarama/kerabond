@@ -44,7 +44,7 @@
 
 <style>
     .fl-setup {
-        background-color: var(--lighter);
+        /* background-color: var(--lighter); */
         flex: 1;
         display: grid;
         grid-template-columns: auto 1fr;

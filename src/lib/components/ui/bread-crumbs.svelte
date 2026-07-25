@@ -19,6 +19,7 @@
 
 <style>
     .fl-crumbs {
+        /* background-color: var(--lighter); */
         display: flex;
         align-items: center;
         gap: 0.5rem;

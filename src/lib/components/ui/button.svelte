@@ -28,20 +28,22 @@
     .fl-button {
         background-color: var(--white);
         /* background-color: transparent; */
-        /* border: 1px solid var(--border-light); */
-        border: none;
-        border-radius: var(--border-radius);
+        border: 1px solid var(--border-semi-light);
+        border-bottom: 3px solid var(--border-semi-light);
+        /* border: none; */
+        /* border-radius: var(--border-radius); */
+        border-radius: 0.25rem;
         cursor: pointer;
         display: flex;
         justify-content: center;
-        font-size: 0.875rem;
+        font-size: 0.75rem;
         gap: 0.5rem;
-        padding: 0.6rem 1rem 0.6rem 1rem;
+        padding: 0.5rem 1rem;
         position: relative;
         transition: all 100ms ease-in-out;
     }
     :global(.fl-button.fl-button-text) {
-        padding: 0.7rem 1rem 0.7rem 1rem;
+        padding: 0.5rem 1rem 0.5rem 1rem;
     }
     :global(.fl-button.flat) {
         /* background-color: var(--ivory); */
@@ -50,6 +52,8 @@
     }
     .fl-button-active {
         background-color: var(--dark) !important;
+        /* border: 1px solid var(--primary-light);
+        border-bottom: 3px solid var(--primary-light); */
         color: var(--white);
     }
     .fl-button-accent-active {
@@ -57,7 +61,7 @@
         color: var(--white);
     }
     .fl-button:not(.fl-button-active):hover {
-        background-color: var(--light) !important;
+        background-color: var(--lighter) !important;
     }
     /* .fl-button:not(.fl-button-accactive):hover {
         background-color: var(--light) !important;

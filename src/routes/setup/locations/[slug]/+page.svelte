@@ -46,6 +46,7 @@
 <div class="fl-location wrapper">
 
     <BreadCrumbs items={[
+        { link: '/setup', text: 'Setup' },
         { link: '/setup/locations', text: 'Branches' },
         { link: `/setup/locations/${location.id}`, text: location.name },
     ]} />

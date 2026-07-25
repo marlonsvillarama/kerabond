@@ -1,10 +1,12 @@
 <script>
+    import Button from "../button.svelte";
     let {
         oncreate
     } = $props();
 </script>
 
-<button type="button" class="fl-btn-new" onclick={oncreate}>Create Booking</button>
+<!-- <button type="button" class="fl-btn-new" onclick={oncreate}>Create Booking</button> -->
+<Button onclick={oncreate} accent={true}>New Booking</Button>
 
 <style>
     .fl-btn-new {

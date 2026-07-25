@@ -10,7 +10,7 @@
         style = ''
     } = $props();
     let calendarState = getContext('CALENDAR_STATE');
-    let staffState = getContext('STAFF_STATE');
+    let staffState = getContext('STAFF');
 
     let daysOfWeek = [
         { day: 0, short: 'Sun', long: 'Sunday' },

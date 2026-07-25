@@ -34,10 +34,11 @@
     .fl-card {
         display: flex;
         flex-direction: column;
-        background-color: var(--white);
+        background-color: var(--lightest);
         border: 1px solid var(--semi-light);
         border-top: 4px solid var(--semi-light);
         border-radius: 0.375rem;
+        /* box-shadow: var(--shadow); */
     }
     .fl-card.fl-card-accent {
         border-color: var(--primary);

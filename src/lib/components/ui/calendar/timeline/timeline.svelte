@@ -2,7 +2,8 @@
     import { X } from "@lucide/svelte";
     import { getContext } from "svelte";
     import { goto } from "$app/navigation";
-    import { formatDate } from "../calendar-helper.svelte";
+    import { DateFormatter } from "$lib/modules/dates";
+    // import { formatDate } from "../calendar-helper.svelte";
     import Avatar from "../../avatar.svelte";
     import BookingForm from "../forms/booking-form.svelte";
     import Button from "../../button.svelte";
@@ -18,7 +19,8 @@
     let props = $props();
     let calendarState = getContext('CALENDAR_STATE');
     let openDrawer = $state(true);
-    let staffState = getContext('STAFF_STATE');
+    let staffState = getContext('STAFF');
+    console.log('** timeline staffState', staffState);
     let timelineStaff = $derived(staffState.filter(d => calendarState.selectedStaff.indexOf(d.id) >= 0));
     
     let daySlots = $derived.by(() => {
@@ -35,7 +37,7 @@
             output.push({
                 day: dt.toLocaleDateString('en-NZ', { weekday: 'short' }),
                 longday: dt.toLocaleDateString('en-NZ', { weekday: 'long' }),
-                date: formatDate(dt),
+                date: DateFormatter.toString(dt),
                 long: dt.toLocaleDateString('en-NZ', { month: 'long', day: 'numeric' }),
                 short: dt.toLocaleDateString('en-NZ', { month: 'short', day: 'numeric' }),
             });
@@ -61,7 +63,7 @@
 
             output.push({
                 id: `${hours}${minutes}`,
-                date: formatDate(dt),
+                date: DateFormatter.toString(dt),
                 slot: dt.toLocaleTimeString('en-NZ', { hour: 'numeric', minute: '2-digit', hour12: true }),
                 value: `${hours}${minutes}`,
                 hourStart: dt.getMinutes() === 0
