@@ -1,6 +1,8 @@
 export const DateFormatter = () => {
     return {
-        toDate: (value) => {
+        add: () => {},
+
+        parseDate: (value) => {
             return new Date(value);
         },
 

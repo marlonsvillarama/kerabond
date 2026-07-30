@@ -48,7 +48,8 @@
             //     dt = new Date(initialDate);
             // }
 
-            this.date = DateFormatter.toString(dt);
+            this.date = DateFormatter().toString(dt);
+            console.log('CalendarState constructor this.date', this.date);
             // this.date = formatDate(dt);
             // this.selectedStaff = staffState.map(d => d.id);
         }
@@ -61,7 +62,7 @@
                 case 'week': { prevDay.setDate(prevDay.getDate() - 7); break }
                 default: { prevDay.setDate(prevDay.getDate() - 1); break }
             }
-            this.date = DateFormatter.toString(prevDay);
+            this.date = DateFormatter().toString(prevDay);
             // this.date = formatDate(prevDay);
         };
 
@@ -73,12 +74,12 @@
                 case 'week': { prevDay.setDate(prevDay.getDate() + 7); break }
                 default: { prevDay.setDate(prevDay.getDate() + 1); break }
             }
-            this.date = DateFormatter.toString(prevDay);
+            this.date = DateFormatter().toString(prevDay);
             // this.date = formatDate(prevDay);
         };
 
         today () {
-            this.date = DateFormatter.toString();
+            this.date = DateFormatter().toString();
             // this.date = formatDate(new Date());
         };
     }

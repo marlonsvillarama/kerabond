@@ -12,6 +12,7 @@
     } from "@lucide/svelte";
 
     import { getContext } from "svelte";
+    import { DateFormatter } from "$lib/modules/dates";
     import Button from "$lib/components/ui/button.svelte";
     import ButtonGroup from "$lib/components/ui/button-group.svelte";
     // import Select from "../select.svelte";
@@ -20,7 +21,7 @@
     import CalendarDateSelect from "./calendar-date-select.svelte";
     import CalendarLocationSelect from "./calendar-location-select.svelte";
     import CalendarModeSelect from "./calendar-mode-select.svelte";
-    import { DateFormatter } from "$lib/modules/dates";
+    // import { DateFormatter } from "$lib/modules/dates";
     // import { formatDate, parseDate } from "./calendar-helper.svelte";
 
     let {
@@ -38,11 +39,13 @@
     let activeLocation = $derived(calendarState.selectedLocation ? calendarState.locations.find(d => d.id === calendarState.selectedLocation) : null);
     let locationText = $derived(activeLocation ? activeLocation.text : 'Select Location...');
     let dayDisplay = $derived.by(() => {
-        let dt = DateFormatter.toDate(calendarState.date);
+        let dt = DateFormatter().parseDate(calendarState.date);
+        // let dt = DateFormatter.toDate(calendarState.date);
+        console.log('dayDisplay dt', dt);
         return dt.toLocaleDateString('en-NZ', { weekday: 'long' });
     });
     let dateDisplay = $derived.by(() => {
-        let dt = parseDate(calendarState.date);
+        let dt = DateFormatter().parseDate(calendarState.date);
         return dt.toLocaleDateString('en-NZ', { year: 'numeric', month: 'long', day: 'numeric' });
     });
 </script>

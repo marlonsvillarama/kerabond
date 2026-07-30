@@ -55,16 +55,16 @@
     }
     .fl-page-header > .title > .name {
         color: var(--darker);
-        font-size: 1.5rem;
+        font-size: 1.375rem;
         gap: 0.5rem;
         font-weight: 600;
     }
     .fl-page-header > .title > .count {
         background-color: var(--primary-light);
         font-weight: 500;
-        height: 2rem;
+        height: 1.75rem;
         /* width: 2rem; */
-        padding: 0 0.75rem;
+        padding: 0 0.625rem;
         border: 0;
         border-radius: 0.25rem;
         display: flex;
